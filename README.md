@@ -1,46 +1,49 @@
-# Getting Started with Create React App
+# Nuber Eats Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 14.0 Create React App
 
-## Available Scripts
+프론트엔드를 만듦
 
-In the project directory, you can run:
+create react app을 사용함
 
-### `yarn start`
+typescript도 미리 셋업됨
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+터미널에 npx create-react-app nuber-eats-frontend --template=typescript 입력함
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+create react app은 template들을 가지고 있음
 
-### `yarn test`
+typescript code를 쓸 수 있게 설치됨
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+TS configure 등을 다 포함함
 
-### `yarn build`
+설치가 끝난 다음에 nuber-eats-frontend로 들어가고, 터미널에 git remote add origin https://github.com/kko0831/nuber-eats-frontend.git 입력
+ 
+git repository가 잘 만들어짐
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+예를 들어 tsconfig 파일이 있음
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+test 파일도 있음
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+index.ts 파일도 있고 reportWebVitals()라는게 들어있는데 analytics와 관련됨
 
-### `yarn eject`
+setUpTests도 있음
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+cannot use JSX라는 버그가 뜬다면 TS config로 가서 react-jsx를 react로 바꿔주기만 하면 됨
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+새 버전이라 버그가 뜨는 것 같음
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+파일들을 몇 개 좀 삭제할건데 그 전에 일단 잘 돌아가는지부터 봄
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+터미널에 npm run start 입력함
 
-## Learn More
+create react app react-scripts에 버그가 있음
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+에러들이 떴다면 node_modules를 삭제하고, 재설치 해야함
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+node_modules를 삭제하고, react-scripts에 바꾼 버전의 node_modules를 재설치함
+
+터미널에 npm i 입력하여 수정된 버전의 create react app을 재설치함
+
+package.json 파일을 수정하고 터미널에 npm i 입력 했을 때 ERESOLVE unable to resolve dependency tree 에러 발생 -> npm i --legacy-peer-deps를 입력하여 해결
+
+파일 삭제를 좀 하고, 나머지 몇 가지를 재설치함

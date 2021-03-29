@@ -333,3 +333,111 @@ Tailwind를 처음 설치했을 때는 그럴 수 있음
 디자이너가 될 필요없이 클래스 이름만 가지고 놀면 됨
 
 CSS 셋업은 끝났고, 다음은 GraphQL 셋업임
+
+## 14.3 Apollo Setup
+
+다음으로 설치할 것은 Apollo client임
+
+Apollo client와 GraphQL을 설치함
+
+터미널에 npm install @apollo/client@3.2.7 graphql@15.4.0 입력함
+
+client를 생성함
+
+src 폴더 안에 새 파일을 만들고 apollo.ts라고 함
+
+우리 backend의 URL을 사용함
+
+nest.js의 localhost 포트가 3000임
+
+우리 front-end create react app도 포트가 3000번이라 문제가 생길 수 있음
+
+nest.js 포트를 수정하는 것이 좋음
+
+미리 nuber-eats 백엔드를 띄워놓음
+
+열어서 백엔드 포트 부분만 빠르게 바꿈
+
+백엔드의 main.ts로 가서, main에서 3000을 바꿔줌
+
+전체 unit에 대해 4000으로 바꿈
+
+GraphQL은 4000에서 돌리고, create react app은 3000에서 돌리고 싶기 때문임
+
+uri: "http://localhost:4000/graphql"로 수정함
+
+백엔드를 실행해야함
+
+백엔드 터미널에 npm run start:dev 입력함
+
+잘 돌아가는지 확인해봐야함
+
+만일 안 되면 client가 연결되지 못 함
+
+백엔드에서 메세지를 잘 던져주고 있고 우리의 restaurant check가 매초 잘 들어오고 있음
+
+이게 클라이언트를 만드는 방식임
+
+index.ts로 가서 ApolloProvider를 사용함
+
+Apollo로부터 client를 임포트함
+
+별 문제없이 동작함
+
+react app에서 에러가 안 뜸
+
+개발자 도구에 가보면 콘솔에 에러가 없어야함
+
+크롬에 Apollo extension을 설치하여 Apollo로 가보면, docs와 연결이 되어있어야함
+
+보다시피 docs가 잘 설치되어있음
+
+Apollo가 백엔드와 연결되는 순간, schema를 가져오기 위해 query를 보내게 되기 때문임
+
+이걸 Reconnaissance query라고 함
+
+개발자 도구 Network탭에서 localhost가 있고 graphql이 있음
+
+localhost와 graphql은 introspectionQuery를 자동적으로 감지함
+
+introspection query가 아니라는건, 단순하게 response를 받게 될 거란 뜻임
+
+schema를 통째로 받게 됨
+
+GraphQL의 모든 schema는 Apollo로 보내짐
+
+Apollo extension을 쓰면 schema를 좀 더 편하게 볼 수 있음
+
+꽤 깔끔함
+
+확장 프로그램은 Apollo dev tools임
+
+Brave랑 Chrome에서 작동함
+
+Apollo client developer tools는 Firefox에도 있음
+
+프론트엔드에서 schema가 보여야함
+
+다음으로 할 거는 route 만들기랑 우리 앱에서의 state를 어떻게 관리할지에 대한 것임
+
+로그인 파트를 만들거고, 어떻게 form을 다룰지를 배움
+
+create account form을 만들고, 인증을 하고, Apollo를 사용해 local state를 다루는 방법을 설명함
+
+user part라는건 restaurant을 볼 수 있고, restaurant을 검색하는 카테고리를 볼 수 있고, 유저 자신의 profile을 볼 수 있고, 자신의 profile을 수정하고 주문하는 부분을 얘기함
+
+그러고 나서 오랫동안 기능 확장을 중단함
+
+이번 강의에는 testing에 큰 비중을 두고 싶음
+
+restaurant owner dashboard를 만듦
+
+그 다음엔 driver 파트를 만들고, driver 부분은 subscriptions랑 map 부분 등을 포함함
+
+user 부분을 만들고, user가 볼 수 있는 부분을 다루고, 그 다음에 testing을 많이 함
+
+Testing을 비중있게 다룸
+
+schema, 프론트엔드에서 details를 사용하는 방법을 알려줌
+
+routes를 셋업하고 authentication으로 들어감

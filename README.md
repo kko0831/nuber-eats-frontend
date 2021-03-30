@@ -441,3 +441,89 @@ Testing을 비중있게 다룸
 schema, 프론트엔드에서 details를 사용하는 방법을 알려줌
 
 routes를 셋업하고 authentication으로 들어감
+
+## 14.4 React Router Dom
+
+react router를 셋업함
+
+필요한 routing들이 많음
+
+예를 들어 로그아웃 될 수 있는 사람이 있음
+
+로그아웃된 사람이 볼 수 있는 router가 있고, 로그인된 사람이 볼 수 있는 router가 있음
+
+드라이버의 경우엔 또 달라짐
+
+드라이버는 일부 다른 route를 가짐
+
+driver용 router랑 customer용 router를 만들 수도 있음
+
+restaurant owner를 위한 router를 만들 수도 있음
+
+routing이 조금 더 복잡하고 발전된 형태임
+
+어떻게 routing이 동작할지에 대한 계획도를 만듦
+
+react-router-dom을 씀
+
+react-router-dom은 리액트 생태계에서 가장 많이 사용되는 라우팅 솔루션임
+
+옛날보다 보기에 훨씬 나아짐
+
+터미널에 npm install react-router-dom@5.2.0 입력
+
+어떻게 route를 다룰 것인지를 생각해야함
+
+logged out router만 만드는 것으로 시작함
+
+일단 로그인 상태인지 확인해야함
+
+로그인된 상태라면 logged in router를 봐야함
+
+logged in router에는 다양한 옵션이 있음
+
+두 개의 분리된 파일을 만듦
+
+router라는 이름의 새 폴더를 만듦
+
+logged-out-router.tsx 파일과 logged-in-router.tsx 파일을 만듦
+
+logged-out-router를 먼저 작업하고 이후에 logged-in-router를 작업함
+
+일단 2개의 router를 만들거라는 틀을 기억하고 있어야함
+
+logged-in-router가 더 까다로움
+
+driver-routes, user-routes, restaurant-owner-routes 등으로 나뉨
+
+지금은 logged-out-routes만 리턴함
+
+react 임포트하는거를 잊으면 안 됨
+
+App.tsx를 봄
+
+typescript로 코딩 중이고, typescript는 리턴에 있어서 살짝 까다로운 편임
+
+component로 string을 리턴할 수 없음
+
+Typescript에선 안 되니까 span을 씀
+
+App.tsx가 잘 수정됨
+
+authentication에 필요한 seed를 줌
+
+isolatedModules라는 에러가 뜨면 앱을 재시작해야함
+
+error에 갇히면 계속 걸림
+
+authentication 시스템을 위한 틀이 됨
+
+어플리케이션은 우리가 로그인 상태인지 아닌지 결정해야하기 때문임
+
+로그인 상태면 logged-in-router를, 로그아웃 상태면 logged-out-router를 보여줌
+
+하지만 아직까지 우리 앱은 logged-out만 보여줌
+
+routers 폴더를 만들었고, React router DOM을 설치했고 사용하려는 로직에 대해서도 이해함
+
+App에서 어떤 router를 갖게 될지 다룸

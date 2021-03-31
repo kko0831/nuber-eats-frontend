@@ -527,3 +527,197 @@ authentication 시스템을 위한 틀이 됨
 routers 폴더를 만들었고, React router DOM을 설치했고 사용하려는 로직에 대해서도 이해함
 
 App에서 어떤 router를 갖게 될지 다룸
+
+## 15.0 Local Only Fields
+
+이번 파트에서는 authentication의 프론트엔드 부분을 만듦
+
+로그인, 계정 생성 등 authentication은 간단한 것처럼 느껴질 수도 있음
+
+이런 기능들만을 만드는 것으로도, 많은 것을 구현하고 배우게 됨
+
+예를 들어, Local-only fields에 대해 배움
+
+Local-only Fields는 GraphQL 서버의 스키마에 정의되지 않은 것을 말함
+
+Apollo client가 local state를 다룰 수 없다고 생각하지만, 사실 Apollo client는 GraphQL state를 다루는데 굉장히 능함
+
+Apollo의 cache도 뛰어남
+
+local state만을 다룰 수 있다는 사실을 잘 모름
+
+local state는 server에는 없지만 application에는 있기를 바라는 그런 state임
+
+예를 들면 로그인, 로그아웃 같은 것임
+
+그게 바로 front end에서 다루고자 하는 local state임
+
+app.tsx, app component는 유저가 로그인 상태인지 아닌지에 대한 local state를 알아내야함
+
+유저가 로그인하면 local state를 업데이트해서 logged-in-router를 보여야함
+
+이게 바로 local-only Fields의 예시임
+
+다른 예시로는 다크 모드가 있는 웹사이트임
+
+다크 모드의 여부는 모든 컴포넌트가 신경써야할 부분이고, 모든 요소가 다크 모드 세팅을 확인해야하지만 서버로 보내야 할 필요는 없음
+
+YouTube같은 곳에서의 음량도 local-only fields의 예시가 될 수 있음
+
+플레이어를 보면 볼륨을 몇으로 해뒀는지를 기억해야함
+
+local state가 있으니까 비디오마다 몇으로 볼륨을 세팅해뒀는지를 기억함
+
+서버에게 줄 필요가 없는 정보임
+
+우선 local state를 정의함
+
+typePolicies를 추가함
+
+대부분의 기본적인 GraphQL 타입에 대해서 1개의 프로퍼티를 추가함
+
+바로 Query임
+
+Query에는 field들이 있고 그 중 하나는 isLoggedIn이 됨
+
+그리고 field들은 function call read가 있어야함
+
+read는 field의 값을 반환하는 함수임
+
+일단 false로 함
+
+false만 반환하고 있으니 read() 함수는 아무 것도 하고 있지 않음
+
+계속 false만 반환함
+
+app ts 파일에서 어떻게 접근하는지 보여줌
+
+기본적인 GraphQL Query를 짬
+
+gql 안에 isLoggedIn이라고만 써주면 됨
+
+client cache에 요구해야함
+
+@client를 붙여줘야함
+
+쿼리의 isLoggedIn이 fields 부분의 isLoggedIn과 동일해야함
+
+받은 data를 콘솔에 출력함
+
+이게 바로 local state를 cache에 저장하는 방법임
+
+local state에 접근하는 방법 중 하나임
+
+대부분의 경우 local state를 바꾸고 싶어하지 않음
+
+local state는 다른 것으로부터 측정하게 되는 것일 수도 있음
+
+예를 들어 토큰이 있으면, isLoggedIn을 Token이라고 치면 local storage에 token이 있을 때에는 우리가 logged in 되었다는걸 알려줌
+
+그게 read 함수가 하는 일임
+
+아직은 read 함수를 업데이트하지 않음
+
+return false로 해두고, 어떻게 read 함수를 업뎃하는지 보여줌
+
+앱은 언제나 user가 logged in 상태인지를 물어봄
+
+유저가 로그인되지 않은 상태라면 logged out router를 보여줌
+
+로그인된 상태라면 logged in router를 보여줌
+
+LoggedInRouter를 임포트함
+
+로그인 상태에서는 LoggedInRouter를 보여주고, 로그아웃 상태에서는 LoggedOutRouter를 보여줌
+
+Logged out 상태인걸 볼 수 있음
+
+제대로 동작함
+
+local only field를 업데이트하는 주체는, app이 아니라 LoggedOutRouter가 되어야만함
+
+logged-out-router에 div를 만듦
+
+Logged Out 버튼도 넣음
+
+local state를 핸들하는 법을 보여주고 있음
+
+먼저 개념을 증명해서 빌드업한 후, 실제 구현에 들어감
+
+다양한 것들에 대해 먼저 개념을 증명한 뒤, 구현에 들어감
+
+버튼이 있는데, Tailwind 덕분에 아무 스타일도 가지고 있지 않음
+
+어쨌든 클릭은 할 수 있음
+
+local state를 Apollo client를 통해 업뎃함
+
+함수를 만듦
+
+클릭을 했을 때 local state가 업데이트되도록 하고 싶음
+
+문제는 우리 local state가 비유하자면 죽은 상태나 마찬가지임
+
+지금은 항상 false만 리턴하기 때문임
+
+reactive variables라는걸 사용해야함
+
+reactive variables는 Apollo client의 새 기능임
+
+원래는 없었는데, 이제 사용할 수 있는 버전으로 들어섰음
+
+아무튼 새로 나온건데 굉장한 기능임
+
+reactive variable을 만드는 방법은 makeVar() 함수를 쓰는 것임
+
+보다시피 Reactive variables는 application의 어디에서나 읽고 수정할 수 있음
+
+GraphQL operation을 쓸 필요없음
+
+reactive variables를 쓰면 오래된 방법을 사용할 필요가 없음
+
+reactive variables를 쓰면 어디서든 읽고 업데이트할 수 있음
+
+저장은 apollo client에 됨
+
+reactive variables의 값이 변경되면, 그 필드를 갖는 쿼리들이 자동으로 새로고침됨
+
+Fields 값이 reactive variable의 값에 의존한다면, variable 값이 바뀔 때 field를 포함하고 있는 active query들이 자동으로 새로고침됨
+
+reactive variable에 반응하는 모든 것을 업데이트할 수 있음
+
+makeVar() 함수를 사용함
+
+default value를 정해야하는데 일단 함수의 default value를 false로 함
+
+false를 반환하는 대신 isLoggedInVar를 반환함
+
+우선 변수를 export함
+
+logged-out-router에 변수를 import하고, isLoggedInVar()에 새 값을 넣음
+
+이 경우에는 새 값이 true가 됨
+
+redux를 쓸 필요가 없음
+
+Reactive variables로부터 값을 가져옴
+
+GET_CART_ITEMS가 있고, client 사이드에 있음
+
+먼저 GraphQL query를 작성해야하고 그러고나서 Query hook을 써야함
+
+코드 양 자체도 훨씬 적고, reactive variables에는 아무거나 저장할 수 있음
+
+Apollo client가 모든 것들이 다시 렌더링되는걸 확인해줌
+
+로그아웃 상태에서 로그인으로 잘 되는걸 보니까 우리 코드가 잘 돌아가는게 확실함
+
+logged-in-router로 가서 몇 가지만 고침
+
+모든게 제대로 동작하는지 한번 더 확인하기 위한 것임
+
+이게 우리의 authentication이 동작하는 방식임
+
+reactive variables를 사용해서 우리의 authentication state를 알아냄
+
+다음 영상에서는 Library를 사용한 form에서 mutation들을 만드는 방법을 알려줌

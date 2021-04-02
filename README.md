@@ -721,3 +721,207 @@ logged-in-router로 가서 몇 가지만 고침
 reactive variables를 사용해서 우리의 authentication state를 알아냄
 
 다음 영상에서는 Library를 사용한 form에서 mutation들을 만드는 방법을 알려줌
+
+## 15.1 React Hook Form
+
+react에서 form을 만드는 것은, react의 가장 최악인 부분 중 하나임
+
+폼을 만드는 프로세스가 얼마나 길어지는지를 보여주려고 한번 시험삼아 만들어봄
+
+만약에 email과 password를 넣는 input을 구현하고 싶다면, 두개의 state를 만들어야함
+
+password, set password 그리고 email, set email임
+
+둘 다한테 unchanged functions를 넘겨주고, unchanged function에서 input의 이름이 email인지를 확인하고, email이나 password에 값을 set함
+
+email을 위한 input에도 값을 줘야하고, password를 위한 input에도 값을 줘야함
+
+이 과정은 하다보면 좀 열받음
+
+우리가 이 폼들을 validate(인증)해야함
+
+예를 들어 email은 이메일의 형식을 띄어야하고, password는 몇자 이상이어야함
+
+패스워드 길이가 10보다 작을 때 유효한 형식인지 validate해야함
+
+또 form에서 error도 보여줘야함
+
+예를 들어 "패스워드가 너무 짧습니다."같은 거라던가 이 에러들을 대체 어디에 만들어야하는가
+
+다른 passwordError, setPassword같은 변수를 또 만들어줘야함
+
+생각만 해도 너무 열받음
+
+이 예시는 그냥 리액트에서 form을 직접 만드는게 얼마나 불편한지를 보여주기 위한 사례임
+
+onSubmit 함수를 만들고, default를 막아야하고, 정말 번거로운 일임
+
+일단 지금은 이메일이 있고, 패스워드가 있고, 모든게 잘 있음
+
+아직은 submit button이 없음
+
+지금 보여주려는건 방금 만들었던 것과 동일한 validation을 더 적은 코드와 error handling과 함께 어떻게 더 쉽게 만들지에 대한 것임
+
+우선 react hook form을 설치해야함
+
+터미널에 npm i react-hook-form@6.11.4 입력
+
+UseState는 쓰지조차 않음
+
+button을 만듦
+
+Tailwind 작업을 해줌
+
+react hook form을 쓰는건 단 한 개의 hook을 쓰는 방식과 같음
+
+useForm Hook 한 개가 너무나 많은 기능을 제공함
+
+우리는 register 부분만을 다룸
+
+register는 useForm이 우리에게 제공하는 함수임
+
+register는 그냥 input의 ref안에 넣으면 됨
+
+오직 register만 추가했는데 이미 react에 의해서 컨트롤되는 form을 생성함
+
+useForm에 watch라는 함수도 들어있음
+
+모든 권능은 useForm으로부터 오는 셈임
+
+unchanged, event 등 잡다한 것들을 다 피해서 만듦
+
+useForm Hook에서 모든 힘을 끌어다 쓰면 됨
+
+register function을 가져와서 ref로 넣음
+
+한가지 더 트릭을 알려줌
+
+submit을 어떻게 handle하는지를 보여줌
+
+email 부분이 좀 마음에 안 듦
+
+보다시피 지금은 작동하지 않음
+
+submit하고 페이지를 새로고침하는 중임
+
+handleSubmit이란 함수를 데려옴
+
+onSubmit을 만듦
+
+email만 watch하고 싶음
+
+handleSubmit과 onSubmit이 어떻게 함께 동작하냐면, form에서 onSubmit을 써주고, hook에서 가져온 handleSubmit을 넣어줌
+
+폼에 입력된 값이 유효할 때 불리는 커스텀 함수를 인자에 넣음
+
+유효할 때 불리는 것, 유효하지 않을 때 불리는 함수를 2개 넣을 수도 있음
+
+onInValid 함수를 만듦
+
+email을 watch하고 있으니까 submit해보면 잘 동작함
+
+그 밖에 아무거나 watch 할 수도 있음
+
+onInvalid를 handleSubmit에 넣음
+
+validate는 함수를 사람이 입력한 데이터와 함께 넘겨줌
+
+그러고나서 ValidateResult를 반환함
+
+ValidateResult는 Message나 Boolean의 형태일 수 있음
+
+hanmail이란 단어가 안 들어가있는 사람을 다 reject함
+
+일단 email은 string임
+
+이렇게 field를 검증함
+
+이메일 철자에 hanmail.net이 포함된다면 true를 반환함
+
+아무 말 넣고 Submit을 누르면 onSubmit이 잘 동작함
+
+이메일 주소를 naas.com으로 바꿔봄
+
+can't create account라고 뜸
+
+submit을 누르니, 바로 form이 에러가 있는 field로 돌아감
+
+pattern으로 validate해도 됨
+
+regular expression(정규 표현식)으로 검증도 가능함
+
+다시 돌아와서 submit함
+
+이제는 계정을 만들 수 있음
+
+error message에 대해서도 얘기함
+
+useForm에는 errors도 있음
+
+onInvalid가 불릴 때, errors를 console.log함
+
+어떤 errors가 찍히는지 봄
+
+errors는 빈 오브젝트임
+
+입력하는 순간 email error가 뜸
+
+email에 error가 떴다는거고, type: "pattern"도 뜸
+
+예시를 들기 위해서 html에 required를 잠깐만 없앰
+
+유저의 브라우저가 지원하지 않더라도, javascript가 보호해준다는걸 보여줌
+
+required를 "this is required" 같은걸로 바꿈
+
+submit하면 error가 뜨고 error의 type은 required임
+
+이렇듯 error messages에도 적용 가능함
+
+useForm()에 typescript를 쓰는 법을 아직 안 배움
+
+이건 다음 비디오에서 다룸
+
+단 한 줄의 import로 많은 기능들을 가져옴
+
+API documentation을 보면, API documentation도 굉장함
+
+다 useForm hook에서 가져올 수 있는 기능들임
+
+옵션들을 넘겨줄 수 있음
+
+useForm 아래에 register가 있고 register에는 옵션들이 있는데 required, maxLength, minLength, max, min, pattern과 validate, unRegister, watch가 있음
+
+watch는 fields를 보여주는 역할을 함
+
+handleSubmit도 있고 에러를 매뉴얼하게 하나하나 설정하고 싶다면 setError도 있음
+
+errors.username 등 에러를 가져오는 방식임
+
+clearErrors, setValues, getValues 등도 있음
+
+getValues는 watch랑 비슷한데 딱 한번만 읽는다는 점이 다름
+
+renderer를 trigger하거나 하는게 없음
+
+react hook form은 form 만드는데 들이는 시간을 정말 많이 줄여줌
+
+검증 기능들이 있으니까 내 form은 훨씬 안전해짐
+
+pattern 같은 것들로 validate하기 편해짐
+
+validate를 보면, 다양한 것들에 대한 validate가 가능하단걸 알 수 있음
+
+validate는 object가 될 수 있음
+
+또 다른 예시로 좋은 코드 챌린지가 있음
+
+username을 validate하는 API endpoint를 만듦
+
+유저가 username을 입력하면 API를 타고 들어감
+
+보다시피 async랑 await를 지원함
+
+fetch해서 해당 username이 허용 가능한지를 판단함
+
+form을 typescript와 통합하고 useForm에 대해 조금 더 배워봄

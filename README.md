@@ -925,3 +925,61 @@ username을 validate하는 API endpoint를 만듦
 fetch해서 해당 username이 허용 가능한지를 판단함
 
 form을 typescript와 통합하고 useForm에 대해 조금 더 배워봄
+
+## 15.2 React Hook Form part Two
+
+useForm에 대해 보여주고 싶은게 한가지 더 있음
+
+profile을 만들어야하고 restaurant도 만들어야하고 dish도 만들어야함
+
+우선 시작하기 전에 useForm을 typescript와 통합시키는 법을 알려줌
+
+typescript Interface를 만듦
+
+이름은 IForm으로 함
+
+항상 인터페이스 이름을 I로 시작함
+
+그래야 이름만 봐도 인터페이스인걸 앎
+
+멤버로 email을 만듦
+
+password도 마찬가지로 type을 string으로 해줌
+
+useForm 함수에다 넣어줌
+
+예를 들어 errors에 가보면 뒤에 .을 붙였을 때 errors 내부의 email과 password가 나오는걸 볼 수 있음
+
+뒤에 messages를 붙일 수도 있음
+
+tailwind를 넣음
+
+Tailwind를 많이 사용함
+
+어떻게 Tailwind 방식으로 생각해서 코딩하는지 배우게 됨
+
+error를 하나 더 해봄
+
+type은 string이 됨
+
+=== "pattern"이라 해줘야함
+
+error의 타입이 pattern과 동일하다면 수행하도록 함
+
+Only hanmail allowed라고 써줌
+
+이메일을 입력해보고 submit해보면 Only hanmail allowed라고 뜸
+
+이메일을 hanmail로 바꿔봄
+
+에러가 사라짐
+
+useForm을 소개함
+
+이제 login form을 만들 모든 준비를 갖춤
+
+무료 GraphQL course를 들었다고 가정하면 mutation을 전송하는 방법은 알고 있을거라 생각함
+
+하지만 아직 어떻게 우리의 schema를 react와 mix하는지는 모름
+
+error를 방지할 수 있음

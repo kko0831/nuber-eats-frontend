@@ -983,3 +983,171 @@ useForm을 소개함
 하지만 아직 어떻게 우리의 schema를 react와 mix하는지는 모름
 
 error를 방지할 수 있음
+
+## 15.3 Router and @types
+
+이제 실제로 해볼 시간이 옴
+
+실제로 유저를 login 시켜봄
+
+router랑 그외 기타 등을 만듦
+
+Pages란 이름의 새 폴더를 만듦
+
+screens든 routes든 부르고 싶은 이름으로 함
+
+pages 폴더에 login page를 만듦
+
+login.tsx 파일을 만들고 sign up page도 만듦
+
+아님 create라고 불러도 좋음
+
+페이지 두 개를 만듦
+
+컴포넌트를 만들어줌
+
+실제 라우터를 만들어봄
+
+logged-out-router에다 만들어줌
+
+물론 로그인 되었을 때는 logged-in-router를 씀
+
+LoggedOutRouter에서 이전에 했던 것을 다 지워줌
+
+logged-out-router가 필요한건 당연히 router임
+
+router를 import해봄
+
+BrowserRouter를 import함
+
+import { BrowserRouter as Router } from "react-router-dom"를 넣어줌
+
+react-router-dom에 빨간 줄이 있음
+
+불평하는 이유는 react-router-dom을 위한 typescript definition이 없기 때문임
+
+개발자가 react-router-dom을 typescript로 작성하지 않았음
+
+아마도 javascript로 작성되었을 것 같음
+
+해결하려면 두 가지 옵션이 있음
+
+declare module react-router-dom 이런 식으로 선언함
+
+빨간 줄은 사라졌는데 router를 실제로 클릭해보면 props도 없고 errors도 뭔지 알 수가 없음
+
+내가 잘못된 prop을 전달했을 수도 있는거고 아무튼 아무런 정보가 뜨지 않음
+
+고맙게도 react-router-dom은 types란걸 가지고 있음
+
+에러를 고치는데 두가지 옵션을 줬음
+
+하나는 npm install @types/react-router-dom함
+
+다른 하나는 declare module "react-router-dom"함
+
+module을 선언(declare)하는 이유는 types에 대한 폴더가 없기 때문임
+
+types가 뭘까
+
+types에 대해 알아봄
+
+definitelyTyped란게 있음
+
+DefinitelyTyped는 하이 퀄리티 typescript type definition을 위한 repository임
+
+보다시피 엄청 인기 많은 repository임
+
+이 repository는 typescript를 사용하지 않는 library의 type을 가지고 있음
+
+하지만 typescript를 사용하고 싶은 사람들이 그냥 그 library의 "type"해서 쓰는 것임
+
+types 폴더를 열어보면 내용이 엄청 방대함
+
+무려 6000개 가량의 내용물이 표시되지 않았음
+
+github에는 1000개만 보여줄 수 있음
+
+typescript로 만들어지지 않은 npm packages들에 상응하는 거의 모든 typescript types를 담은 폴더임
+
+사용하는 라이브러리에 만약 에러가 뜬다면 그 라이브러리가 typescript definition을 지원하지 않기 때문임
+
+두가지 옵션이 있음
+
+첫번째는 npm install @types/...이 제대로 설치되길 기도하는 것임
+
+존재한다면 에러는 사라짐
+
+터미널에 npm install @types/react-router-dom@5.1.6 입력
+
+아무도 repository에 type definition을 만들어놓지 않았다면 declare 해야함
+
+빨간줄 없어진게 보임
+
+아무 것도 이제 불평을 안 함
+
+만약에 type definition이 존재하지 않는다면 추가해야함
+
+typescript에게 보호를 받지 못하니까 처음에 좀 당황스러움
+
+보통 type definitions가 있고 실수를 해서 잘못된 prop을 보낸다면 typescript가 도와줌
+
+하지만 package에 Type definitions가 없다면 따로 선언을 해야함
+
+React-Router-Dom은 주마다 300만 다운로드를 받음
+
+라이브러리가 엄청 유명하다면 누군가가 type definition을 입력할법도 함
+
+그럼 있는지 찾아볼까
+
+react-router-dom을 찾아봄
+
+역시 있었음
+
+누가 모든 type들을 입력해놨음
+
+누군가 우리를 위해 모든 type들을 덧붙여놨음
+
+자원해서 사람들이 하는거니까 일부는 미완성일 수도 있음
+
+마음대로 만들 수 있음
+
+typescript 생태계에 기여할 수 있고 시간도 얼마 안 걸림
+
+모든 옵션들을 작성해서 나열함
+
+이게 types에 대한 전부임
+
+이제 router를 시작함
+
+옵션이 있는데 browser router랑 hash router가 있음
+
+hash router는 해시태그를 가지고 있음
+
+고르고 싶은걸로 고르도록 함
+
+더 복잡하게 만드는걸 좋아하니까 browser router를 씀
+
+browser router가 deploy할 때 configuration을 필요로 함
+
+Senior developer에게 필요한 코스임
+
+좀 더 어려운 browser router를 고르겠지만 browser router url이 더 예쁘게 생김
+
+import route 해봄
+
+Route를 추가함
+
+switch도 import함
+
+switch는 오직 한 route만 임포트할 수 있게 해주는 장치임
+
+route의 맨 위에 또 다른 Route를 만듦
+
+예쁜 라우터가 완성됨
+
+create account랑 login이 잘 뜸
+
+router 만들기의 첫번째 스텝으로 다음 영상에서 login 부분을 만져봄
+
+react hook form을 사용할거고 typescript랑 Tailwind CSS도 사용함

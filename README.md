@@ -1151,3 +1151,319 @@ create account랑 login이 잘 뜸
 router 만들기의 첫번째 스텝으로 다음 영상에서 login 부분을 만져봄
 
 react hook form을 사용할거고 typescript랑 Tailwind CSS도 사용함
+
+## 15.4 Form Design
+
+이제 login 화면을 만들고 최대한 예쁘게 꾸며봄
+
+이게 디자인 수업은 아니니까 엄청 예쁘게 하려고 하진 않음
+
+아무튼 Tailwind CSS를 써봄
+
+먼저 h-screen을 추가함
+
+스크린 크기만큼 키움
+
+이번 영상은 어떻게 Tailwind CSS로 작업하고 Tailwind가 얼마나 직관적인지 보여줌
+
+처음엔 클래스 이름을 기억하는데 시간이 좀 걸릴 수 있음
+
+그래도 엄청 직관적임
+
+flex를 치면 flexbox class가 자동완성되는 식임
+
+flex container로 만들고 align item center를 함
+
+클래스명에 items-center랑 justify-center를 넣어줌
+
+또 다른 div를 만듦
+
+uber eats의 배경색이 뭔지 찾아봄
+
+bg를 쳐보면 보다시피 엄청 다양한 회색들이 있음
+
+bg-gray-800을 씀
+
+Log In한 다음 Tailwind를 적용해줌
+
+font를 두껍게 만들어줌
+
+font-bold라고 함
+
+text-lg도 적용해주고 이제 색을 정해줌
+
+text-gray-800으로 설정해줌
+
+박스에 padding을 줌
+
+Tailwind CSS에서는 px(padding horizontal, padding x축)를 치면 다양한 옵션들이 나옴
+
+보통 measurement로 rem(상대적 수치)을 사용함
+
+padding에 px를 사용할 것도 있지만 대부분 rem을 씀
+
+이런 특성이 반응형 디자인을 보장해줌
+
+padding 대신 width도 있음
+
+width도 다양한 옵션들이 있음
+
+개인적으로 잘 쓰는 옵션을 보여줌
+
+항상 w-full을 하고 max-w를 함
+
+max-w(최대 너비)의 옵션에는 super small, small, medium, large, XL, 2XL, 3XL 등이 있음
+
+그리고 현재 screen의 사이즈인 screen 옵션도 있음
+
+이 component 너비는 전체로 해줄거니까 w-full이라고 해줌
+
+스크린 사이즈 최대가 small이라 max-w-screen-sm을 넣어줌
+
+반응형으로 만들어진 것을 볼 수 있음
+
+근데 스크린이 필요 이상으로 큰 거 같음
+
+padding top이랑 bottom에 10을 줌
+
+border radius도 만져봄
+
+rounded-sm, rounded, rounded-md, lg, xl, 2xl 등이 있음
+
+circle까지는 필요없음
+
+text-center를 넣어줌
+
+h3는 text-2xl로 바꿈
+
+font-bold는 필요 없을 것 같음
+
+보다시피 화면을 클래스 이름만 가지고 만들고 있음
+
+이게 대단한 포인트임
+
+background, width, max-width, padding은 물론 px pw 또는 p까지를 배움
+
+pw left, right / py up, down, top, bottom / p top, bottom, left, right임
+
+rounded 클래스는 border-radius를 설정해줌
+
+flex / items-center / justify-center / bg로 배경색 설정하는 것도 앎
+
+우리의 form을 만들어봄
+
+form에는 input이 있어야함
+
+이 input은 placeholder="Email"을 가지고 있음
+
+placeholder="Password"도 있어야함
+
+어떻게 생겼는지 봄
+
+정말 별로임
+
+flex-col을 넣어줄건데 flex direction이 column이라는 뜻임
+
+백그라운드 컬러만 바꿔서 크기를 봄
+
+폼이 Log in에 닿음
+
+margin이 필요함
+
+margin top만 쓰려면 mt임
+
+margin top이랑 bottom을 쓰려면 my해주면 됨
+
+여기엔 margin-top을 5로 해줄거라 mt-5를 씀
+
+이 form은 padding도 있어야함
+
+padding 왼쪽, 오른쪽은 x축이니까 px고 크기는 5라서 px-5로 해줌
+
+나쁘지 않음
+
+이제 input을 건드려봄
+
+margin bottom을 3정도 함
+
+mb-3이 됨
+
+input 두 개 모두 padding을 넣음
+
+위 아래를 3으로 해줌
+
+양 옆으로 2만큼 해줌
+
+둘 다 rounded를 추가해줌
+
+rounded-lg를 해봄
+
+근데 아무 것도 안 바뀐 거 같음
+
+rounded-xl로 해줌
+
+둘의 사이드 패딩을 좀 키워줌
+
+모든 컴포넌트에 다 이렇게 일일이 할 건 아님
+
+시간이 오래 걸림
+
+초반에는 Tailwind로 어떻게 작업하는지 보여주고 따라해볼 수 있도록 할건데 어느 순간부터는 Tailwind를 다루지 않음
+
+그렇게 하면 그 영상은 엄청나게 길어짐
+
+배경색을 바꿈
+
+bg color은 red로 놔둬도 될 거 같음
+
+별 문제 없음
+
+다른 색으로 바꿈
+
+Gray로 바꿀건데 중요한 점이 하나 있음
+
+지금 치고 있는데 autocomplete(자동완성)가 안 뜸
+
+우리가 사용하는 extension이 아직 완전하지 않음
+
+자동완성이 안 됨
+
+클래스를 삭제한 다음에 space를 누르면 자동완성이 뜸
+
+가끔 이럼
+
+class를 작성하다가 실수를 했으면 삭제하고 다시 시작해봄
+
+bg-gray-300, 연한 그레이로 고름
+
+200으로 내림
+
+100으로 해봄
+
+이제 그림자를 다뤄봄
+
+쓸 수 있는 그림자 종류가 참 다양함
+
+사용할 수 있는 shadow 중에는 md가 있음
+
+md를 써도 되고 inner shadow를 써도 됨
+
+shadow-inner를 적용해봄
+
+꽤 괜찮다고 생각함
+
+shadow-inner를 실제로 웹사이트 만들 때 많이 씀
+
+테두리 outline을 바꾸고 싶음
+
+좋은 점은 pseudo selectors가 있어서 states를 쓸 수 있음
+
+예를 들어 hover state를 클래스에서 설정해줄 수 있음
+
+hover라고 쓰면 뒤에 자동완성이 보임
+
+그리고 hover의 모든 속성이 다 나옴
+
+정말 좋은 기능임
+
+background가 gray지만 hover되면 border-purple-600으로 변하게 되어있음
+
+아직 border를 안 만들어줘서 적용이 안 됨
+
+일단 bg로 바꿔줌
+
+gray말고 purple로 해줌
+
+className만 가지고도 잘 실행됨
+
+.hover 이런 식으로 클래스 이름이 생성되는 것을 볼 수 있음
+
+이게 CSS 파일이 엄청 컸던 이유임
+
+모든 클래스들과 그 클래스들의 hover 클래스까지 담고 있음
+
+focus로 바꿔도 잘 적용됨
+
+예를 들면 focus:outline-none으로 바꾸면 outline이 없어짐
+
+이제 윗 부분을 클릭했을 때 border가 생겼으면 좋겠음
+
+아주 얇은 border가 email이나 password 같은 inputs를 감쌌으면 좋겠음
+
+먼저 Tailwind에서 border를 어떻게 쓰는지 보여줌
+
+예를 들어서 border-를 치면 opacity부터 colors까지 옵션이 많이 보임
+
+green으로 가봄
+
+border-green-600을 넣어봄
+
+보다시피 아무 일도 일어나지 않았음
+
+border-green-600은 보이지도 않음
+
+이건 Tailwind가 각 property에 대해 굉장히 세심하기 때문임
+
+width property가 따로 있는 셈임
+
+border하고 쳐보면 border-width:1px라고 뜸
+
+border-l, border-b 1px도 있음
+
+border-l-8 left, bottom, right, top 8 pixels 등 더 다양한 숫자들이 있음
+
+우리는 Tailwind에게 정확하게 요구해야함
+
+이제 border가 뜸
+
+border opacity도 마찬가지로 지정할 수 있음
+
+50정도로 줘봄
+
+굳이 opacity가 필요 없을 거 같음
+
+이제 내가 focus할 때만 border-green이 뜨게 하고 싶음
+
+focus:border-green-600이 적용됨
+
+email input에도 똑같이 해줌
+
+border를 border-2로 바꿈
+
+border-opacity-20으로 함
+
+focus할 때 border opacity 변화를 주도록 함
+
+이제 희미해졌음
+
+20말고 다른 수치를 넣어봄
+
+50으로 바꿔봄
+
+버튼 하나만 만들면 다음으로 넘어갈 준비가 됨
+
+만약에 form에 button이 하나만 있다면 그 button은 submit button으로 취급됨
+
+버튼을 만들어봄
+
+button도 input들과 비슷한 퀄리티로 만들면 될 것 같음
+
+안에 Log in이라고 적고 padding을 넣어봄
+
+bg-gray-800을 추가해줌
+
+color도 바꿔봄
+
+font는 medium으로 감
+
+input의 mb-3이랑 맞춰서 mt-3이라고 해줌
+
+rounded-lg도 추가함
+
+login button은 왠지 focus:outline-none까지 해줘야 할 것 같음
+
+hover:opacity-80을 해줌
+
+hover:opacity-90으로 해줌
+
+다음 영상에서는 어떻게 하면 코드의 반복을 줄일 수 있을지 알려줌

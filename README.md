@@ -1467,3 +1467,249 @@ hover:opacity-80을 해줌
 hover:opacity-90으로 해줌
 
 다음 영상에서는 어떻게 하면 코드의 반복을 줄일 수 있을지 알려줌
+
+## 15.5 Form Login
+
+Tailwind에서 가장 좋아하는 점을 공유하고자 함
+
+flex 같은 class 말고도 tailwind는 아름답게 만들어주는 class들이 존재함
+
+예를 들어 ring이라는 class가 있음
+
+ring을 쓰면 멋진 그림자 효과를 줄 수 있음
+
+이러면 input이 훨씬 보기 좋아짐
+
+그냥 border는 멋있지 않음
+
+ring을 적용해서 더 이쁘게 만들어봄
+
+이제 border 대신 ring을 써봄
+
+border를 바꿔줌
+
+focus:ring을 해줌
+
+ring을 쓰면 css가 만들어짐
+
+ring-2로 함
+
+offset도 해줘야함
+
+offset에 대해서 보여줌
+
+ring offset을 해줄 수 있음
+
+ring offset의 색도 변경해줄 수 있음
+
+어렵지 않게 예쁘게 만들어 줄 수 있음
+
+진짜 편리함
+
+ring 색을 적용해주려면 focus:ring-green-600을 해줌
+
+어떻게 생겼는지 봄
+
+보면 약간의 차이가 있음
+
+더 이상 border가 아니라 ring임
+
+focus:ring-opacity-50을 해줌
+
+50말고 90으로 함
+
+일일이 css 효과를 만들려면 정말 괴로운데 Tailwind의 좋은 점이 아름다운 class name을 통해 쉽게 할 수 있도록 도와줌
+
+생성되는 css를 보면 엄청 복잡함
+
+이제 굳이 효과를 주려고 css를 작성할 필요가 없음
+
+너무 많은 class name을 사용하는 것 같음
+
+class들을 복사해서 붙여넣고 정신없다고 생각할 수 있음
+
+그런거를 개선해봄
+
+그 전에 공간을 좀 수정해봄
+
+아래에 비해서 위가 좀 긴 것 같음
+
+form을 약간 수정해줌
+
+margin top은 5고 margin bottom은 없어도 됨
+
+padding을 바꿔줘야함
+
+box의 윗 부분 padding이 약간 높으니까 padding top은 8, padding bottom은 5로 바꿔봄
+
+이게 더 나아보임
+
+많은 부분을 반복하고 있는데 보면 알 수 있듯이 모양이나 그림자나 ring 같은 부분이 반복됨
+
+심지어 padding, round 같은 부분도 반복되고 있음
+
+두가지 선택권이 있는데 하나는 className을 가진 react component를 만들어 주는거고 또 다른 옵션은 전에 만들어둔 css를 사용함
+
+이 경우에는 Tailwind 안에 나만의 input class를 만들어줌
+
+이제 @apply해서 원하는 것을 넣어주면 됨
+
+전부 input에 모든 것을 복사해서 넣어줄건데 button에 뭔가 너무 많이 있음
+
+나중에 button class를 만들어줌
+
+margin bottom만 빼고 다 지워줌
+
+margin bottom은 있어야함
+
+이제 className에 input을 넣어줌
+
+form마다 전부 다르니까 margin bottom은 지워줌
+
+잘 동작하는지 확인해봄
+
+tailwind:build를 해야한다는 점을 잊지 말고 server를 재시작함
+
+터미널에 npm run start 입력
+
+새로고침하면 css에 input이 적용됨
+
+잠깐 기다려봄
+
+잘 동작함
+
+이제 input이라는 className을 갖게 되었고 재사용을 할 수 있음
+
+하나 더 만들어봄
+
+btn이라고 하고 @apply를 써줌
+
+margin top은 form마다 다르므로 margin top은 제외함
+
+className에 btn을 적용시켜줌
+
+다시 실행해봄
+
+터미널에 npm run start 입력
+
+Tailwind를 빌드했고 form을 완성시킴
+
+너무 마음에 듦
+
+css를 작성해주지 않았는데도 input이 아름다움
+
+ring css를 만든다면 얼마나 오랜 시간이 걸릴지 모르겠음
+
+처음에 했던 선택이 별로였던 것 같음
+
+padding top을 10으로 해줌
+
+계속 해봄
+
+이제 form은 끝남
+
+react form을 해줄 차례임
+
+우리는 register를 얻어줘야함
+
+getValues랑 errors가 필요함
+
+그리고 useForm을 써줌
+
+typescript를 만들어봄
+
+email은 string type을 가지고 password도 string이 됨
+
+ILoginForm을 type으로 써줌
+
+이제 register, password, email을 input에 배치해줌
+
+엄청 중요한데 input에 name을 정해줘야함
+
+만약 input에 name이 없으면 useForm이 찾지 못 함
+
+handleSubmit도 필요함
+
+form에서 가져오도록 함
+
+onSubmit={handleSubmit} 해줌
+
+handleSubmit은 valid를 해주는 function이 필요함
+
+일단 우리는 invalid해도 신경쓰지 않음
+
+onValid나 onSubmit이라는 함수를 만들어줌
+
+form이 잘 동작하는지 테스트를 해봄
+
+console.log(getValues()) 해봄
+
+inspect를 보면 console로 가봄
+
+이제 error에 대해서 해봄
+
+HTML required를 통해 보호해줘야함
+
+사람들이 우회할 수가 있음
+
+input에 required 부분을 지워버릴 수 있음
+
+그러니까 그걸 방지하려면 react에서 해줘야함
+
+Email is required라고 써줌
+
+Password is required라고 해줌
+
+그럼 몇 가지 validation을 해줄건데 password의 최소 길이는 10으로 함
+
+back-end에서 이렇게 안 해줬으니까 나중에 이 부분을 지워줌
+
+일단 error를 테스트해봄
+
+error를 한번 내봄
+
+input에 error가 있다면 나타나게 됨
+
+우선 error를 만들어봄
+
+I'm an error라고 보임
+
+이제 className을 넣어줌
+
+text-medium을 해줌
+
+text-red-500을 해줌
+
+font-medium이 됨
+
+I'm an error가 나옴
+
+input에 있는 margin-bottom이 좀 마음에 안 듦
+
+error 메세지가 뜸
+
+flex나 flex column 말고 grid를 사용해봄
+
+grid gap을 className에 넣어줌
+
+grid gap-5를 해봄
+
+column을 해줄 필요도 없고 row도 설정해줄 필요가 없음
+
+만약 error가 없으면 gap은 3이 됨
+
+errors.email?.message를 해줌
+
+다른 error가 있다면 error.email은 어떤 error도 다 가능함
+
+type이던지 types도 가능함
+
+"Password must be more than 10 chars."라고 입력해줌
+
+error message를 해주면 password로 바꿔줘야함
+
+잘 동작함
+
+validation이 됨
+
+이제 첫 mutation을 만듦

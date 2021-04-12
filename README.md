@@ -1903,3 +1903,287 @@ apollo tooling을 package.json이랑 console에서 실행함
 터미널에 npm install -g apollo@2.31.1 && npm install apollo@2.31.1 입력
 
 mutation을 보호하기 위해서 마법같은 typescript를 가져옴
+
+## 15.7 Apollo Codegen
+
+apollo-tooling은 back-end에서 mutations, query responses, input type을 전부 다 typescript 정의로 자동으로 생성해줌
+
+mutation을 보낼 때 back-end에 데이터를 전송한다는 것을 확신할 수 있고 response를 받으면 받은 response의 type을 알 수 있음
+
+DTO가 모든 것의 시작이라는 점을 기억해야함
+
+DTO가 schema가 되었고 schema가 front-end를 위한 typescript가 되었음
+
+따라서 우리는 정확하게 어떤 타입을 back-end로 보내야할지 알고 있음
+
+하지만 이제는 backend로부터 어떤 type이 되돌아오는지도 알 수 있음
+
+그러면 우선 apollo tooling의 configure부터 해주도록 함
+
+apollo.config.js를 만들어줌
+
+어떻게 파일을 구성하는지 정보가 있음
+
+하지만 중요한 것은 client가 필요하고 이 client에 이름을 만들어줘야함
+
+name은 하고 싶은걸 하면 됨
+
+name을 nuber-eats-backend로 함
+
+그리고 client는 url이 있어야함
+
+그러니까 client는 service가 있어야함
+
+처음에는 service를 먼저 해줘야함
+
+service 안에 url이 있어야함
+
+이 경우에 url은 backend의 graphql url이 됨
+
+다음 할 일은 apollo에게 file을 알려줘야함
+
+여기서 질문이 하나 있음
+
+우리는 무엇을 찾아야할까
+
+apollo가 무엇을 할까
+
+apollo가 기본적으로 하는 일은 front로부터 모든 schema를 가져오는게 아님
+
+그건 말도 안 됨
+
+apollo가 하는 일은 file을 보면서 gql tag를 사용할 때마다 apollo는 typescript definition을 줌
+
+기본적으로 내가 작성한 것을 내가 얻게 됨
+
+그럼 includes가 필요한데 Client에 includes가 있어야하고 경로가 하나 밖에 없지만 array로 해줌
+
+source가 include에 들어가야함
+
+그럼 .src/를 써줌
+
+이걸 glob으로 사용할 수 있음
+
+glob patterns라고 함
+
+glob은 *을 의미함
+
+그럼 src 내부에서 모든 폴더와 확장자를 가진 모든 파일을 포함함
+
+이게 우리가 원한 확장자임
+
+이제 service를 설정했음
+
+name은 뭐든 상관없고 graphql url도 있음
+
+includes는 src 폴더 내에서 모든 폴더 안에 있는 확장자가 tsx인 모든 파일에서 query를 찾는 것을 의미함
+
+이게 경로의 두 단계를 의미하는게 아님
+
+만약 폴더 안에 폴더 안에 폴더 안에 해서 5번의 폴더가 있음
+
+그래도 동작함
+
+마지막으로 만약 Apollo에서 제외하고 싶은 부분이 있으면 해줘야함
+
+기본으로 node_modules랑 test는 제외되어있음
+
+우리가 필요한건 바로 tagName임
+
+tagName은 내가 사용한 tag를 의미함
+
+여기서는 gql tag를 사용했음
+
+그러니 같은 것을 사용해줘야함
+
+이걸 어떻게 부를까
+
+실행해보고 어떻게 되는지 보자
+
+apollo-tooling으로 돌아감
+
+한가지 option이 있는데 apollo client:codegen임
+
+실행해봄
+
+console에 apollo가 잘 되야함
+
+그럼 apollo client:codegen을 실행해봄
+
+결과는 나와야하고 mytypes.d.ts를 써줌
+
+d는 definition을 의미함
+
+이제 configuration은 자동으로 됨
+
+내가 원하는거는 target임
+
+target은 typescript를 사용해줌
+
+잘 되는지 해봄
+
+--target=에다 typescript를 써주면 됨
+
+잘 됨
+
+터미널에 apollo client:codegen mytypes.d.ts --target=typescript 입력
+
+mytypes 안에 파일이 생김
+
+pages 안에 mytypes 안에 Potato Login이 생김
+
+우리는 PotatoMutation의 type을 갖게 됨
+
+PotatoMutationVariables 부분은 backend에 있는 부분이 아님
+
+내가 써줌
+
+그 다음에 Apollo codegen은 login을 봄
+
+그리고 결과로 어떤 것들을 얻는지 살펴봄 
+
+그럼 무슨 일이 일어날까
+
+우리가 결과로 어떤 것들을 얻는지 알아냄
+
+ok를 얻고 이건 boolean일테고 token을 얻는데 이건 string이나 null, error도 string이나 null이 됨
+
+정확히 우리가 DTO에 설정한거랑 같음
+
+pages 내부에 만든걸 알 수 있음
+
+우리는 이걸 원하지 않음
+
+그저 한 개의 file로 생성해줬으면 좋겠음
+
+폴더를 만들고 그 안에 파일을 만들길 원하지 않음
+
+나중에 고쳐줌
+
+우리는 apollo codegen을 이용했음
+
+우선 file을 살펴보고 우리가 필요하다고 했던 모든 변수들의 interface를 제공해줌
+
+그런 다음에 back-end의 실제 schema를 살펴봄
+
+그래서 url을 적어줌
+
+apollo codegen이 back-end를 확인해야함
+
+그리고 mutation의 return을 우리에게 제공해줌
+
+이제 어떻게 얻어오는지 알 수 있게 되었음
+
+useMutation으로 간 다음에 PotatoMutation을 넣어줌
+
+front-end에서 이름이 중요함
+
+PotatoMutationVariables를 얻었음
+
+이제 우리는 변수에 대해서 보호받을 수 있음
+
+typescript가 보호해주고 있음
+
+typescript가 password는 number가 아니라 string이어야하는 사실을 알고 있음
+
+심지어 내가 data를 mutation으로부터 가져와서 console.log로 출력해보면 data가 login을 가지고 있고 login이 error, ok, token을 가지고 있는 것을 볼 수 있음
+
+이건 전에 말했던 DTO로부터 나오는 것임
+
+폴더 안에 파일을 만들어줌
+
+기본적으로 폴더에 있는 모든 mutation을 만들어주고 있음
+
+내가 원하는건 output을 약간 변경해주고 flat output이라고 함
+
+그 output은 folder가 될거고 folder는 api로 함
+
+output을 flat하게 만들어봄
+
+outputFlat을 보면 "기본적으로 TypeScript/Flow는 생성된 각 파일을 원본 파일 바로 옆 디렉토리에 저장한다"라고 되어있음
+
+터미널에 apollo client:codegen --target=typescript 입력
+
+각 파일들 옆에 수많은 폴더들을 갖기 원한다면 이렇게 하는게 좋음
+
+내가 원하는건 이게 아님
+
+output flat을 원함
+
+outputFlat을 써줌
+
+터미널에 apollo client:codegen --target=typescript --outputFlat 입력
+
+어떤 일이 벌어졌는지 봄
+
+이제 outputFlat을 보면 generated에 있음
+
+아무튼 globalType이 있고 아직 아무 것도 없음
+
+potatoMutation이 있음
+
+이건 나의 선택임
+
+그럼 명령을 만들어봄
+
+package.json 안에 만듦
+
+scripts에 codegen을 추가함
+
+apollo:codegen이라고 함
+
+apollo client:codegen --target=typescript --outputFlat 명령을 실행함
+
+그럼 import를 고치러 가봄
+
+PotatoMutation이라고 쓰면 이제 안전하게 보호됨
+
+src 안에 들어갔어야했음
+
+src/__api__로 해줌
+
+아니면 기존처럼 __generated__이 더 나음
+
+npm run apollo:codegen을 실행해봄
+
+터미널에 npm run apollo:codegen 입력함
+
+src 내부에 generated가 있어서 잘 됨
+
+전부 다 src 폴더 내부로 넣어주는 것이 중요함
+
+login component가 src 폴더 밖에까지 도달하지 못 하기 때문에 매우 중요함
+
+이게 create react app에서의 규칙임
+
+이제 보면 찾을 수 있음
+
+잘 찾아짐
+
+typescript 덕분에 우리의 실수로부터 보호받을 수 있음
+
+PotatoMutation 이름을 바꿔줌
+
+loginMutation으로 바꿔줌
+
+codegen을 다시 실행함
+
+터미널에 npm run apollo:codegen 입력함
+
+codegen이 loginMutation을 만들어줌
+
+loginMutation으로 바꿔주고 loginMutationVariables로 바꿔줌
+
+이제 name이 뭔지 앎
+
+PotatoMutation은 지워줌
+
+codegen을 다시 실행할 때마다 폴더를 삭제해주게 함
+
+여기서 일단 멈추고 다음 강의에서 계속함
+
+DTO로부터 모든 것을 가져오고 있음
+
+DTO는 schema가 됐고 schema는 type이 됐음
+
+이제 type에 의해서 우리는 보호받고 있음

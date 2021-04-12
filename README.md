@@ -1713,3 +1713,193 @@ error message를 해주면 password로 바꿔줘야함
 validation이 됨
 
 이제 첫 mutation을 만듦
+
+## 15.6 Login Mutation part One
+
+어디에서나 error를 사용하려고 함
+
+styles를 통해서 하지 않음
+
+react를 통해서 해봄
+
+typescript와 react를 처음 배우는 사람도 있으니까 typescript로 props를 통해 어떻게 만드는지 알려줌
+
+components라는 폴더를 만듦
+
+그런 다음 form-error.tsx 파일을 만듦
+
+export const FormError라고 쓴 다음 FormError의 type은 React.FC라고 해줌
+
+FC는 Functional Component의 약자임
+
+markup을 return 해야함
+
+errorMessage를 return 해줌
+
+errorMessage는 props로부터 받아와야함
+
+{errorMessage}를 파라미터로 써줌
+
+errorMessage의 type이 any인데 이건 좋지 않음
+
+React.FC에 한해서 "errorMessage는 children type에 존재하지 않습니다"라고 되어있음
+
+component가 반드시 얻어야하는 유일한 prop은 children임
+
+그러니 우리는 interface를 만들어줘야함
+
+그 전에 import React from "react" 해줌
+
+그럼 interface를 만들어줌
+
+errorMessage는 string이어야함
+
+이제 아무 문제 없음
+
+errorMessage의 type이 string이라는 사실을 알 수 있음
+
+ErrorMessage가 아니라 FormError임
+
+errorMessage는 필수라서 빨간 줄이 나옴
+
+"errorMessage가 없습니다."라고 나옴
+
+더 이상 props에 type을 지정해줄 필요가 없음
+
+email도 똑같이 해줌
+
+더 보기 좋아짐
+
+email의 message는 string임
+
+Tailwind를 사용해서 components를 만들어주는 방법임
+
+이제 같은 class를 복사 붙여넣기 해줄 필요가 없음
+
+그리고 어떻게 react component에 type을 주는지 알게 됨
+
+진행하면서 typescript에 대한 것을 계속해서 배우게 됨
+
+mutation을 back-end에 보낼 시간임
+
+login을 하고 싶음
+
+그럼 mutation을 만듦
+
+LOGIN_MUTATION이라고 부름
+
+gql을 해주고 mutation을 작성함
+
+mutation을 입력해주고 안쪽에 mutation을 넣어줌
+
+mutation에 이름을 할당해줌
+
+이 이름은 back-end로 넘어가지는 않음
+
+이 이름은 front-end에서만 사용됨
+
+나중에 엄청 중요한 작업임
+
+기억하기 쉬운 이름으로 해봄
+
+PotatoMutation이라고 함
+
+PotatoMutation은 front-end를 위한 것임
+
+PotatoMutation은 back-end로 넘어가지 않음
+
+이 mutation을 사용하기 전에 schema를 먼저 봄
+
+login, input, type, email, password가 있음
+
+우리는 이것들의 type이 필요함
+
+우선 Apollo validation을 이용하고 실제 schema의 모양대로 type이 필요함
+
+우리는 email이랑 password가 required인 사실을 알고 있음
+
+type은 String이고 password도 마찬가지로 String임
+
+달러($) 표시를 처음 붙여주게 되면 이건 변수라는 뜻임
+
+Apollo는 변수라는 사실을 알게 됨
+
+이제 실제 back-end에 하듯이 적어줘야함
+
+login 안에는 input이 존재하고 input은 email이랑 password를 가짐
+
+그럼 email은 type이 $email이고 password의 type은 $password임
+
+잘 보면 이 방법은 playground에서 적는 방식이랑 같음
+
+Apollo가 login mutation에서 input을 validation해주는 방식에도 써줄 수 있음
+
+그러면 login mutation은 ok, token, error를 받게 됨
+
+ok, token, error라고 써줌
+
+변수의 name이랑 type을 적어줘야함
+
+mutation을 어떻게 활용할까
+
+빈 array를 만들고 useMutation 안에 우리가 만든 mutation을 붙여 넣어주기만 하면 됨
+
+이제 mutation은 MutationTuple을 return해줄거고 기본적으로 이 배열의 첫 변수는 mutation function임
+
+이 function은 mutation의 방아쇠 역할을 함
+
+loginMutation이라고 써줌
+
+loginMutation은 mutation function임
+
+useMutation hook으로부터 얻는 두번째 변수는 loading, error, data를 가지는 객체임
+
+그 말은 data는 mutation으로부터 되돌아온다는 것임
+
+loading은 mutation이 실행되고 있다는 의미고 error는 mutation이 error를 반환한다는 것임
+
+이 정보들을 살펴보려면 console.log 출력을 해봄
+
+mutation을 불러봄
+
+잘 동작함
+
+console을 보면 Object에는 email이랑 password가 있음
+
+const { email, password }에다 getValue()로 받아올 수 있음
+
+typescript를 사용하기 때문에 email은 string이나 undefined라는 사실을 알 수 있음
+
+password도 마찬가지임
+
+둘 다 required라서 반드시 필요하니까 undefined면 안 됨
+
+email이랑 password는 string type만 가질 수 있음
+
+onSubmit이 호출되면 모든 validation이 통과됨
+
+그럼 mutation에 변수는 어떻게 추가할까
+
+mutation을 부른 다음 options로 variables를 주고 variables로 email과 password를 넘겨주면 됨
+
+보다시피 어떤 것으로부터 보호되지 않고 있음
+
+back-end에서 password는 string이어야하니까 error를 냄
+
+mutation에 type을 이용하지 않았기 때문임
+
+mutation을 사용하기 위한 type을 사용할 수 있는데 이건 다음 영상에서 이야기함
+
+다음 영상으로 가기 전에 apollo tools를 다운로드 받음
+
+apollo를 global로 설치해줌
+
+project 안에도 일단 설치해줌
+
+apollo tooling을 package.json이랑 console에서 실행함
+
+그러니까 global에도 설치하고 project 안에도 설치해줌
+
+터미널에 npm install -g apollo@2.31.1 && npm install apollo@2.31.1 입력
+
+mutation을 보호하기 위해서 마법같은 typescript를 가져옴

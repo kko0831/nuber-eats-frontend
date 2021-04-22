@@ -2187,3 +2187,179 @@ DTO로부터 모든 것을 가져오고 있음
 DTO는 schema가 됐고 schema는 type이 됐음
 
 이제 type에 의해서 우리는 보호받고 있음
+
+## 15.8 Login Mutation
+
+이전 영상에서 typescript의 힘으로 type을 보호하게끔 했음
+
+loginMutation을 써주면 변수를 만들어줌
+
+input type이라는 것을 back-end에 만들어놨었음
+
+input type은 email: String!, password: String!임
+
+우리는 왜 input type을 이용하지 않았을까
+
+email String, password string을 쓰지 않았음
+
+잘못 실수를 할 수도 있음
+
+우리는 실수를 만드는 기계임
+
+그런데 왜 우리는 이런 위험을 감수했을까
+
+DTO를 기억해봄
+
+우리는 DTO를 source of truth(단일 진실 공급원)로 만들고 싶음
+
+source of truth가 이상하게 들릴지도 모르겠지만 진짜 있는 말임
+
+이거 덕분에 Nest, React, Typescript, Apollo codegen을 빌드할 수 있었고 심지어 front-end까지 영향을 미침
+
+output뿐만 아니라 input까지 우리는 input type을 이용할 수 있음
+
+input type을 사용하지 않을거면 input type은 왜 만든건가
+
+type은 LoginInput이 됨
+
+이제 우리의 DTO는 더 가치가 있어짐
+
+머리 속에서 나오는게 아니라 input과 output 모두 DTO로부터 오게 됨
+
+DTO로부터 와야함
+
+npm run apollo:codegen을 해봄
+
+터미널에 npm run apollo:codegen 입력
+
+어떤 일이 일어났는지 우선 globalType을 봄
+
+globalType은 여기 보이듯이 Enums랑 Input Object를 가짐
+
+이제 loginMutation은 LoginInput을 type으로 가짐
+
+typescript가 문제를 감지함
+
+이제 variables는 email이랑 password가 아님
+
+variable은 loginInput: { email, password }라고 해줘야함
+
+우리는 client mutation을 back-end에 있는 LoginInput으로 입력해줌
+
+더 이상 뭉칠 수도 없음
+
+이제 모두 함께 있음
+
+back-end에 있는 DTO를 수정하게 되면 front-end에 있는 typescript가 지적해줌
+
+버그를 만들 가능성을 최소화해줌
+
+만약 theme에서 작업을 한다면 백엔드가 무엇을 하고 있는지 알기 위해서 해야할 일은 단지 apollo codegen을 실행해주면 어떻게 보내야하고 어떤 값을 return해서 받을지 알 수 있게 됨
+
+codegen이 끝남
+
+이제 mutation을 실행해봄
+
+mutation이 끝나면 우리가 무엇을 해줘야할까
+
+LOGIN_MUTATION을 내가 필요한대로 약간 바꿔줄 수 있음
+
+한가지 더 있는데 variables는 getValues()로부터 오기 때문에 variables를 해줄 필요가 없음
+
+만약 getValues()를 호출하게 되면 그 순간의 value를 얻게 됨
+
+원한다면 바꿀 수도 있음
+
+내가 찾는 variables를 전달해줌
+
+email이 들어가고 watch를 써줘야함
+
+watch는 실시간으로 변화를 감지함
+
+이제 mutation을 호출할 때 variables를 넣어줄 필요가 없음
+
+watch는 계속 지켜보면서 변화를 감지해줌
+
+mutation 전체를 함수 외부에서 커스터마이징이 가능함
+
+mutation을 좀 더 맞춤화할 수 있는데 그 중 하나가 onCompleted임
+
+onCompleted는 function임
+
+그리고 onError도 해줄 수 있음
+
+onError도 function임
+
+두 함수를 구현해봄
+
+onCompleted를 만들어줌
+
+그냥 onCompleted만 쓰면 됨
+
+그리고 onError를 만들어줌
+
+onCompleted는 type을 가지고 있음
+
+type을 추가해줘서 LoginMutation type을 가짐
+
+이제 onCompleted는 data를 갖게 되는 사실을 알게 되었음
+
+그리고 error는 ApolloError type을 가짐
+
+ApolloError가 필요함
+
+error는 연결이 안 되면 발생함
+
+back-end에서 request를 받아주지 않아서 error false를 받게 되면 이 error는 발생하지 않음
+
+output에서의 error false는 GraphQL에게 error가 아님
+
+output에서의 error false는 GraphQL에게 onCompleted임
+
+GraphQL에서의 error는 request가 유효하지 않거나 인증이 필요하거나 url이 잘못됐을 경우임
+
+따라서 우리는 error를 그리 많이 사용할 것 같지 않음
+
+data를 사용하지 않음
+
+이 강좌에서 모든 mutation을 기본적으로 다루는 방법을 보여주고 싶음
+
+이제 onCompleted를 하게 됨(Hint: 뒤에서 다시 작성함)
+
+login을 data로부터 얻어옴
+
+onCompleted는 login이 있다는 것을 의미하는걸 알고 있음
+
+ok가 true면 console.log(token)을 출력함
+
+error가 true면 error를 state에 설정해줄 수도 있고 혹은 아무 것도 안 해줄 수도 있음
+
+loginMutation에서 data를 얻을 수 있고 data는 loginMutation이랑 같음
+
+onCompleted는 내가 다룰 수 있는 data를 제공해줌
+
+예를 들면 login이 되었다고 설정해줌
+
+일종의 프로그래밍임
+
+또한 loginMutation은 error나 loading, called 같은 것들을 줄 수 있음
+
+data 이름을 바꿔줌
+
+loginMutationResult로 바꿈
+
+이름을 다시 설정해줌
+
+object를 열었을때 object로부터 property를 얻어옴
+
+완전히 다름
+
+이름을 변경해준 것임
+
+data는 name으로 그닥 좋지 않음
+
+data를 loginMutationResult로 바꿔줌
+
+다음에는 test 해봄
+
+backend에 전달하는거랑 client가 동작하는지 살펴볼거고 mutation이 잘 동작하는지도 살펴보고 모든 것들을 살펴봄

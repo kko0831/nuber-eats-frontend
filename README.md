@@ -2363,3 +2363,143 @@ data를 loginMutationResult로 바꿔줌
 다음에는 test 해봄
 
 backend에 전달하는거랑 client가 동작하는지 살펴볼거고 mutation이 잘 동작하는지도 살펴보고 모든 것들을 살펴봄
+
+## 15.9 Login Mutation part Two
+
+test를 해보기 전에 무엇을 할거냐면 codegen을 마무리하려고 함
+
+기억날지 모르겠는데 우리는 PotatoMutation을 가졌던 적이 있음
+
+나중에 이름을 수정했지만 PotatoMutation 파일은 generated에 그대로 남아있음
+
+그래서 apollo codegen을 실행할 때마다 generated 폴더를 지워주려고 함
+
+Mac이나 Linux같은 경우는 rm -rf src/__generated__ 해주면 됨
+
+그런데 Windows 같은 경우에는 명령어가 다름
+
+하지만 Windows에서 보고 있는 사람도 있기 때문에 Cross-Platform 방법을 보여주려고 함
+
+Cross-Platform 방식은 rimraf라는 것을 사용하는 것임
+
+rimraf는 패키지인데 많은 사람들이 사용하지 않음
+
+대부분 rimraf를 잘 모름
+
+어떻게 하는지 보여줌
+
+rimraf는 아직 잘 안 알려짐
+
+node.js를 위한 rm -rf임
+
+rimraf를 설치해줌
+
+터미널에 npm i rimraf@3.0.2 입력함
+
+기다리는동안 create-react-app에 경고가 있는지 확인해봄
+
+경고가 없음
+
+rimraf가 설치되면 이제 package.json을 수정해서 그 안에 rimraf를 추가해줌
+
+그리고 start command에도 추가해줌
+
+우선 start command는 type을 얻게 됨
+
+그런 다음에 tailwind를 build하고 react-script start를 실행하면 됨
+
+한번 전체를 테스트해봄
+
+터미널에 npm run start 입력
+
+아직 generated만 됐음
+
+tailwind build를 함
+
+Tailwind 파일을 아주 슬림한 버전으로 만들 수 있는 방법을 알려줌
+
+이제 테스트해봄
+
+backend에 있는 database를 지웠기 때문에 동작이 안 됨
+
+로그인 못 함
+
+아무 것도 없는 상태로 시작하고 싶어서 지웠음
+
+동작은 안 하지만 일단 보도록 함
+
+backend에서 동작하지 않기 때문에 token을 얻지 못 함
+
+하지만 이번 test에서 해볼 것은 mutation의 error를 볼 수 있어야하고 GraphQL이 불러지는 것도 볼 수 있어야함
+
+password는 뭐든 상관없음
+
+우리는 backend로부터 error가 오는 것을 확인해봐야하고 GraphQL network request도 나와야함
+
+loading도 볼 수 있어야함
+
+아직 loading 안 해줬음
+
+loading을 해줌
+
+mutation이 제공하는 것 중에 loading이 있음
+
+mutation이 발생하면 loading은 true나 false임
+
+loading일 때는 "Loading..."을 보여줌
+
+다른 메세지를 보여줘도 됨
+
+loading이 아닐 때는 Log In으로 함
+
+loading은 mutation이 한번만 일어나게 해줌
+
+사람들이 너무 빨리 클릭해서 login이 여러번 되는게 싫기 때문임
+
+가끔 버튼을 클릭할 때 버튼이 아무 동작도 하지 않음
+
+실은 이게 loading 중인데 사람들은 그냥 막 눌러봄
+
+따라서 여러번 클릭되는 것을 원하지 않음
+
+만약 한번 클릭하게 되면 성공하거나 실패할 때까지 loading은 true가 됨
+
+loading이 아닐 때 login 할 수 있음
+
+localhost에서 해서 그런지 mutation이 진짜 빠름
+
+loading을 보지도 못 함
+
+하지만 잘 동작하는 것 같음
+
+error가 떴음
+
+error는 전부 다 backend로부터 왔음
+
+우리는 GraphQL mutation을 원하는 것을 전부 담아서 보냈음
+
+여태까지 많은 form을 만들어봤고 mutation도 사용해봤고 typescript의 강력함도 겪어봤고 모든 mutation의 typescript 정의도 생성해봤음
+
+이제 우리에게 작업 속도를 빠르게 해줌
+
+제대로 모든 타입을 갖추고 어떻게 동작하는지 알게 되면 기능을 구현하는게 얼마나 쉬운지 알게 됨
+
+useMutation은 array를 반환함
+
+array의 첫 원소는 반드시 호출해줘야하는 mutation function임
+
+두번째 원소는 Object이고 많은 것이 들어있음
+
+예를 들면 data, loading, called, error 같은 것들을 가지고 있음
+
+우리는 result도 사용했는데 error를 가지고 있음
+
+mutation을 여러번 호출되는 경우를 원하지 않아서 loading도 사용해줌
+
+loading이 아닐 경우에만 mutation을 호출하도록 했음
+
+전체적으로 어떻게 할건지 한번 다뤄봤음
+
+다음 영상에서는 create account를 만들어봄
+
+일단 login이 잘 작동하고 있음

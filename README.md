@@ -2503,3 +2503,338 @@ loading이 아닐 경우에만 mutation을 호출하도록 했음
 다음 영상에서는 create account를 만들어봄
 
 일단 login이 잘 작동하고 있음
+
+## 15.10 UI Clonning
+
+계정을 만들러 가기 전에 우버이츠 화면을 Tailwind CSS로 클론 해보려고 함
+
+Tailwind를 가지고 원하는 것은 무엇이든 만들 수 있다는걸 보여줌
+
+Tailwind로 prototype을 얼마나 빠르게 만들 수 있는지 보여주려고 만듦
+
+심지어 디자인에 대해 아무 것도 몰라도 class를 추가만 해줘도 멋진 결과를 얻을 수 있음
+
+Tailwind를 사용해서 layout을 클론하는 과정을 보여줌
+
+이미지를 이미 다운로드 해놨는데 이미지를 다운받고 싶으면 오른쪽 클릭을 하고 새 창에서 열기를 누름(https://www.ubereats.com/에서 오른쪽 위에 있는 Sign in을 클릭하면 나오는 Uber Eats 이미지를 다운로드함)
+
+그냥 svg파일로 저장해주면 됨
+
+nuber-eats-frontend의 src 안에 images 내부에 저장해주면 됨
+
+이제 로그인을 제대로 해봄
+
+form은 중요한 부분이니까 놔둠
+
+div tag를 닫아줌
+
+이제 시작함
+
+우선 items center는 괜찮고 justify-center는 필요없음
+
+이제 margin top이 필요함
+
+고맙게도 tailwind는 size를 제공해줌
+
+하지만 몇몇 특정 부분에서 size가 약간 뜀
+
+4, 5, 6, 7, 8, 9, 10 ... 16까지는 전부 있음
+
+그 다음부터는 4씩 올라감
+
+16, 20, 24, 28, 32, 36, 40, 44 ... 그 다음에는 8씩 올라가는 것 같음
+
+어떻게 보이는지 한번 해봄
+
+15가 좋을 것 같음
+
+15는 존재하지 않음
+
+32로 해봄
+
+여기까지 top이고 이제 logo를 넣어줌
+
+svg를 모를 수도 있는데 이것은 그냥 text로 보임
+
+그냥 code니까 import 할 수 있음
+
+img의 src로 사용할 수 있음
+
+img elements must have an alt prop, either with meaningful text, or an empty string for decorative images라는 warning이 뜸
+-> img의 prop으로 alt를 넣어서 해결함
+
+다행이 잘 됐음
+
+약간 크게 만들어줌
+
+다시 tailwind class name을 이용하면 width를 지정해줄 수 있음
+
+다양한 width 선택지가 있음
+
+컨테이너의 25%, 33%와 같은 비율임
+
+혹은 rem을 사용할 수 있음
+
+우리는 rem을 사용함
+
+너무 작음
+
+top을 28로 함
+
+거의 비슷함
+
+logo가 좀 큼
+
+이제 max width를 정해줄건데 responsive하게 만들어봄
+
+우선 모바일 버전부터 함
+
+안쪽에 새로운 div를 만듦
+
+항상 모바일에서 먼저 작업을 시작함
+
+따라서 class name으로 w-full max-w-screen-sm을 해줌
+
+잘 됨
+
+maximum width는 작은 스크린 사이즈고 640임
+
+정확하게 내가 딱 원한 것임
+
+이제 flex flex-col items-center를 해줌
+
+여기서 잊지 말아야 할 것이 만약 item-center를 해줬으면 child에 width를 반드시 설정해줘야함
+
+w-full 해줌
+
+uber eats를 보면 top이 매우 가까움
+
+하지만 크게 만들면 아래로 내려감
+
+Tailwind CSS를 이용해서 responsive design을 해줄 수 있음
+
+저렇게 하기 위해서 sm을 사용할건데 sm은 small screen이라는 의미임
+
+md는 medium screen을 위한거고 lg랑 xl도 있음
+
+Tailwind CSS로 쉽게 responsive하게 디자인할 수 있음
+
+항상 모바일을 먼저 생각해서 시작해주고 있음
+
+margin-top이 그냥 margin-top이면 안 되고 반드시 large screen이어야함
+
+그리고 기본 값으로 모바일을 해줌
+
+이제 large screen으로 만들면 내려오는 것을 볼 수 있음
+
+항상 모바일 먼저 생각해야함
+
+desktop 먼저 생각하면 안 됨
+
+mt-10같이 기본 class name은 항상 모바일로 시작해야함
+
+모바일이 먼저임
+
+그런 다음에 lg:mt-28을 해주는 것임
+
+Tailwind가 이렇게 해주는 것은 진짜 놀라움
+
+class만으로 media query를 해줌
+
+이제 Welcome back을 해주면 됨
+
+h4를 하고 Welcome back이라고 씀
+
+items-center가 있어서 text-left가 안 됨
+
+width full이 됨 
+
+padding에 대해서 해봄
+
+padding이 있음
+
+아마 padding 5인 것 같음
+
+div에 padding을 줌
+
+수평쪽 padding으로 5를 해줌
+
+이제 welcome back에 padding이 생겼고 form에 있는 padding을 지워줌
+
+form에 더 이상 padding이 필요없음
+
+welcome back을 좀 더 크게 해줌
+
+text를 쓰면 많은 옵션이 있는데 left, right, center, size도 있음
+
+4로 해봄
+
+margin-bottom 10을 해봄
+
+input 부분을 해봄
+
+uber의 input이랑 좀 더 비슷하게 보이려고 input을 조금 바꿔줌
+
+border가 끝임
+
+둥근 부분이 전혀 없음
+
+하지만 roundness를 좋아해서 웹사이트에 자주 사용함
+
+font가 약간 두꺼움
+
+medium, bold, semibold, normal 등등 많이 있지만 medium으로 함
+
+input을 해줌
+
+그러기 위해서 input class를 지워줘야함
+
+전에 input class를 만들어줬었음
+
+Tailwind 안에 있음
+
+우리가 만든 것임
+
+저걸 바꿔줘야함
+
+className을 먼저 변경하고 다시 만들어봄
+
+round는 없음
+
+어떠한 round도 없어야함
+
+이제 padding이 필요함
+
+padding이 거의 같아 보임
+
+그럼 모든 방향으로 padding 7정도 해봄
+
+border를 해봄
+
+border를 해주고 border의 색은 gray가 됨
+
+border-gray-400으로 함
+
+너무 padding이 과했음
+
+3정도로 함
+
+괜찮아 보임
+
+border가 너무 어두운 것 같으니까 200으로 함
+
+이제 중요한게 있는데 border-2를 해주고 font size는 medium으로 해줌
+
+충분히 괜찮은 것 같음
+
+font-light를 해줌
+
+focus:outline-none을 함
+
+focus:border-gray-500 해줌
+
+password도 똑같이 해줌
+
+그럼 class를 또 만들어줌
+
+Tailwind를 컴파일 해야하니까 서버를 다시 실행해줌
+
+괜찮은 것 같음
+
+탭할 때 transition이 없음
+
+하지만 uber는 color에 약간 transition을 가지고 있음
+
+transition 해줌
+
+transition을 보면 transition-colors 옵션이 있음
+
+background-color, border-color, color, fill, stroke의 transition을 주고 opacity, shadow, 모든 transform 같은 것들이 존재함
+
+transition-colors를 해줌
+
+이제 우리도 color transition을 갖게 됨
+
+멋진 transition이 있음
+
+복사해서 tailwind에 붙여 넣어줌
+
+쿠킹 클래스가 돌아왔음
+
+login 버튼을 해줌
+
+login 버튼은 보면 회색임
+
+아직 준비가 안 됐으면 회색임
+
+그러면 회색 버튼은 기본적으로 disable인 상태가 될테고 버튼 사용이 가능해지면 초록색이 됨
+
+btn class 앞에 버튼을 만듦
+
+배경을 해주면 green임
+
+green을 해봄
+
+다른 green임
+
+먼저 text-white를 해주고 input이 가지고 있는 padding이랑 똑같이 해줌
+
+input의 padding이 위 아래는 3임
+
+input은 padding이 몇인가
+
+padding이 너무 작은 것 같으니까 4로 해줌
+
+괜찮은 것 같고 다음으로 넘어감
+
+green이 마음에 안 듦
+
+나중에 바꿔줌
+
+green부터 해줌
+
+700이 더 나을 것 같음
+
+약간 더 생기 넘치는 다른 종류의 초록색을 사용해야 할 것 같음
+
+하지만 불행히도 tailwind에는 존재하지 않는 것 같음
+
+사실 가능한데 확장해줘야함
+
+거기에는 에메랄드나 강철 같은 다양한 종류의 색들이 존재함
+
+여기 있는 것은 기본적인 색이고 더 추가가 가능함
+
+일단은 green 600으로 타협함
+
+버튼을 어둡게 만들어주는게 필요함
+
+transition 추가하는거 잊지 말고 hover:bg-green-800 해줌
+
+나쁘지 않음
+
+너무 진한거 같음
+
+글씨가 약간 더 커야할 것 같음
+
+이거만 하면 끝임
+
+text-lg가 맞는지 잘 모르겠음
+
+이제 우리의 nuber eats를 얻게 되었음
+
+베이킹 해야함
+
+잘라내고 btn으로 만들어줌
+
+작업하는게 아님
+
+지금 우리는 베이킹 해주는 것임
+
+터미널에 npm run start 입력
+
+버튼 비활성화를 잊었음
+
+비활성 상태가 필요함
+
+그건 다음 강의에서 보여줌

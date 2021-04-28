@@ -2838,3 +2838,289 @@ text-lg가 맞는지 잘 모르겠음
 비활성 상태가 필요함
 
 그건 다음 강의에서 보여줌
+
+## 15.11 UI Clonning part Two
+
+저번에 봤듯이 초록색이 마음에 안 듦
+
+초록색이 좀 이상함
+
+다른 색이 필요한 것 같음
+
+그럼 기본 색상을 보여줌
+
+바로 tailwind의 기본 색상임
+
+tailwind는 gray, red, yellow, green, blue, indigo, purple, pink를 50부터 900까지 제공해줌
+
+꽤 다양함
+
+그런데 가끔 더 많은 색을 추가하고 싶을 때가 있을 것임
+
+그럴 때 나만의 color palette를 만들거나 tailwind 사이트에서 제공하는 color palette를 사용하면 됨
+
+tailwind 사이트에서 제공해주는 color palette를 보여줌
+
+True Gray라는 것도 있음
+
+Warm Gray도 있고 처음 보는 것도 있고 Amber도 있음
+
+Amber랑 Yellow랑 다름
+
+Orange랑도 좀 다름
+
+Lime도 있음
+
+전에는 없었던 Emerald랑 Teal, Cyan, Light Blue, Violet, Fuchia 등등 엄청 많음
+
+그래서 우리가 원하는 색은 에메랄드 색임
+
+라임일 수도 있음
+
+라임이 더 맞는 것 같음
+
+라임 맞음
+
+그러면 tailwind를 어떻게 확장해줄까
+
+우선 tailwind color를 import 해줘야하는데 이미 tailwind에 있어서 설치는 되어있음
+
+어떤 부분을 확장할건지 tailwind.config.js에 써주기만 하면 됨
+
+우리의 경우는 colors임
+
+extend를 써주는게 중요함
+
+extend 객체 내부에 원하는 것을 넣어줘야함
+
+왜냐하면 우리는 확장을 하고 싶어서 그럼
+
+교체가 아니라 확장임
+
+그럼 색을 확장하기 위해서 라임 색을 추가해줌
+
+colors.lime을 써줌
+
+터미널에 npm run start 입력하여 재시작을 해줌
+
+재시작이 됐고 background에 lime option이 생김
+
+그런데 좀 별로임
+
+좀 달라도 되니까 라임 500으로 감
+
+우리는 라임 색을 얻었음
+
+이게 확장하는 방법임
+
+우리가 사용한 멋진 extension이 자동 완성을 해줌
+
+이 extension은 tailwind config file을 읽음
+
+그럼 계속 해보면 방금 우리는 tailwind를 확장했고 green 대신 lime으로 요리해봄
+
+Tailwind CSS를 다시 compile 해야하니까 서버를 다시 실행해줌
+
+터미널에 npm run start 입력
+
+매번 해줄 필요는 없음
+
+form이 유효하지 않으면 버튼은 비활성화가 됨
+
+매우 중요한 부분임
+
+어떻게 접근하는지 보여줌
+
+그리 나쁘지 않음
+
+그런데 라임 대신에 에메랄드를 할 걸 그랬음
+
+버튼이 눌리면 안 되고 못 생긴 회색으로 해줘야함
+
+어떻게 form 상태를 얻어야하는지 보여주고 싶음
+
+마법 같은 form의 기능 중에 formState를 얻을 수 있음
+
+formState가 가지고 있는 것을 보면 isDirty가 있음
+
+이건 뭔가 써졌다는 것임
+
+isValid가 정확히 우리가 원한 것임
+
+될지 모르겠는데 btn 써주고 나서 ${!formState.isValid}면 background를 gray로 해줌
+
+gray 300으로 해봄
+
+더 좋음
+
+문제가 하나 있는데 hover over가 문제임
+
+그럼 버튼을 component로 만들어봄
+
+isValid랑 loading까지 자주 사용함
+
+그래서 컴포넌트를 만드는게 좋은 것 같음
+
+components 폴더에 button을 만들어줌
+
+form-button이라고 할까
+
+어디서든 쓸 수 있게 button.tsx로 함
+
+type은 React.FC가 될 것임
+
+ButtonProps는 나중에 만듦
+
+props가 있을거고 button을 return 해야하는데 좀 이상함
+
+그럼 interface를 만듦
+
+기본적으로 canClick이 필요함
+
+이것은 type이 boolean임
+
+그리고 loading도 필요하고 type은 boolean이 될 것임
+
+btn을 좀 바꿔줌
+
+btn을 tailwind로부터 가져와줌
+
+dynamic class가 되어야해서 class를 요리하기는 싫음
+
+그 전에 먼저 만약 loading이면 "Loading..."이라고 해주고 loading이 아니면 actionText를 넣어줌
+
+그 다음은 valid거나 valid하지 않을 때 ${canClick} 클릭할 수 있을 때는 뭔가를 갖고 클릭할 수 없으면 background gray 300 해줌
+
+react import가 필요함
+
+이제 btn class에서 모든 class를 가져옴
+
+약간 분리해줌
+
+background lime이랑 hover over는 사람들이 버튼을 클릭할 수 있을 때만 보여짐
+
+margin top은 필요 없음
+
+버튼은 canClick, loading, actionText를 가지고 있음
+
+canClick은 {formState.isValid}할 때 가능함
+
+그 다음은 loading인데 loading은 mutation을 front에서 기다리는 것임
+
+마지막은 actionText이고 Log in이라 함
+
+이제 멋진 버튼이 생겼음
+
+cooked class는 다 됐음
+
+잘 동작하는 것 같음
+
+문제가 있음
+
+버튼이 안 눌림
+
+property를 pointer-events-none이라고 부름
+
+버튼을 누를 수 없을 때 추가해줌
+
+focus:outline-none 해줌
+
+안 눌림
+
+왜 formState.isValid가 동작하지 않을까
+
+documentation을 읽어봄
+
+form은 valid함
+
+그런데 왜 동작하지 않을까
+
+동작하지 않는 이유는 form은 우리가 submit을 하기 전까지 valid하지 않기 때문임
+
+documentation을 보면 form에서 사용 가능한 magic value 중에 formState가 있음
+
+isValid는 mode에 영향을 받음
+
+그럼 mode가 무엇일까
+
+mode는 많은 option이 있음
+
+mode는 onChange, onBlur, onSubmit, onTouched가 될 수 있음
+
+submit event가 일어날때 validation이 일어난다고 함
+
+그래서 submit을 하기 전까지 form은 invalid임
+
+이게 하나의 예시고 다른 것은 onBlur도 있음
+
+onBlur는 안에 초점이 있다가 밖으로 나온 것임
+
+이게 onBlur임
+
+또 다른 것은 onChange인데 모든 입력이 변할 때마다 validation을 체크한다는 것임
+
+그리고 onTouched는 첫 blur event에 발생함
+
+따라서 isValid는 onChange나 onBlur에만 일어남
+
+그럼 onBlur로 mode를 바꿔주러감
+
+validation을 언제 실행할지에 따라 다름
+
+useForm에다가 mode: onBlur 해줌
+
+이제 동작할 것임
+
+잘 동작함
+
+혹은 onChange를 해줄 수 있음
+
+이 말은 input마다 항상 변화해준다는 것임
+
+uber랑 유사한데 validation이 즉각적으로 일어남
+
+원하는거 하면 됨
+
+Log in도 loading으로 변하는 것 보임
+
+잘 동작하고 User not found라 나옴
+
+꽤 괜찮은 것 같음
+
+이제 마무리함
+
+form 아래 있어야하고 간단한 div로 만들어봄
+
+Create an Account 써줌
+
+link를 사용할건데 react-router-dom을 사용해줄 것임
+
+to가 필요함
+
+Create an Account라고 나옴
+
+이제 className을 해줄건데 green이고 밑줄이 있음
+
+색을 바꿔주고 underline을 해줌
+
+자동완성이 안 되면 스페이스를 누르면 됨
+
+hover는 underline이 되어야함
+
+margin-top만 주면 완벽할 것 같음
+
+form에 margin-bottom을 주는게 좋음
+
+mb-3 해줌
+
+괜찮아 보임
+
+margin bottom 5로 해줌
+
+버튼이랑 form 사이에 약간 공간이 더 있어야겠음
+
+그래도 괜찮아 보임
+
+Create account가 나오는지 봄
+
+create-account로 왔음

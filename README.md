@@ -3124,3 +3124,207 @@ margin bottom 5로 해줌
 Create account가 나오는지 봄
 
 create-account로 왔음
+
+## 15.12 Create Account Mutation
+
+이번에는 react-helmet을 설치해봄
+
+react-helmet이 무엇을 해주냐면 title을 변화시켜줌
+
+title이 항상 react app이었는데 이제 업데이트 할 수 있음
+
+먼저 index.html을 수정해줘야함
+
+그럼 react가 전달을 해줌
+
+Nuber라고 함
+
+터미널에 npm i react-helmet@6.1.0 입력
+
+설치가 되는동안 어떻게 계정을 생성하는지 봄
+
+Uber Eats에서 계정을 생성하는 것은 매우 쉬움
+
+휴대폰 번호만 필요한데 우리는 안 했음
+
+계정을 생성하기 위해서 email, password, role이 필요함
+
+그럼 login에 있는 것을 전부 복사함
+
+helmet이 다 설치되었으니 Helmet을 해줌
+
+일단 import 해줘야함
+
+import Helmet from "react-helmet"을 입력함
+
+react-helmet에 typescript definitions가 존재하지 않음
+
+터미널에 npm install @types/react-helmet@6.1.0 입력
+
+이제 helmet을 사용할 수 있음
+
+document의 head를 변경할 수 있게 해줌
+
+이제 nuber에는 Login Nuber Eats가 나옴
+
+login.tsx에 있는거 전부 복사해서 create-account에 붙여넣음
+
+그리고 loginMutation을 지워줌
+
+createAccountMutation으로 바꿔줌
+
+꼭 이렇게 길게 할 필요는 없음
+
+이제 playground에 가서 docs를 보면 Dish의 createAccount가 보임
+
+CreateAccount는 ok랑 error를 가짐
+
+CreateAccount는 input이 필수임
+
+$createAccountInput 해줌
+
+$createAccountInput이 입력이 됨
+
+createAccountMutation을 가지고 있음
+
+createAccountInput의 type은 CreateAccountInput이고 input을 보내면 ok랑 error를 받음
+
+CREATE_ACCOUNT_MUTATION으로 바꿔줌
+
+일단 type도 지워줌
+
+onCompleted도 아직은 필요 없음
+
+우리의 form은 email, password랑 role도 필요함
+
+하지만 role은 나중에 해줄건데 그 이유는 조금 뒤 보여줌
+
+Welcome back 대신에 Let's get started로 바꿔줌
+
+Let's get started 해줬고 Create Account라 해줌
+
+우리는 이미 email이랑 password는 있고 role은 나중에 해줌
+
+button은 일단 false로 해줌
+
+error도 아직 필요 없음
+
+Already have an account?를 적어줌
+
+CreateAccount를 export 해줘야함
+
+New to Nuber? Create an Account 링크가 보임
+
+Let's get started가 나오고 Log in now가 보임
+
+create account에 있는 버튼을 Create Account로 해줌
+
+아직 복사해서 붙여넣고 더 이상 안 쓰는 많은 부분을 지워줬을 뿐임
+
+다 됐음
+
+type들을 얻고 싶기 때문에 codegen을 한번 실행해봄
+
+터미널에 npm run apollo:codegen 입력함
+
+generated를 보면 UserRole이 있음
+
+UserRole이 왜 enum을 갖고 있냐면 우리의 Schema로부터 오기 때문임
+
+input에서 role이 필요한데 이 role은 UserRole임
+
+잘 동작함
+
+email, password가 있고 role은 UserRole type이라는 것임
+
+이제 알 수 있는 것은 우리의 form조차 backend의 DTO의 enum에 의존할 거라는 것임
+
+우리가 enum을 생성했기 때문임
+
+option은 Client, Owner, Delivery중 하나가 될 것임
+
+option을 안쪽으로 넣어줌
+
+잘 되는지 봄
+
+잘 됨
+
+전부 backend로부터 옴
+
+나는 frontend를 했지만 그 정보는 전부 backend로부터 왔음
+
+내일 만약 backend 개발자가 role을 하나 더 추가해도 아무 것도 해줄게 없음
+
+오직 내가 할 일은 type을 생성해주는 것임
+
+그게 끝임
+
+그럼 모든 enum이 나옴
+
+style을 좀 줘봄
+
+className을 넣어줌
+
+input을 주고 어떻게 되는지 봄
+
+나쁘지는 않은데 괜찮아 보임
+
+register를 해줌
+
+default value를 넣어줘야할까
+
+하지 않음
+
+form을 열 때 default value를 설정해줌
+
+defaultValues를 해주고 role은 UserRole.Client로 해야함
+
+기본 값이어야함
+
+우리는 create account form을 만들었음
+
+정말 간단했고 너무 아름답고 엄청 빠르게 만들었음
+
+정말 빠르게 만들었고 완전 수준급임
+
+typescript의 도움으로 혼자서 회사를 차릴 수 있음
+
+하지만 아직 끝나지 않았음
+
+value가 잘 동작하는지 보기 위해서 watch를 해줌
+
+inspect 해봄
+
+ILoginForm을 ICreateAccountForm으로 바꿔줌
+
+email을 써줌
+
+email이랑 password가 나옴
+
+name해주는거 깜빡함
+
+select tag에 name이 필요함
+
+모든 register는 name이 필요함
+
+name은 role이랑 같아야함
+
+그래서 개발자 도구 Elements에 나타나지 않았던 것임
+
+child는 unique한 key prop이 필요함
+
+새로고침 하면 email, password, role을 이미 가지고 있고 role은 default로 설정이 되어있음
+
+email이랑 password도 마찬가지로 default로 설정해줄 수 있음
+
+전혀 문제가 되지 않음
+
+모바일에서 기본 값이 나타남
+
+email, password가 있고 role은 client로 함
+
+완벽하게 동작함
+
+내일 backend 개발자가 role을 한개 더 추가한다고 해도 전혀 수정할 필요 없음
+
+다음 영상에서 이 mutation을 테스트해봄

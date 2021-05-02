@@ -3328,3 +3328,141 @@ email, password가 있고 role은 client로 함
 내일 backend 개발자가 role을 한개 더 추가한다고 해도 전혀 수정할 필요 없음
 
 다음 영상에서 이 mutation을 테스트해봄
+
+## 15.13 Create Account Mutation part Two
+
+이번에는 email pattern을 검색해봄
+
+email의 유효성을 검사하려고 함
+
+엄청 김
+
+그런데 99%로 정확함
+
+create account에 email 검증을 해주고 싶음
+
+pattern을 붙여넣어줌
+
+pattern에서 Unnecessary escape character warning이 발생하는데 \[를 [로 수정하여 해결함
+
+login에도 마찬가지로 input에 똑같이 해줌
+
+이제 에러 메세지를 하나 더 추가해야함
+
+{ errors.email?.type === "pattern" }이라 해줌
+
+이제 create account도 해줘야하니 복사함
+
+우리는 최소 암호 길이 같은 것은 안 해줌
+
+다른 것은 하나도 안 해줄거고 mutation의 typescript를 추가해줌
+
+이미 실행해서 보면 createAccount가 만들어져 있는 것을 볼 수 있음
+
+우리는 createAccountMutationVariables랑 createAccountMutation을 가지고 있음
+
+createMutation은 gql에 있는 이름으로부터 왔음
+
+원하는 이름으로 해줄 수 있음
+
+mutation은 이미 만들었고 createAccountMutation이랑 createAccountMutationVariables를 해줌
+
+전에 했던거랑 마찬가지로 { loading }을 추가해줌
+
+if (!loading)이면 createAccountMutation을 호출함
+
+variables도 넣어줌
+
+variables: createAccountInput을 써줌
+
+createAccountInput은 email, password, role이 전부 필요함
+
+하지만 고맙게도 우리는 useForm으로부터 얻은 getValues를 이미 가지고 있음
+
+그럼 불러와봄
+
+{} 안에다가 email, password, role을 써줌
+
+button에 있는 loading을 바꿔줌
+
+loading은 loading이 되고 나머지는 똑같이 두면 됨
+
+이제 onComplete는 어떻게 될까
+
+onComplete를 만들어봄
+
+onComplete는 data와 같이 제공됨
+
+이 data는 createAccountMutation으로부터 옴
+
+onComplete를 등록해줌
+
+const { createAccount: { ok, error } }라고 함
+
+createAccount는 ok랑 error 딱 2가지만 가짐
+
+만약 ok면 user를 login page로 redirect 시켜줌
+
+login page로 redirect를 시켜주는 것을 해줌
+
+error일 경우에는 신경쓰지 않아도 괜찮음
+
+login에 있던 에러랑 같은 방식으로 보여줌
+
+mutation으로부터 에러를 가져옴
+
+button 아래에 둠
+
+data: createAccountMutationResult를 써줌
+
+nest.js에서 우리는 긴 이름을 사용했었음
+
+그러니 익숙할 것임
+
+테스트를 해보기 전에 위로 올라가서 redirect를 해줌
+
+redirect를 하기 위해서 history API를 사용해줌
+
+useHistory로부터 옴
+
+history.push("/login")으로 user를 login page로 보내줌
+
+잘 동작하는지 확인해봄
+
+만약 우리가 login에 성공하게 된다면 token을 출력해줌
+
+그런데 실제로 로그인도 하고 싶음
+
+이 섹션의 초반에 했던건데 live variable을 해줬었음
+
+live variable이 있음
+
+LoggedInVar를 호출해서 true를 넘겨줌
+
+token을 가지고 있음
+
+우리는 JWT를 얻을 수 있음
+
+그럼 테스트를 해봄
+
+email은 itnico.las.me@gmail.com, password는 121212, type은 client로 함
+
+잘 작동함
+
+계정 생성을 했고 이제 로그인 해봄
+
+console창을 열면 warning이 좀 있는데 나중에 고침
+
+로그인이 됐음
+
+항상 처음에 실수를 하고 고침
+
+로그인했고 잘 동작함
+
+variable을 변경해줬음
+
+token도 있음
+
+token에 대해서는 다음 강의에서 이야기함
+
+계정을 만들었고 로그인까지 성공했음

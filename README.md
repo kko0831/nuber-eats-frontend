@@ -3466,3 +3466,193 @@ token도 있음
 token에 대해서는 다음 강의에서 이야기함
 
 계정을 만들었고 로그인까지 성공했음
+
+## 15.14 Saving the Token
+
+이제 계정 생성과 로그인을 다 했음
+
+유저들에게 계정이 만들어지면 로그인 화면으로 이동된다는 것을 알려주기 위해 alert를 넣음
+
+우리는 계정을 다 끝냈고 이제 logged-in-router에 대해 얘기해봄
+
+토큰도 state에 저장해줘야함
+
+아직 authentication을 끝내지는 못했지만 거의 다 왔음
+
+로그인하면 token을 가지게 되고 출력해봤음
+
+그냥 token을 get하는 대신에 token을 저장하고 싶음
+
+isLoggedInVar을 변경하는 것처럼 token도 똑같이 해주고 싶음
+
+apollo.ts fields에 보면 isLoggedIn도 있고 token을 만들어줌
+
+read할거고 이 함수는 무엇을 리턴함
+
+token 변수를 만들어줌
+
+jwtToken 혹은 authToken이라고 해줘도 됨
+
+이게 더 나은 것 같음
+
+makeVar를 해주고 이것은 기본값을 가질건데 나중에 보여줌
+
+아직은 기본값이 없음
+
+우리 앱이 시작될 때 authToken을 확인하는 방법도 있음
+
+localStorage.getItem("token")으로 확인해봄
+
+그게 기본값일 것임
+
+localStorage에 아무 것도 없으면 어떡하지
+
+Console에서 localStorage.getItem("lalalala")을 실행하면 null을 받음
+
+우리의 앱 초반에 유저가 로그인하지 않았을 때 authToken은 null이 됨
+
+Boolean(localStorage.getItem("lalalala"))는 false를 리턴함
+
+token이 isLoggedInVar에 영향을 미치기 때문에 null을 boolean으로 변환한 것임
+
+token을 가져옴
+
+isLoggedInVar에 Boolean(token)이라고 해주고 authToken에는 token이라고 함
+
+유저와의 첫번째 interaction에서는 isLoggedInVar는 false일거고 authToken은 null임
+
+이게 중요한 이유는 내가 다시 돌아올 때 로그인 되어있는 상태이길 바라기 때문임
+
+다시 로그인하는 것이 싫음
+
+localStorage에서 token을 가져옴
+
+isLoggedInVar를 만들고 token을 가졌느냐에 따라 boolean 값을 저장하고 authToken에 토큰 값을 저장함
+
+localStorage의 기본 값임
+
+token일 수도 null일 수도 있음
+
+무엇을 더 하기 전에 constants.ts 파일을 만들고 export token을 해줌
+
+많은 곳에서 접근할거기 때문에 더 정확하고 싶으면 LOCALSTORAGE_TOKEN이라고 해줌
+
+LOCALSTORAGE_TOKEN을 넣어줌
+
+다음으로 넘어감
+
+이것이 우리의 apollo client cache임
+
+우리가 로그인하면 token을 바꾸고 싶음
+
+일단 localStorage.setItem(LOCALSTORAGE_TOKEN, token)이라고 해줌
+
+그리고 token은 null일 수도 있으니까 ok를 확인해줌
+
+그 다음에 authToken이라 하고 기억해야할 것은 reactive variable임
+
+token으로 설정해줌
+
+이제 다음으로 넘어갈 수 있음
+
+token을 저장하고 있음
+
+다음에 우리가 새로고침을 하면 로그인 되어있을거고 토큰이 localstorage에 저장되어있음
+
+우리 앱에 token이 뭐라고 말하는지 알 수 있게 nuber-token이라고 함
+
+다음 apollo 파일에 console.log를 해줌
+
+이제 console.log에 isLoggedInVar와 authTokenVar의 기본값을 볼 수 있음
+
+로그인하면 실행됨
+
+token을 설정하고 reactive variable에 token을 업데이트하고 isLoggedInVar도 업데이트함
+
+email과 패스워드를 입력해봄
+
+로그인하면 로그인, 로그아웃을 볼 수 있음
+
+이제 콘솔창을 보면 기본값을 볼 수 있음
+
+warning은 고쳐야함
+
+isLoggedInVar의 기본값은 false임
+
+우리는 기본값으로 로그인 되어있지 않고 authTokenVar의 기본값은 null임
+
+이것은 앱이 막 시작했을 때의 상태임
+
+이제 새로고침에서 기본값이 무엇인지 알아봄
+
+새로고침을 했지만 로그인이 되어있음
+
+이것이 처음에 기본값을 설정하는 것의 힘임
+
+사람들이 로그인 되어있고 기억되고 싶으면 그렇게 할 수 있음
+
+form에서 할 수 있음
+
+예로 들자면 form에 remember me를 만듦
+
+이제 새로고침해도 기본으로 로그인 되어있고 토큰이 있음
+
+일단 에러를 고치고 싶음
+
+react helmet 때문임
+
+react helmet async를 검색해봄
+
+고치는 방법은 react-helmet-async를 사용하는 것임
+
+warning이 있기 때문임
+
+warning은 에러가 아님
+
+그냥 경고임
+
+그러니까 내가 고치고 싶은지에 달렸음
+
+warning이 빨간색임
+
+error처럼 보이지만 그냥 경고임
+
+앱이 작동을 멈추지는 않음
+
+터미널에 npm i react-helmet-async@1.0.7 입력
+
+helmet을 바꿔줌
+
+일단 바꿔봄
+
+빨간 줄이 잠시 좀 보임
+
+설치된 후에 react-helmet-async가 typescript definitions가 있는지 확인함
+
+이제 HelmetProvider를 만들어야함
+
+이것은 helmet을 이용하는 컴포넌트 위로 와야함
+
+index.tsx 파일에다 적용함
+
+HelmetProvider를 가져옴
+
+helmet은 안 이용함
+
+이제 아무 것도 불평하지 않음
+
+모든 것이 잘 작동함
+
+로그아웃하면 모든 것이 변함
+
+다시 한번 말하지만 이것은 조그만 버그임
+
+이제 토큰을 어떻게 사용할까
+
+request를 이제 보내야함
+
+우리의 작은 loggedInRouter가 request를 보내서 "이 사람은 누구일까"라는 질문에 답을 얻어야함
+
+graphql에 보내야한다는 것임
+
+그것은 다음 영상에서 다룸

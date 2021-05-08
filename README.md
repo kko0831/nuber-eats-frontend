@@ -3656,3 +3656,299 @@ request를 이제 보내야함
 graphql에 보내야한다는 것임
 
 그것은 다음 영상에서 다룸
+
+## 15.15 Using the Token
+
+우리가 사용할 쿼리는 me임
+
+me 쿼리를 사용할거고 완전 유용함
+
+우리가 user에 알아볼 때 완전 중요함
+
+맨 위 loggedInRouter에 사용함
+
+유저가 로그인하면 프로필을 가져옴
+
+email, role, verified 등을 가져옴
+
+중요한 것들을 먼저 가져온 후에 결정함
+
+이제 쿼리를 적어봄
+
+ME_QUERY라고 함
+
+gql``이라고 한 다음 이름을 meQuery라고 함
+
+아무거나 해도 됨
+
+우리 백엔드의 me가 됨
+
+me를 가져오고 싶고 유저의 id랑 email을 가져옴
+
+role과 verified를 가져옴
+
+이제 apollo codegen을 실행시킴
+
+타입을 가져오고 싶음
+
+터미널에 npm run apollo:codegen 입력
+
+타입이 있는지 확인해봄
+
+apollo codegen을 실행시켜봄
+
+이제는 편리하게 타입을 사용할 수 있음
+
+쿼리를 적음
+
+data, loading,error를 가져올거고 useQuery를 사용함
+
+ME_QUERY를 넣어줌
+
+에러는 있을거고 곧 보게 될거기 때문에 에러를 콘솔에 출력해봄
+
+다시 돌아와서 새로고침 해줌
+
+error가 나와있고 undefined라고 나오는데 LoggedInRouter로 가봄
+
+data, loading 순으로 undefined가 나온 것 같음
+
+forbidden resource가 있음
+
+이게 발생하는 이유는 me resolver를 backend에서 호출할 때 토큰없이 호출해서 그럼
+
+backend의 restClient.http에 me를 query해줌
+
+```javascript
+query {
+   me {
+      email
+   }
+}
+```
+
+우리에게 토큰이 없기 때문임
+
+백엔드를 토큰 없이 콜하기 때문에 forbidden이 나옴
+
+일단 apollo에서 무엇을 지우고 넘어감
+
+console.log 이제 필요없음
+
+LoggedInRouter를 발전시킴
+
+일단 loading함
+
+이제 라우터가 로딩할 때의 스크린을 만듦
+
+if(loading)이라 할 때 Loading을 return을 해줌
+
+vh는 viewport height라는 것임
+
+스크린의 높이를 말함
+
+full이면 parent의 100% 높이가 됨
+
+하지만 LoggedInRouter의 parent는 높이가 없음
+
+가끔 사람들이 높이를 100%로 하고 싶어하는데 부모에게 높이가 없기 때문에 body, parent까지 가서 각각 높이를 설정해줘야함
+
+이런 과정은 매우 짜증남
+
+이 화면은 로딩 중이라고 뜰거고 그런 다음 className에 flex를 넣어줌
+
+justify-center도 해주고 items-center를 해줌
+
+새로고침하면 보다시피 완전 빨리 로딩했음
+
+완전 빠름
+
+true로 설정해줌
+
+ubereats가 하는 방법임
+
+font를 써주고 medium으로 설정해줌
+
+text-xl로 설정함
+
+이러면 우버이츠 스타일이 완성됨
+
+tracking 할 수 있나
+
+tracking white 할 수 있음
+
+글자들에 공간이 더 많아짐
+
+Tailwind에는 tracking-wide, wider, widest 설정도 있음 
+
+widest하면 어떻게 되지
+
+그냥 white로 설정함
+
+유저 정보를 가져오는동안 로딩하도록 해줬음
+
+그게 1단계임
+
+이제 에러가 있음
+
+에러는 graphql 때문이 아니라 토큰을 보내지 않아서임
+
+토큰을 보내는 방법은 뭐가 있을까
+
+apollo client에서 설정해줘야하는 문제임
+
+apollo client에게 request 보내는 것에 우리는 아무거나 보내고 싶고 request에 무엇을 추가하고 싶다는 것을 설정해줘야함
+
+apollo client를 변경하고 헤더를 보낼 수 있음
+
+apollo.ts에서 apollo client가 하는 모든 것을 변경할 수 있음
+
+변수에서 토큰을 찾고 모든 request 헤더에 토큰을 넣어줌
+
+이 방법은 apollo client를 조금 변경해서 할 수 있음
+
+graphql에 uri를 설정하면 uri를 apollo httpLink에 보낼 수 있음
+
+httpLink를 만들 수 있고 apollo client에서 나온 것임
+
+모든 것에 import 되어있고 대부분 설정할 필요가 없음
+
+그런데 가끔 변경해야할 필요가 있음
+
+링크를 바꿔줘야함
+
+subscription을 할 때도 subscription은 web socket을 통해 구현되기 때문에 web socket 링크도 만들어줘야함
+
+그런데 감사하게도 완전 쉬움
+
+일단 http link를 만들어줘야함
+
+httpLink = createHttpLink를 해줌
+
+apollo client에서 왔음
+
+uri가 필요함
+
+이제 다음으로 넘어갈 수 있음
+
+apollo client에서 uri를 제거하고 우리의 링크인 httpLink로 대체함
+
+다 괜찮은데 authLink를 생성해야함
+
+참고로 apollo link package에서 온 것임
+
+authentication을 위한 여러 옵션을 가지고 있음
+
+보면 많은 종류의 링크를 가지고 있음
+
+http, state, rest, error 등의 링크가 있음
+
+context를 우리가 사용할거고 apollo-link-ws를 나중에 사용하게 됨
+
+지금 할 것 아님
+
+우리가 필요할 때 함
+
+이제 authorization link를 만듦
+
+setContext를 사용함
+
+apollo client link context에서 옴
+
+setContext는 모든 client가 만든 request의 context를 set함
+
+header를 보낼 수 있음
+
+원하는 것 아무거나 설정해줄 수 있음
+
+모든 request에 발생함
+
+localStorage에서 가져오고 있음
+
+우리는 토큰을 가지고 있으니까 괜찮음
+
+이전 header를 모두 return 해야함
+
+그 다음에 "x-jwt"를 써줌
+
+그 전에 먼저 헤더를 출력해봄
+
+예를 들면 여러 링크를 사용하는 방법은 그냥 하나의 링크에 concat를 해서 계속 추가해주는 방법이 있음
+
+일단 request에 헤더 설정을 하고 그 다음에 httpLink에서 사용함
+
+links에 대해 전문가 수준으로 알아야하는 것은 아님
+
+websocket link를 만들어야하니까 어차피 다시 해봄
+
+이제 headers를 출력함
+
+전에 있던 headers를 리턴함
+
+새로고침하고 inspect로 가봄
+
+출력해보면 headers가 없음
+
+console.log로 돌아옴
+
+보다시피 헤더가 없음
+
+그 말은 우리는 헤더를 보내고 있지 않음
+
+x-jwt를 적어줌
+
+그리고 잊지 말고 토큰을 적어줌
+
+그게 끝임
+
+token만 적어줄 수도 있지만 token || ""이라고 해줌
+
+로그인 되어있지 않은 상태에서도 이 request는 발생하기 때문임
+
+null 혹은 undefined가 아니라 값이 나올 수 있도록 해줌
+
+undefined를 보내면 어떻게 반응할지 모름
+
+authTokenVar()는 우리가 설정한 var를 읽어옴
+
+모든 것을 kill하고 새로고침함
+
+다시 출력해줌
+
+에러가 없음
+
+그 뜻은 data에 무엇인가 있다는 것임
+
+me가 보임
+
+email, id, role, verified가 있음
+
+meQuery 타입을 추가해야함
+
+data는 meQuery임
+
+마지막으로 error를 적음
+
+!data도 추가해줌
+
+만약에 데이터가 있으면 스크린에 보여줌
+
+data.me.role을 해줌
+
+client라고 나왔음
+
+새로고침 해줌
+
+client가 나왔음
+
+이제 authentication이 끝났음
+
+다시 말하자면 link는 그냥 연결할 수 있는 것들임
+
+http, auth, web, sockets 링크를 가짐
+
+authLink라고 하지 않아도 됨
+
+potatoLink라고 이름 지어도 됨
+
+그냥 context를 설정하는 것임

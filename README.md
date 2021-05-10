@@ -3952,3 +3952,311 @@ authLink라고 하지 않아도 됨
 potatoLink라고 이름 지어도 됨
 
 그냥 context를 설정하는 것임
+
+## 15.16 Routers and 404s 
+
+이제 user의 역할을 앎
+
+우리는 그냥 user router, restaurant router 그리고 driver router만 만들면 됨
+
+Pages를 만들고 싶음
+
+그리고 이 Pages들은 user의 역할에 따라서 나눠짐
+
+예를 들어서 client 페이지가 됨
+
+우리는 사용자 혹은 고객이 접속하자마자 처음으로 뜨는 화면인 restaurants.tsx 파일을 생성함
+
+엄청 간단한 route를 만들어봄
+
+그리고 이 화면이 무엇을 하는지 설명해줌
+
+Restaurants 변수를 만들어주고 Restaurants를 써줌
+
+로그인은 user에 있는 것임
+
+우리는 항상 있을 Header를 만들었고 접속하는 사람이 드라이버든 레스토랑 주인이든 손님이든 header가 보임
+
+그리고 카테고리도 있음
+
+보다시피 아이콘 이미지가 쓸만함
+
+그래서 원한다면 저장하고 back-end에 업로드해도 됨
+
+카테고리가 있을거고 많은 식당들을 볼 수 있게 만듦
+
+일단 router를 만듦
+
+logged-in-router.tsx 파일 안에 있어야할 거 다 만듦
+
+파일 용량이 커지면 우리는 다른 파일로 바꿈
+
+우선 Client Router를 만듦
+
+너무 커지면 그 때 바꿈
+
+우선 router를 import 해봄
+
+우리는 BrowserRouter를 추가해줌
+
+switch를 만들어줌
+
+client routes가 더 나음
+
+fragment가 될거고 parent없이 많은 element를 동시에 return 할 수 있게 된다는 것임
+
+우선 data.me.role === "Client"를 입력함
+
+true면 ClientRoutes가 보이게 할 것임
+
+지금 client route가 비어있음
+
+그래서 route를 만들어봄
+
+첫번째 route는 restaurants가 됨
+
+path가 됨
+
+그런데 문제가 생겼음
+
+보다시피 지금 /login 상태임
+
+그런데 /login 상태에서 보이면 안 되는 restaurants가 보임
+
+이것을 몰랐을 수도 있음
+
+그런데 만약에 localhost로 들어가면 index 페이지가 로그인으로 뜨는 것을 볼 수 있음
+
+create account를 눌러보면 create account로 들어가짐
+
+그런데 log in 눌러보면  /login으로 됨
+
+home이 login 페이지니까 이렇게 되면 안 됨
+
+이것을 진작에 눈치채지 못 했을 것임
+
+그런데 일부러 이렇게 한 것임
+
+머리로는 이해가 가는데 route 상에서는 아무렇게나 입력해도 login 페이지가 뜸
+
+router가 만들어진 방법 때문에 그럼
+
+logged-out router를 보면 path가 같음
+
+path에 대해 말하자면 path는 /만 의미하지 않음
+
+react router의 원리는 path가 무엇인가를 포함하고 있다 혹은 있다면 이라고 전제를 두고 있음
+
+예를 들어서 만약에 /create-account 같은 path가 있으면 아래에 있는 route랑 위에 있는 route가 어떤 공통점을 가지고 있음
+
+/를 가지고 있음
+
+/create account에 가면 Create account라고 있음
+
+그래서 react router는 멈춤
+
+그리고 switch가 있어서 그럼
+
+switch가 있으면 한번에 route 하나만 render하라고 알려주는 것임
+
+/create-account로 가면 react router는 component를 발견하고 멈춤
+
+그런데 만약에 /lalalalalal를 입력하면 react router는 계속 찾을거고 가장 비슷하게 찾은 것은 /something이 될 것임
+
+그런데 결국 /임
+
+exact를 넣음
+
+exact를 넣으면 react router는 nothing으로 시작하고 /가 있고 nothing으로 끝나는 것만 받아들임
+
+Log In Now를 누르면 아무 것도 안 보임
+
+의도하던대로임
+
+나중에 혹은 지금일지는 잘 모르겠지만 not found routes를 back to home으로 redirecting하는 법에 대해서 말할 것임
+
+exact가 빠졌음
+
+그런데 우리는 실수한 것과 잘못 작동되는 것을 발견하고 나서야 왜 exact가 필요한지 알게 됨
+
+exact를 설정함
+
+그리고 우리는 create account의 코드를 조금 바꿈
+
+login을 push하는게 아니라 nothing으로 push함
+
+그리고 똑같은 것을 already have an account에다 할 것임
+
+login을 없애고 /를 넣음
+
+그런데 아직 문제가 있음
+
+만약에 내가 원한다면 404를 표시할 수 있음
+
+"This page doesn't exist" 같은 것으로 404를 표시함
+
+아니면 사용자가 원하는 페이지로 다시 돌아가게 redirect 할 수도 있음
+
+두가지 방법을 다 알려줌
+
+우리는 첫번째 방법인 404를 해봄
+
+로그인 표시가 있으면 안 됨
+
+404가 있어야함
+
+그 다음에 우리는 redirect를 함
+
+새로고침 한 다음 404를 해봄
+
+pages에 가서 404.tsx를 입력함
+
+오랜 시간이 걸리지 않음
+
+Tailwind 덕분에 멋있게 잘 될 것임
+
+div를 할거고 늘 하듯이 className 입력하고 스크린의 세로 길이 설정함
+
+내가 만든 텍스트를 중앙에 놓으려고 한 것임
+
+우리는 span 안 씀
+
+h2를 넣음
+
+Page Not Found라고 적어줌
+
+이제 링크를 만듦
+
+go back home을 함
+
+그리고 arrow를 만듦
+
+이제 이 페이지는 많은 router에서 쓰일 것임
+
+logged-in router에도 logged-out router에서도 쓰일거고 그냥 모든 곳에서 쓰임
+
+그래서 어떻게 하지
+
+진짜 쉬움
+
+예를 들어서 logged-out router에 가면 됨
+
+그리고 route를 만듦
+
+router 끝 부분에 path 없는 route를 만들 것임
+
+이것은 NotFound가 됨
+
+위에서 아래로 보이는거니까 코드 끝 부분에 있음
+
+웹페이지로 가봄
+
+incognito(시크릿 모드)로 localhost를 해봄
+
+create account 있고 보다시피 잘 됨
+
+그냥 주소창에 /potato라고 침
+
+Page Not Found 페이지가 나왔음
+
+flex container를 보면 됨
+
+Flex Column을 빠르게 해봄
+
+이제 크기를 늘려봄
+
+font를 입력하고 굵기를 semi-bold로 하고 텍스트 크기는 xl로 만듦
+
+margin bottom은 5로 함
+
+3으로 바꿈
+
+x-large는 아닌데 굵게 함
+
+굵기는 medium으로 하고 텍스트 크기는 large로 함
+
+margin bottom은 5로 함
+
+조금 큰 거 같음
+
+텍스트 크기는 그냥 base로 함
+
+Go back home을 봄
+
+Go back home에 className을 만들어줌
+
+text 말고 hover:underline이라고 씀
+
+그런 다음에 text-lime-500 해줌
+
+링크를 이미 했던거 같음
+
+Link component에 만들 차례인 것 같음
+
+잘 되었음
+
+xl을 2xl로 해봄
+
+이제 home으로 돌아감
+
+다음에 할 것은 redirection임
+
+redirection은 route랑 비슷함
+
+우리는 redirection을 logged-in router에서 작업함
+
+이미 routes가 있음
+
+redirect를 추가함
+
+redirect는 react-router-dom이 제공하는 component고 from이랑 to 같은 props가 있음
+
+우리 같은 경우는 특히 아무데서나 redirect하길 원하지 않음
+
+우리는 모든 곳에서 redirect 할 수 있기를 원함
+
+from을 지울거고 to를 넣음
+
+route가 없으면 redirect to="/"를 찾을 수 있을 것임
+
+이제 새로고침을 해보면 잘 안 됨
+
+정말 흔한 실수임
+
+client route가 fragment를 return하고 있는데 switch가 가질 수 있는 child는 route 밖에 없다고 되어있음
+
+fragment가 될 수 없음
+
+route여야 함
+
+client routes는 fragment를 return하는 component니까 지금 같은 경우에는 client routes를 수정해야함
+
+바꿀거고 방법은 쉬움
+
+이제 client route는 여러 route를 가진 변수가 됨
+
+client routes를 설정함
+
+redirect는 될 것임
+
+새로고침 해봄
+
+잘 되는거 보임
+
+이제 선택하면 됨
+
+사용자한테 "이 페이지를 찾을 수 없다"라고 말해줌
+
+아니면 그냥 redirect 해줌
+
+페이지를 찾을 수 없다고 말하는게 더 좋은 것 같음
+
+from potato일 때만 redirect 할 수 있음
+
+lalalaa를 치면 potato가 아니니까 안 될 것임
+
+이제 다 끝냈음
+
+우리는 router 404를 완성했음
+
+이제 Restaurant route함

@@ -4260,3 +4260,213 @@ lalalaa를 치면 potato가 아니니까 안 될 것임
 우리는 router 404를 완성했음
 
 이제 Restaurant route함
+
+## 15.17 Header part One
+
+restaurant 스크린을 하는게 아니라 먼저 헤더를 만듦
+
+header 컴포넌트를 만들었고 header에 있는 링크를 사용할건데 링크는 router 안에 있어야하기 때문에 switch랑 router 사이에 뒀음
+
+router 안에 있어야함
+
+아주 중요함
+
+보이듯이 route에 어디가든 헤더가 어디에 있을 것임
+
+header 컴포넌트를 만들고 싶었음
+
+한번에 모든 컴포넌트를 만들고 싶지 않았음
+
+초반에는 무엇을 해야할지 모름
+
+header를 만들려면 "헤더가 얼마나 큰지 재보자"라고 생각하기 쉬움
+
+이 경우에 높이가 80px임
+
+하지만 tailwind는 80px라는 클래스 이름을 제공하지 않음
+
+이게 나쁜 것이라는게 아님
+
+나쁜게 아니라 사실 좋은 것임
+
+Tailwind에서 사이즈를 정하는 방법은 %를 사용하거나 rem을 사용함
+
+rem은 사이즈 단위임
+
+content를 봐야함
+
+content에 padding이 있음
+
+처음에는 일단 padding을 봐야함
+
+일단 padding을 보고 padding을 정하면서 원하는 결과/사이즈를 가지게 됨
+
+이렇게 해야 responsive design을 쉽게 할 수 있음
+
+그러면 모바일에서도 보기가 좋음
+
+일단 보여줌
+
+높이가 16px임
+
+padding을 보니까 위 아래 모두 16px 같음
+
+이제 클래스 이름을 정해줌
+
+일단 배경을 빨간색으로 해줌
+
+그러면 헤더를 보기가 쉬움
+
+또 padding 위 아래를 설정해줌
+
+보면 rem 단위 밖에 쓸 수 없음
+
+rem에 대해 모를 수도 있음
+
+em도 모를 수도 있음
+
+em이 무엇일까
+
+em은 예를 들면 document에 있는 font의 사이즈임
+
+document가 16px라면 그 다음에 margin top을 1em으로 설정해주면 1em은 16px라는 뜻임
+
+em은 document의 M임
+
+그리고 document의 M은 16px임
+
+그게 em임
+
+사실 document가 아니라 em은 element의 폰트 크기에 좌우됨
+
+예를 들어 div에 있고 폰트 크기가 50px라면 marginTop도 50px임
+
+Tailwind css가 padding과 size를 이용하는 방법은 보다시피 rem임
+
+rem은 root em이라는 뜻임
+
+그 말은 div가 있어도 div의 폰트 크기가 50px고 margin top은 2em일 때 2em은 100px가 되지 않음
+
+그렇게 되는게 아님
+
+em은 100px일거고 rem은 body의 폰트 크기가 될 것임
+
+body의 폰트 크기는 5px고 div는 margin top이 10px임
+
+그게 rem과 em의 차이임
+
+더 좋게 할 수 있음
+
+margin bottom이라고 하고 2em이 될 것임
+
+div는 margin top이 10px고 margin bottom은 100px임
+
+그게 rem과 em의 차이임
+
+rem은 body의 폰트 크기를 가져오고 em은 가장 가까이 정의된 폰트 크기를 가져옴
+
+이제 헤더를 보면 16px 높이를 가지고 있음
+
+그리고 기본 폰트 사이즈가 16px라는 것을 앎
+
+모르면 h1을 inspect하면 됨
+
+h1이 선택되어있음
+
+computed를 눌러서 폰트 크기를 찾아봄
+
+보다시피 16px임
+
+그게 기본 폰트 사이즈의 베이스일 것임
+
+이제 위 아래 padding을 16px하고 싶다면 py를 하고 1rem을 찾아야함
+
+그 말은 padding 위 아래가 16px라는 것임
+
+이제 패딩 위 아래가 16px임
+
+완전 정확했음
+
+container가 있음
+
+완전 중요한 것임
+
+이제 header는 full width가 됨
+
+header container를 안에 만들어줌
+
+div를 써줌
+
+이제 header container가 됨
+
+className이라고 하고 width를 full width라고 해주고 max-width도 해줌
+
+max-width를 7로 해주고 새로고침 해줌
+
+bg-yellow-500을 해줌
+
+작동하기는 함
+
+margin이 있음
+
+mx-auto로 해주면 중간으로 옴
+
+이렇게 하면 될 것 같음
+
+이 정도로 container를 정해주면 될 거 같음
+
+아마 더 필요할지도 모르겠음
+
+max-w에 7xl말고 5xl을 해줌
+
+5로 하면 너무 많음
+
+원하면 max-w-screen을 large로 해줄 수 있음
+
+이것이 tailwind에 따르면 가장 큰 스크린임
+
+아니면 xl 스크린으로 해줌
+
+이게 더 나음
+
+같은 사이즈가 아니지만 괜찮은 것 같음
+
+이제 container라는 className을 만들어줌
+
+이 className은 w-full, max width, mx-auto를 가짐
+
+그렇게 하면 container를 가질 수 있음
+
+그냥 한 예시임
+
+아니면 그냥 size를 외워서 해도 됨
+
+사이즈는 끝임
+
+이제 따라 만들어봄
+
+해야할 것은 로고를 가져오는 것임
+
+import 해줌
+
+이미 되어있음
+
+pages의 createAccount에 같은 사이즈를 사용하고 싶음
+
+이것은 이미 해줬음
+
+이번 기회에 logo 컴포넌트를 만드는 것은 어때
+
+어디든 사용하고 있기 때문에 좋아보임
+
+header 안에 넣어줌
+
+너무 크니까 w-40으로 설정해줌
+
+완전 커보임
+
+다음 비디오에서 바꿈
+
+header를 복제함
+
+그 다음에 restaurant 페이지로 넘어감

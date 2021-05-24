@@ -4470,3 +4470,319 @@ header 안에 넣어줌
 header를 복제함
 
 그 다음에 restaurant 페이지로 넘어감
+
+## 15.18 Header part One
+
+header로 넘어가기 전에 fontawesome을 설치하고 싶음
+
+리액트 전용 fontawesome을 쓸 것임
+
+많은 것을 설치해야하므로 그냥 복사함
+
+그런 다음에 붙여넣기하고 설치할건데 한번 살펴봄
+
+터미널에 npm i --save @fortawesome/fontawesome-svg-core@1.2.32 @fortawesome/free-solid-svg-icons@5.15.1 @fortawesome/react-fontawesome@0.1.13 입력
+
+react fontawesome을 설치함
+
+fontawesome의 리액트 컴포넌트임
+
+icon set도 설치함
+
+solid-svg-icons랑 fontawesome-svg-core 설치할거고 원하면 깃헙 로고나 인스타그램 로고 같은 회사 brands도 설치할 수 있음
+
+그게 brands임
+
+일단 어떻게 쓰는지 알려줌
+
+user icon이 있음
+
+중요한 것을 보여주고 싶기 때문에 빨리 header를 완성함
+
+margin bottom을 지워줌
+
+img의 width를 24로 바꿔줌
+
+flex justify-between items-center를 적용해줌
+
+검색 기능은 안 할거고 유저 이름을 만들어주도록 함
+
+username이라고 써주고 나중에 아이콘을 넣어주도록 함
+
+일단 username을 가져오도록 함
+
+username이 너무 큼
+
+작게 만들어줌
+
+나중에 아이콘이나 링크를 넣어주도록 함
+
+user를 request하는 방식을 좀 바꿔줄 필요가 있음
+
+그렇게 한 다음 header에서 username을 가져옴
+
+한가지 방법으로는 일단 LoggedInRouter를 가봄
+
+이미 data가 있고 user가 있음
+
+Header에 prop을 줄 수 있음
+
+username이라고 쓰고 data를 쓰고 그냥 email을 사용함
+
+me.email이라고 함
+
+user name은 없음
+
+이제 interface를 만들어봄
+
+user가 아니라 email이라고 함
+
+string 타입으로 함
+
+React.FC를 추가해줌
+
+그 다음 email이라고 적음
+
+만약에 컴포넌트 중에 router에 접근할 수 없는게 있다면 어떻게 할까
+
+email은 string이고 email을 적음
+
+불평하는 곳이 없음
+
+router 아래 바로 header가 나오고 router가 user를 제공함
+
+그런데 만약에 form 같은 컴포넌트가 있는데 user에 접근하고 싶다면 어떻게 할까
+
+만약에 예를 들어 notification, alert 기능이 있는 컴포넌트가 있고 "안녕, 니콜라스" 같은 것을 출력하려고 함
+
+어떻게 할까
+
+prop을 loggedInRouter에서 아래 컴포넌트까지 전달해야할까
+
+당연히 아님
+
+우리에게는 강력한 cache 엔진이 있음
+
+우리는 강력한 apollo client가 있음
+
+그래서 정보를 보낼 필요가 없음
+
+그런데 만약에 누가 로그인 되어있는지 알고 싶은데 컴포넌트가 깊숙히 있다면 어떻게 할까
+
+Router 안에 Route가 있고 그 안에 컴포넌트 안에 컴포넌트가 있다면 어떻게 할까
+
+그리고 끝에 로그인 되어있는 유저의 email을 알고 싶다면 어떻게 할까
+
+그러려면 일단 custom hook을 만들어줌
+
+hooks 폴더를 만듦
+
+useMe.tsx를 만들어줌
+
+이제 이 hook이 무엇을 할거냐면 유저가 누구인지 알려주는 api를 호출함
+
+많은 props를 보내줄 필요가 없음
+
+hook과 apollo cache의 힘을 이용함
+
+return을 써주고 useQuery를 리턴해줌
+
+많은 import를 없앴음
+
+많은 코드를 줄일 수 있었음
+
+logged-in-router.tsx에서 할 것은 useMe()를 통해서 data, loading, error를 가져오는 것임
+
+이제 useMe()라는 hook이 있음
+
+보다시피 똑같이 작동함
+
+그런데 이제 우리는 header가 아주 깊숙이 있다고 가정하고 router 안에 깊숙이 있다고 하고 아니면 props를 header로 보내고 싶지 않다고 해봄
+
+header로 아무 것도 보내지 않음
+
+우리가 해야할 것은 hook을 부르는 것임
+
+그냥 data만 필요함
+
+다른거 없이 useMe()를 사용할 것임
+
+이제 data.me.email을 할 수 있음
+
+이제 계속해봄
+
+저장하고 새로고침하면 똑같이 작동함
+
+지금도 좋음
+
+그런데 좀 바보같다고 생각할 수 있음
+
+api를 header에 부르고 싶지 않다고 생각할 수도 있음
+
+우리는 쿼리를 두번 부르고 있으니까 그건 바보같음
+
+새로고침부터 하고 inspect함
+
+network에 가봄
+
+새로고침 함
+
+그 전에 disable cache를 선택해줌
+
+graphql을 몇번 부르는지 알아봄
+
+새로고침 하고 graphql을 찾아봄
+
+첫 graphql의 Request Method에 options라고 나와있음
+
+그런데 이것은 상관없음
+
+우리가 호출한게 아님
+
+무엇을 호출했는지 보자
+
+우리는 me를 호출했음
+
+apollo가 좋은게 무엇이냐면 apollo는 cache였다는 것을 알고 있음
+
+그래서 알아서 우리한테 정보를 줌
+
+그게 끝임
+
+캐시에서 가져올 수 있게 할 수 있기 때문에 query hooks를 사용하는게 좋다고 생각함
+
+만약에 없으면 graphql, apollo가 알아서 가져와줌
+
+이제 우리는 id, email, role, verified를 주는 hook이 있음
+
+cache에서 가져옴
+
+header에서는 api로 가지 않고 캐시로 감
+
+완전 좋음
+
+props를 보내는 것을 방지할 수 있음
+
+처음에 말한 것처럼 헤더에 props를 보내는 것은 상관 없음
+
+그런데 문제는 컴포넌트가 많은 컴포넌트 아래에 있는데 user id나 email을 보내고 싶을때임
+
+우리는 useMe를 많이 쓸 것임
+
+alert를 작동시킬 때를 생각해봄
+
+useMe()로 미리 저장된 것을 가져올 수 있음
+
+로그인 정보를 가져올 수 있음
+
+레스토랑 오너가 dashboard에 있을때 어느 레스토랑의 order인지 보여줄 수 있음
+
+useRestaurant()라는 hook이 필요할지도 모름
+
+cache에서 데이터를 가져올 수 있게 함
+
+FontAwesomeIcon을 해줌
+
+Icon이라고 해주고 fa를 치고 보면 모든 fontawesomeicon을 자동으로 import 할 수 있음
+
+원하는 것을 찾을 수 있음
+
+우리의 경우에는 User가 필요함
+
+작동하는지 봄
+
+실행시켜보면 User가 보임
+
+icon을 찾는 방법은 간단함
+
+예를 들어 address book을 원한다면 javascript가 원하는대로 적어주면 됨
+
+faAddressBook처럼 원하는 아이콘을 가져올 수 있음
+
+모든 것을 가져오는게 아니라 원하는 것만 가져오면 됨
+
+이 경우에는 faUser가 됨
+
+이제 user를 가져왔음
+
+className을 적고 TailwindCss를 씀
+
+text-2xl을 하면 너무 큼
+
+이제 Link를 만듦
+
+어디로 갈거냐면 /users/라고 적어줌
+
+path가 필요함
+
+my profile에 감
+
+/my-profile이라고 적어줌
+
+/my-profile로 감
+
+스크린을 만들지는 않았지만 곧 만듦
+
+my profile을 클릭하면 my-profile로 감
+
+redirect가 작동하지 않음
+
+이제 작동함
+
+my profile이 존재하지 않으면 그 전으로 돌아감
+
+404로 하면 더 좋을 것 같음
+
+search를 만듦
+
+이제 restaurants를 만듦
+
+그러면 끝임
+
+responsive로 만들어줌
+
+모바일 화면에 margin이 없음
+
+못 생겨보임
+
+빠르게 고쳐봄
+
+normal class names는 작은 사이즈를 위한 것임
+
+small size일 때 왼쪽 오른쪽 padding을 5px로 줌
+
+그런데 medium size에서는 padding을 0으로 줌
+
+다시 말하자면 padding 왼쪽, 오른쪽을 5px로 해줬음
+
+small 사이즈일 때 5px임
+
+그런데 중간 사이즈면 padding이 0이 됨
+
+화면을 좀 늘려봄
+
+중간 사이즈 말고 큰 사이즈에서 padding을 0으로 줌
+
+크게 늘려봄
+
+안 변함
+
+xl로 바꿈
+
+padding은 0이 됨
+
+잘 작동함
+
+Tailwind는 모바일 우선 프레임워크니까 모바일을 우선으로 적용됨
+
+그 다음에 데스크탑을 설정해줌
+
+아주 중요함
+
+data를 header에 사용을 안 했음
+
+다음 섹션에서 함
+
+editProfile을 함
+
+거기서 apollo client를 어떻게 활용할지 배움

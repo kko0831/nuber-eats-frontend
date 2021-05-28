@@ -4786,3 +4786,225 @@ data를 header에 사용을 안 했음
 editProfile을 함
 
 거기서 apollo client를 어떻게 활용할지 배움
+
+## 16.0 Verifying Email part One
+
+header에 쓰지도 않는 data를 만든 이유가 무엇일까
+
+data로 verify email과 edit profile이라는 간단한 기능을 구현해봄
+
+무엇보다 cache를 어떻게 만지고 바꾸는지 배우는 시간이 될 것임
+
+user에게 email이 verified되지 않았다고 말해줘야 하니까 header 위에 배너(banner)를 만듦
+
+!data?.me.verified가 true가 아니면 "email을 verify 해줘"라는 div를 보여줌
+
+텍스트를 span 안에 집어넣음
+
+어떻게 생겼는지 한번 봄
+
+이제 빨간색으로 바꿈
+
+padding을 top과 bottom은 7, left와 right는 3으로 줌
+
+text-align을 center로 적용함
+
+"please verify your email"을 작게 만듦
+
+그래도 padding이 너무 큼
+
+그냥 3으로 통일함
+
+"please verify your email" 텍스트 색상을 화이트로 바꾸고 끝냄
+
+email에는 링크가 있는데 링크를 누르면 127.0.0.1이라고 써있고, page not found가 뜸
+
+page not found는 logged-in-router에 없고 logged-out-router에만 있기 때문에 잘못됐다는 것을 알고 있음
+
+그런데도 이렇게 나오는 이유는 127.0.0.1이 localhost와 다르기 때문임
+
+127.0.0.1을 localhost로 바꿔봄
+
+그런데 redirection 때문에 home으로 돌아감
+
+텍스트를 더 작게 만듦
+
+logged-in router로 가서 redirect를 못하게 만듦
+
+대신 Route를 가짐
+
+이제 localhost에서 confirm?code를 입력하면 보다시피 page not found가 나왔음
+
+"please verify your email"이 있는데 이제 "/confirm"이라는 route를 만들고 싶음
+
+그 페이지를 만듦
+
+이미 user라는 폴더가 있음
+
+user 폴더 안에 새로운 파일인 confirm-email.tsx를 만듦
+
+그리고 confirm email, edit profile처럼 user들이 공통적으로 가지고 있는 부분들을 user 폴더 안에 넣고 client, driver, restaurant owner로 분리해봄
+
+일단 route를 빨리 만듦
+
+그리고 이제 logged-in router로 가서 새로운 route를 만들어줌
+
+path는 "/confirm"이 됨
+
+원했던 것처럼 confirm이 보임
+
+confirm screen은 어떻게 만들면 될까
+
+우선 mutation이 어떻게 나올지 봄
+
+mutation은 아주 쉬움
+
+verifyEmail이라는 mutation에는 input이 있고, input은 code, ok, error임
+
+변수 이름이 길어도 상관하지 않음
+
+짧게 만들어도 상관없음
+
+typescript를 위한 이름을 verifyEmail이라고 적음
+
+input이라는 variable을 가짐
+
+type은 VerifyEmailInput임
+
+백엔드에서 쓰는 mutation 이름을 쓰면 되는데, 똑같이 verifyEmail임
+
+input: $input 그리고 ok와 error를 받음
+
+types를 가져오기 위해 apollo:codegen을 실행함
+
+터미널에 npm run apollo:codegen 입력
+
+mutation을 사용함
+
+mutation을 get함
+
+그리고 loading을 받음
+
+types를 추가해야함
+
+이제 mutation을 만들었고 mutation은 VERIFY_EMAIL_MUTATION임
+
+이 mutation의 confirm email screen을 어떻게 보여줘야할까
+
+우리는 user에게 대기하라고 말하고, 유저의 email을 verifying 중이라고 말함
+
+이게 무슨 뜻이냐면, user는 아무 것도 할 필요가 없음
+
+user가 페이지에 도착하면 우리는 email을 verify함
+
+mutation을 자동으로 call하고 user는 confirm될 때까지 아무 것도 모름
+
+그리고 confirm되면 사라지게 만듦
+
+CSS를 빠르게 함
+
+이제 h1이나 h2를 만들고 "Confirming email..."이라 함
+
+className을 넣음
+
+height를 넣음
+
+404 page는 h-screen이라 함
+
+margin top 50을 함
+
+margin-top 52가 훨씬 나음
+
+Tailwind를 계속 연습해봄
+
+className을 넣음
+
+margin-bottom이 필요없음
+
+아니면 1정도만 해봄
+
+그러면 code를 어떻게 가져올까
+
+useEffect라는게 필요함
+
+useEffect는 ComponentDidMount 같은 것임
+
+우리는 URL만 가져오면 됨
+
+한가지 방법으로 window.location.href에서 url을 가져올 수도 있음
+
+.split("code=")를 쓰면 2개가 나오는데 1번은 관심없고, 우리는 2번에만 신경쓰면 됨
+
+하지만 원한다면 location을 get 할 수도 있음
+
+router와 react에서 useLocation을 사용할 수 있음
+
+router에서 가져온 것임
+
+location을 console log해서 무엇을 get하는지 봄
+
+보다시피 get하는게 다름 
+
+지금은 pathname을 get하고 있음
+
+hash, pathname, search, state를 get 했음
+
+무엇을 선호하는지에 따라 다름
+
+첫번째 방법으로 함
+
+useLocation hook이 얼마나 멋진지 보여주고 싶었음
+
+우리는 window.location.href를 반으로 쪼갬
+
+code 부분을 찾아서 반으로 쪼갬
+
+무엇을 get하지
+
+처음과 끝을 get 했음
+
+우리는 2번째 element가 필요함
+
+그러기 위해 es6 마법을 좀 부림
+
+이제 code를 console.log함
+
+URL에서 온 code임
+
+이제 URL에서 온 code가 있음
+
+verifyEmail만 하면 됨
+
+지금 바로 실행하지는 않을 것임
+
+아직 email을 verify하고 싶지 않아서 그럼
+
+아직 email이 verify되지 않았길 바람
+
+email이 verified 됐음
+
+잘 동작함
+
+verified 됐음
+
+typescript가 좋아서 우리가 실수를 안 함
+
+send 해야하는 것을 정확히 send했기 때문에 user가 verified됨
+
+직감적으로 느낌이 왔음
+
+우리가 save 했을때 auto reload 때문에 verified됨
+
+그러면 내 자신을 verify 해제해봄
+
+새로고침 없이 수동으로 어떻게 하는지 보여주고 싶어서 그럼
+
+pgAdmin의 user table로 가서 itnico.las.me@gmail.com을 찾고 verified true를 false로 저장함
+
+첫 시도에 mutation이 제대로 작동하니까 좋은 소식임
+
+이제 파트 2에서는 email을 verify하고 새로고침 없이 지금은 없어진 배너를 지워야함
+
+지금은 verify your email이라고 나옴
+
+이제 우리는 배너를 지우고 user를 다시 home으로 보내고 싶음

@@ -5008,3 +5008,213 @@ pgAdmin의 user table로 가서 itnico.las.me@gmail.com을 찾고 verified true�
 지금은 verify your email이라고 나옴
 
 이제 우리는 배너를 지우고 user를 다시 home으로 보내고 싶음
+
+## 16.1 Verifying Email part Two
+
+LoggedInRouter에 생긴 에러인데 array를 쓰고도 key를 지정하지 않아서 그럼
+
+key를 추가함
+
+array이기 때문에 key가 꼭 필요함
+
+verifyEmail mutation을 실행하고 싶음
+
+그리고 onComplete한 것을 listen하고 싶기도 함
+
+onComplete는 Apollo cache로 가서 verified를 true로 바꿔야함
+
+기억날지 모르겠는데 header 안에 !data?.me.verified라는 component가 있음
+
+물론 cache로부터 read 할 수도 있고 바로 write 할 수도 있음
+
+cache에 바로 write함
+
+수동으로 !data?.me.verified를 true로 바꿈
+
+새로고침 할 필요도, 다시 refetch 할 필요도 없음
+
+수동으로 직접 cache를 수정함
+
+onCompleted라는 function을 만듦
+
+우리에게 data를 줄건데, data의 type은 verifyEmail임
+
+만약 data.verifyEmail이 ok면, cache에 직접 write 해봄
+
+Reading and Writing Data to the cache라는 가이드가 있는데 writeFragment를 집중적으로 봄
+
+아마 제일 많이 쓸 것 같음
+
+fragment는 type의 일부분 같은 것임
+
+우리 같은 경우에는 type user가 있는데 verified인 fragment를 씀
+
+fragment에서는 조건(condition)이 매우 중요함
+
+기본적으로 id를 가지고 fragment를 찾을 수 있어야함
+
+id를 가지고 fragment를 찾을 수 있어야하고 type은 API에서 오는 type이어야함
+
+어떻게 찾는지 보여줌
+
+application으로 가서, Apollo developer tools에서 cache를 봄
+
+cache에서 ROOT_QUERY 속 me가 보임
+
+이것은 별로 중요하지 않음
+
+중요한 것은 User: 1임
+
+User가 database에서의 type이고, 1은 id임
+
+apollo는 똑똑해서 id가 type 중에서의 id를 가리킨다는 것을 알고 있음
+
+이제 우리는 이것이 id가 1인 user라는 것을 앎
+
+원한다면 type을 바꿀 수 있음
+
+예시로 user의 id를 email로 하고 싶으면 그렇게 바꿀 수 있음
+
+나중에 보여줌
+
+하지만 지금은 Apollo가 model의 type과 id field로 id를 만든다는 것만 알고 있음
+
+그래서 의도적으로 id field를 씀
+
+못 봤을 수도 있음
+
+이렇게 한 이유는 Apollo가 type에 id 속성이 있으면, model의 id로 쓰기 때문임
+
+그러니까 우리가 무엇을 해야하냐면, user의 id로 writeFragment를 함
+
+말했다시피 fragment는 우리가 바꾸고 싶은 type의 파트여야함
+
+그리고 new data를 send 해야함
+
+하다보면 무슨 말인지 감이 잡힘
+
+하지만 그 전에 우리는 client가 필요함
+
+하지만 현재 client가 없음
+
+그러면 hook으로 client를 get함
+
+useApolloClient는 우리가 원하는 client를 줌
+
+이제 client.writeFragment({})라 하고 이 writeFragment에는 id가 필요한데 우리가 edit하고 싶은 type의 id가 뭐지
+
+useMe()에서 data를 받아서 확인해봄
+
+다시 get하고 있음
+
+cache에 있는 요소를 다시 쓰고 있음
+
+이 경우에는 id를 원함
+
+이제 data의 이름을 userData로 바꿈
+
+이게 더 나은 것 같음
+
+typescript가 id는 undefined일 수 있다고 알려주고 있음
+
+그럼 if에 userData?.me.id를 추가하면 됨
+
+?를 지움
+
+가져온 id는 number인데 입력해야하는 id는 string이어야함
+
+이제 fragment를 넣어야하고 나중에 data를 넣어야함
+
+첫번째 fragment는 gql임
+
+gql이 import 됐는지 확인함
+
+fragment라 하고 원하는대로 하면 됨
+
+user에서 무엇을 수정하고 싶은지 씀
+
+우리는 verified property를 수정하고 싶음
+
+이제는 data를 send 해야함
+
+위에 썼던 data를 그대로 쓰면 됨
+
+우리는 fragment를 write함
+
+fragment는 type의 일부분임
+
+이 경우에는 user의 일부분임
+
+type user는 이미 있고, id가 1인 user entity는 이미 있음
+
+fragment를 write하고 싶은데 id가 1인 entity에 write하고 싶음
+
+그리고 실제로 fragment를 작성할건데, fragment에는 verified만 있음
+
+fragment는 전체 model에서 수정하고 싶은 일부분임
+
+우리의 경우에는 verified 부분만 변경하고 싶음
+
+이제 우리가 무엇을 바꾸고 싶은지 선언하고 data를 send함
+
+지금 id를 보면 id가 아님
+
+숫자 1이 아님
+
+id는 User: 1임
+
+id가 통째로 필요함
+
+client가 가진 id와 똑같은 id가 필요함
+
+cache를 봄
+
+cache에는 User: { id }가 있음
+
+이게 id임
+
+이 id로 fragment를 update하고 싶음
+
+update하고 싶은 부분은 verified임
+
+loading에는 관심 없음
+
+이제 email을 verify함
+
+그런데 이미 한번 백엔드에서 email을 verify 했고 verification을 삭제했음
+
+그래서 새로고침을 해도 백엔드에서 실행되지 않을 것임
+
+백엔드에서 안 됨
+
+그 이유는 이미 백엔드에서 한번해서 verification이 없어졌음
+
+그러니 잠깐 멈추고 아니면 다음 비디오에서 해봄
+
+백엔드로 돌아가서 똑같은 code로 verification을 만듦
+
+그리고 새로고침하지 않고도 어떻게 바뀌는지 봄
+
+verifyEmail을 저장하니까 백엔드에서 verified 되어서 verification code를 지우는 실수를 만들었기 때문임
+
+verification code는 더 이상 작동하지 않음
+
+빠른 복습을 해봄
+
+cache에 write하면 됨
+
+cache에 있는 object들은 id가 있음
+
+그러면 fragment를 write 할 수 있음
+
+fragment는 큰 type의 일부분임
+
+예를 들어, 여기에서는 type이 user임
+
+이 fragment를 cache로 write함
+
+그럴려면 id를 update하면 됨
+
+writeFragment와 writeCache는 많이 사용할 예정이라 계속 보임
+
+저장하고 verified 되는 문제를 겪은 경우에도 지금 고치면 됨

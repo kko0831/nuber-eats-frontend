@@ -5218,3 +5218,173 @@ fragment는 큰 type의 일부분임
 writeFragment와 writeCache는 많이 사용할 예정이라 계속 보임
 
 저장하고 verified 되는 문제를 겪은 경우에도 지금 고치면 됨
+
+## 16.2 Edit Profile part One
+
+백엔드에 verification을 만들었음
+
+pgAdmin의 verification table을 통해 볼 수 있음
+
+이제 새로고침을 하면 verify your email이 사라지는지 봄
+
+그 전에 한가지만 추가함
+
+verifyEmail이 잘 작동하면 home으로 가도록 만듦
+
+useEffect의 verifyEmail을 주석 처리하고, history를 사용함
+
+성공적으로 실행되면, user가 verify 되자마자 home으로 돌아감
+
+history.push("/")를 쓰면 home으로 돌아감
+
+이제 잘 작동함
+
+그런데 Warning이 나타났음
+
+"Can't perform a React state update on an unmounted component"라고 나와있음
+
+아마 우리가 promise를 시작했기 때문임
+
+verifyEmail은 promise임
+
+Promise를 시작했는데 그냥 나감
+
+다른데로 가버렸음
+
+떠남으로써 component가 unmounted됨
+
+하지만 verifyEmail function은 component를 update하려고 함
+
+지금 발생한 문제는 verifyEmail function이 이미 떠났음에도 불구하고 home에 있는데도 component를 update하려고 함
+
+아마 error는 당장 고치기에는 무리인 것 같음
+
+react strict mode에서 비롯된 react bug로 추정됨
+
+react가 먼저 고쳐줘야 console에서 warning을 없앨 수 있을 것 같음
+
+하지만 큰 문제는 아님
+
+우리는 아주 손쉽게 Apollo cache를 change할 수 있음
+
+user를 verify하는 작업은 끝났음
+
+이제 edit profile을 만듦
+
+일단 우리는 fragment를 write 했음
+
+fragment를 write, read하고 query 또한 write, read 할 수 있음
+
+writeFragment 또한 아주 중요한 method임
+
+이제 user로 들어가서 edit-profile.tsx를 만듦
+
+edit-profile은 아주 심플한 스크린이 될 것임
+
+form이 있으니까 react hook forms를 연습해봄
+
+Tailwind도 물론 연습함
+
+edit-profile을 만들었고 logged-in-router로 가서 하나 더 만듦
+
+key는 3임
+
+EditProfile이라 함
+
+이제 header를 조금 바꿈
+
+my-profile이 아닌 edit-profile로 감
+
+이제 다 된 것 같음
+
+뭐가 필요한지 한번 봄
+
+일단 우리가 edit하고 싶은게 무엇인지 한번 봐야겠음
+
+Playground로 들어가서 무엇을 edit하고 싶냐면 email과 password임
+
+email과 password를 change하고 싶음
+
+그러면 현재 logged in된 user의 email이 필요함
+
+어떻게 가져올까
+
+useMe()를 쓰면 됨
+
+useMe hook은 cache에 바로 접근할 수 있음
+
+그리고 만약 cache에 없으면 API에 직접 접근함
+
+이것이 바로 Apollo를 fetching client와 local state client로 작업할 때의 좋은 점임
+
+우선 cache에 있는지 확인하고 만약 cache에 없으면 Apollo client가 백엔드에서 찾음
+
+이제 user data도 있고 EditProfile을 만들어봄
+
+빨리 profiles와 restaurants를 끝내고 이 코스에서 가장 중요한 testing으로 갔으면 함
+
+className에 margin top을 줌
+
+많은 hook들 덕분에 component들을 작게 만들 수 있음
+
+우리는 container presenter pattern을 쓰고 있지 않음
+
+hook만 쓰고 있음
+
+이미 작기 때문에 container presenter pattern이 필요없음
+
+이제 form을 만들고 form에 input을 넣음
+
+password도 똑같이 함
+
+password는 required면 안 됨
+
+그리고 button을 만듦
+
+이 button은 Update Profile이 됨
+
+그리고 email도 required면 안 됨
+
+우리가 email을 보내지 않아도 API는 확인을 하고 email이 있으면 update하고, email이 없어도 문제 없음
+
+우리가 전에 만든 코드 중에 input class가 있음
+
+form도 className이 필요함
+
+form을 찾아봄
+
+너무 큼
+
+form이 얼마나 크지
+
+form component를 만들어도 될 것 같음
+
+header를 만들때 스크린을 너무 크게 잡은 것 같음
+
+header를 좀 수정해야함
+
+Edit Profile이 더 커야함
+
+title을 위해 component를 만들어볼까
+
+같은 방식으로 설정해야하는 title이 많음
+
+confirmEmail로 가면 나쁘지 않음
+
+그리고 not found를 보면 title이 마음에 듦
+
+그러면 title만을 위한 component를 만들어도 됨
+
+효율적일 것 같음
+
+edit profile이 있음
+
+className이 없고 대신에 button이 있음
+
+이제 form을 불러올 차례임
+
+다음 영상에서 함
+
+useForm Hook을 한번 더 연습하고, confirm-email에서 했던 것처럼 cache를 edit함
+
+fragment를 write함

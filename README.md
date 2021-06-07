@@ -5388,3 +5388,201 @@ className이 없고 대신에 button이 있음
 useForm Hook을 한번 더 연습하고, confirm-email에서 했던 것처럼 cache를 edit함
 
 fragment를 write함
+
+## 16.3 Edit Profile part Two
+
+form을 가져오기 전에 interface부터 만듦
+
+IFormProps라 하고 email을 만들건데, email은 required일 필요는 없음
+
+NestJS의 resolver에서 email이 없으면 update하지 않는다는 것을 알기 때문에 email이나 password를 send하지 않아도 크게 상관없음
+
+password도 마찬가지임
+
+이제 form을 가져옴
+
+우리 form에는 멋있는 function들이 있음
+
+그 전에 type을 줌
+
+이제 register가 있고, form을 위한 handleSubmit과 getValues도 가져옴
+
+register를 씀
+
+정말 중요한건데, input에는 name이 꼭 필요함
+
+input에 name이 없으면 useForm hook이 작동하지 않음
+
+이제 handleSubmit도 똑같이 해봄
+
+console.log(getValues())를 씀
+
+onSubmit을 추가함
+
+onValid function은 onSubmit으로 하면 됨
+
+onValid를 보면 SubmitHandler임
+
+SubmitHandler는 IFormProps라고 나옴
+
+이제 작동하는지 봄
+
+새로고침하고, 그 전에 default values를 어떻게 set하는지 배워봄
+
+default values는 useForm에서 set하면 됨
+
+보다시피 우리는 input을 절대 건드리지 않음
+
+input에 value를 set하지도 않음
+
+ref와 name만 set함
+
+value를 set하지도 않고, function도 아무 것도 안 함
+
+defaultValues에 email을 쓰고 새로고침함
+
+form의 default values임
+
+하지만 우리는 email이 이미 있음
+
+이렇게 하면 사용자 경험도 더 좋음
+
+새로고침하고, default value가 보임
+
+password는 아무 것도 원하지 않음
+
+password에는 default value가 필요없음
+
+어떻게 돌아가는지 봄
+
+email과 password는 string임
+
+다시 새로고침 해봄
+
+email과 password가 나왔음
+
+password는 빈 string임
+
+우리는 password가 없는 것을 원함
+
+password가 비어있으면 password를 피할 수 있게 백엔드를 고칠 수도 있음
+
+백엔드는 password가 없어야된다고 하니까, 백엔드에서는 혼란스러울 수 있음
+
+나중에 고침
+
+모든 것이 완벽하게 돌아가고 있음
+
+editProfile mutation을 봄
+
+editProfile에는 input이 있음
+
+이제 mutation을 써봄
+
+typescript를 위한 이름을 씀
+
+내가 정한 이름과 같지 않아도 상관 없음
+
+$input의 type은 EditProfileInput이고, required임
+
+apollo:codegen을 실행하고 어떻게 되는지 봄
+
+터미널에 npm run apollo:codegen 입력
+
+form과 values가 있고 edit profile mutation을 만듦
+
+edit profile mutation은 loading이 필요함
+
+loading을 가져옴
+
+그리고 result도 필요함
+
+useMutation을 쓰고, type들을 설정함
+
+이제 onSubmit에서 getValues를 한 뒤 edit profile mutation을 call하고 싶음
+
+하지만 cache도 update하고 싶음
+
+나중에 다른 스크린에 필요할 수 있으니까 user가 email을 update 했을때, cache의 email도 update하고 싶음
+
+그리고 user가 email을 update하면 verified를 false로 바꾸고 싶음
+
+그러면 onCompleted function을 잘 만들어야됨
+
+더 멋진 syntax를 쓰기 위해 같은 이름을 씀
+
+onCompleted는 data: editProfile을 쓰는 function임
+
+항상 그랬듯이 data 안에서 editProfile을 get함
+
+만약 ok라면 cache를 update함
+
+그리고 loading을 loading에 넣고, canClick은 !loading으로 함
+
+login의 Button과 똑같이 작성했음
+
+email 형태를 가져야함
+
+formState도 가져옴
+
+우리가 validation을 handling하는 방법을 바꿔야함
+
+login에서 어떻게 했는지 기억나지
+
+login에서의 mode는 onChange였음
+
+login에서 했던 것과 동일함
+
+이제 mutation을 쓸 준비가 끝났음
+
+그럼 이제 editProfile을 함
+
+variables를 씀
+
+variables에는 input이 필요함
+
+input은 email이 필요함
+
+email은 getValues()에서 가져오면 됨
+
+문제는 password가 빈 string일 수 있다는 것임
+
+그러면 조건(conditional)을 씀
+
+그리고 condition으로 password object를 쓰면 됨
+
+password가 안에 있는 object를 추가함
+
+그리고 해당 object를 확장시킴
+
+password가 ""와 같지 않은 경우 중괄호를 없앰
+
+console.log로 email이 어떻게 생겼을지 봄
+
+email이 보임
+
+pattern이 문제가 될 수도 있음
+
+user가 edit profile을 하면서 email을 delete하지 못하게 email을 required로 만들 수 있음
+
+다른 웹사이트들은 어떻게 하는지 모르겠음
+
+잘 작동함
+
+object를 풀어서 a를 보여줌
+
+password가 빈 string과 같지 않으면 password가 포함된 object를 return하고 object를 풀라는 말임
+
+그런데 onSubmit을 좀 바꿔야함
+
+user가 다른 email로 바꾸면, email을 한번 더 verify 해야하기 때문임
+
+매우 중요함
+
+editProfile은 그냥 둠
+
+그런데 우리가 ok를 받는 순간 체크할게 있음
+
+form의 value(email)가 query useMe()의 email과 다르다면 user가 email을 바꿨다는 뜻임
+
+그럼 cache에 있는 email을 바꿔야하고, verified도 false로 만들어야함

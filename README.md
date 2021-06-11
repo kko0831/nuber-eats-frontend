@@ -5586,3 +5586,285 @@ editProfile은 그냥 둠
 form의 value(email)가 query useMe()의 email과 다르다면 user가 email을 바꿨다는 뜻임
 
 그럼 cache에 있는 email을 바꿔야하고, verified도 false로 만들어야함
+
+## 16.4 writeFragment vs Refetch
+
+이전 영상에서 form의 value를 get 할거라고 했음
+
+만약 누가 email을 바꾸면, cache에 있는 email을 바로 update함
+
+그리고 verified를 false로 update함
+
+2가지 방법이 있음
+
+첫번째 방법은 직접 cache에서 바꾸고 싶은 부분을 바꾸는 것임
+
+우리의 어플리케이션에서 일어나는 모든 update를 백엔드에 의존하지 않았으면 좋겠음
+
+mutation이 일어나면 내가 직접 cache를 update함
+
+이렇게 하면 어플리케이션이 웹사이트처럼 아주 빠름
+
+내가 만드는 모든 mutation이 cache에 update됨
+
+API가 refresh하는 것을 기다리지 않음
+
+그리고 두번째 방법을 알려줌
+
+mutation 이후에 cache를 update하는 방법이 2가지인데 하나는 cache를 직접 update함
+
+우리가 지금 하려는 방법임
+
+다른 방법은 query를 refetch하는 것임
+
+이렇게 하면 cache를 update해줌
+
+2가지 방법 모두 보여줌
+
+말했다시피 value(email)를 get하기 전에, get한 email이 useMe hook에 있는 email과 다르다면 user가 password를 바꿨다는 뜻임
+
+만약 ok이고 userData가 있다면, userData 안에 me가 있음
+
+me에는 email이 있음
+
+그리고 email을 쓰고, newEmail로 이름을 바꿈
+
+email이라는 이름이 2개면 안 됨
+
+그냥 2개 다 이름을 다시 붙임
+
+prevEmail로 바꾸고 newEmail에는 getValues()를 씀
+
+그리고 만약 prevEmail이 newEmail과 다르다면 email이 바뀌었다는거니까 cache를 update함
+
+한번 해봄
+
+client가 없으니까 client를 get함
+
+이제 user의 id가 필요한데, 이것은 userData 안에 있음
+
+User에 id만 쓰면 됨
+
+그리고 fragment 이름을 바꿈
+
+EditedUser로 바꿈
+
+중요한 것은 fragment on 뒤의 User가 같아야함
+
+graphql에서 오는 type이기 때문임
+
+그리고 이 경우에는 email도 update 해야함
+
+verified: true라고도 써야하지만, cache도 update하고 싶으니까 email: newEmail도 써야함
+
+우리는 hook인 userData에서 이전 email과 id를 가져오고 form의 getValues를 써서 새로운 email을 가져옴
+
+email이 다르면 User: ${id}인 fragment를 write할건데, fragment에는 verified와 email이 있을 것임
+
+새로운 data임
+
+패턴이 보일텐데, 계속 이렇게 만듦
+
+object의 id를 갖고 fragment를 write하고, data를 send함
+
+작동하는지 봄
+
+console을 새로고침함
+
+이제 cache로 가서 verified도 true임
+
+email을 바꾸고 싶음
+
+email을 nicolassexylas@gmail.com으로 수정함
+
+verified를 false로 해야함
+
+하지만 잘 작동했음
+
+다시 해봄
+
+email을 다시 바꿈
+
+email을 itnico.las.me@gmail.com으로 수정함
+
+verified: false고 "Please verify your email."이 나왔음
+
+header를 디자인할 때, 컴퓨터 화면이 확대되어 있어서 다 작게 만들었음
+
+이제는 괜찮음
+
+훨씬 나음
+
+화면이 확대된줄 몰랐었음
+
+아주 잘 작동함
+
+한번 더 해봄
+
+보다시피 pgAdmin의 verification table에 새로운 verification이 생겼음
+
+API가 email을 바꿀 때마다 새로운 verification과 email을 갖도록 만들었기 때문임
+
+이제 처음부터 test할 수 있음
+
+code를 confirm하고 방금 받은 새로운 코드도 confirm함
+
+URL에 http://localhost:3000/confirm?code=pgAdmin의 verification table에 있는 code 입력함
+
+verify 됐음
+
+정말 빠름
+
+이제 profile을 edit함
+
+email을 nicolas@gmail.com으로 수정함
+
+보다시피 모든게 즉시 바뀜
+
+이게 한가지 방법임
+
+시간 들여서 fragment를 write하고 바뀌는 부분들을 update함
+
+그냥 즉시에 하는게 더 좋다고 생각함
+
+우리가 무엇을 하고 있냐면, 백엔드는 data를 send하는 용도로 쓰고 있고 프론트엔드에서는 data를 update하고 있음
+
+새로운 data가 백엔드에서 들어오길 기다리지 않고, 프론트엔드에서 바로 update함
+
+예를 들어 nomadcoders.co에서 새로운 무료 강의를 등록하면 빠르게 진행됨
+
+백엔드를 기다리지 않게 만들었기 때문임
+
+강의에 바로 등록해줌
+
+만약 fragment를 write하고 싶지 않다면 다른 방법은 뭐가 있을까
+
+그럴 때 다른 간단한 방법이 있음
+
+먼저 다시 verify함
+
+URL에 http://localhost:3000/confirm?code=pgAdmin의 verification table에 있는 code 입력함
+
+나를 verify함
+
+그 방법은 바로 query를 refetch하는 것임
+
+confirm-email을 좀 수정할거라 아직 enter는 안 누름
+
+useMe hook은 useQuery를 return함
+
+useQuery는 return object에 아주 흥미로운 속성이 있음
+
+그 속성은 바로 refetch임
+
+refetch는 function인데 이것을 call하면 query를 다시 fetch해줌
+
+refetch function은 useQuery에서 오고 모든 query가 가지고 있음
+
+refetch를 call하면, function을 refetch함
+
+그리고 query를 refetch하면 cache가 자동적으로 update됨
+
+Apollo가 자동으로 cache를 업데이트함
+
+writeFragment 부분을 지우고 refetch를 쓰면 됨
+
+그러면 useMe query를 refetch함
+
+우리가 백엔드에서 가장 최신의 data를 가져옴
+
+저장하고 confirm하면 됨
+
+다 동일하게 작동함
+
+하지만 refetch는 promise임
+
+그러면 async, await를 써야함
+
+그리고 refetch한 다음, home으로 돌아감
+
+이 모든 것은 confirm-email에서 한 것임
+
+저장하고 email을 다시 confirm 해봄
+
+email을 confirm 했고 보다시피 똑같이 작동하고 있음
+
+edit-profile로 가서 fragment에 write하는 대신 useMe에서 refetch를 받음
+
+그냥 useQuery를 return하는거지만 어느 component나 page에서 접근할 수 있다는 것은 멋진 일임
+
+이제 edit-profile에서 똑같은 것을 함
+
+원하는만큼 refetch를 call해도 됨
+
+그리고 세부적인 작업은 할 필요가 없음
+
+그냥 refetch만 하면 됨
+
+profile을 update하고 update가 Completed가 되면 새로운 data를 받음
+
+그리고 백엔드가 verified 되어야하는지 알려줌
+
+백엔드가 email 주소 등 모두 줌
+
+그러니까 async를 씀
+
+profile을 edit하면 되고, useMe를 사용해서 refetch하면 됨
+
+원한다면 getUserAgain이나 refetchUser 같은 이름으로 바꿔도 됨
+
+그러면 test 해봄
+
+Edit profile에서 email을 itnico@gmail.com으로 바꿈
+
+보이는 것처럼 똑같이 작동함
+
+다른 방법이 더 빠른 것 같음
+
+실제 백엔드를 가지고, 서버도 실제 서버에 있고, 실제 프론트엔드가 있고 production을 deploy하고 있다면, 이 방법이 더 느리다고 100% 확신할 수 있음
+
+이렇게 하면 다른 API call을 만드는거나 다름없음
+
+선택은 내가 하면 됨
+
+refetch를 call하면 Apollo client cache가 자동으로 update함
+
+시간이 많거나 user에게 빠르게 동작하는 느낌을 주고 싶다면 fragment를 write 해봄
+
+또 다른 API call을 기다릴 필요가 없음
+
+이것도 최적화할 수 있는 기술이 됨
+
+app을 시작할 때는 다 refetch로 쓰고 백엔드가 좀 힘들어하는 것 같을 때 refetch를 fragment로 바꾸면 됨
+
+Edit Profile은 끝났음
+
+기대만큼 폼나지 않음
+
+그런데 앞으로 더 멋진 것들을 봄
+
+routers, custom hooks, Apollo cache, Apollo client를 배웠음
+
+Apollo client는 아직 안 끝났음
+
+websocket link라는 것을 배워야함
+
+나중에 subscriptions를 다룰 때 얘기해봄
+
+links, authentication도 배우고 모든 type들을 가진 graphql로 작업하는게 얼마나 재밌고 멋지고 빠른지도 알았음
+
+그리고 첫 시도부터 작동했음
+
+그것이 Typescript의 힘임
+
+올바르게 만들면 첫 시도에도 바로 작동함
+
+log-in하고, email verify하고, profile을 바꿀 수 있음
+
+그리고 cache를 직접, 또는 간접적으로 바꾸는 것도 배웠음
+
+마지막으로 하고 싶은 것은 로고를 클릭하면 home으로 가고 싶음
+
+restaurants를 시작할 수 있음
+
+그리고 test도 할 수 있음

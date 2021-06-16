@@ -5868,3 +5868,197 @@ log-in하고, email verify하고, profile을 바꿀 수 있음
 restaurants를 시작할 수 있음
 
 그리고 test도 할 수 있음
+
+## 17.0 Restaurants Query
+
+이번 섹션에서는 restaurants 스크린을 만들어봄
+
+모든 음식점들을 볼거고, 이 음식점들을 볼 때 카테고리도 볼 수 있어야함
+
+그리고 음식점들을 클릭할 수 있고, 요리들을 전부 load해서, 음식점의 세부사항도 봄
+
+또한 카테고리를 클릭하고, 카테고리의 모든 음식점을 봄
+
+먼저 Query를 작성해야함
+
+Query는 좀 큼
+
+우선 음식점을 가져와야하고, 카테고리도 가져와야하기 때문임
+
+일단 시작하기 전에 Helmet이 모든 페이지에 있는지 확인해야함
+
+create-account에는 Helmet이 있음
+
+Not Found(404)를 보면, Helmet이 없음
+
+그럼 Helmet을 만들어주고 "Not found | Nuber Eats"로 적어줌
+
+Helmet을 import해줌
+
+user에도 똑같이 해줌
+
+Helmet을 만들어서 Verify Email이라고 함
+
+edit-profile도 마찬가지임
+
+이제 playground로 가서 우리가 호출할 Query를 봄
+
+우리가 호출할 Query는 restaurants이고 input으로는 기본값이 1인 page가 있음
+
+그리고 allCategories도 사용함
+
+왜냐하면 allCategories가 우리한테 모든 카테고리를 줄 것이기 때문임
+
+그럼 allCategories부터 시작해봄
+
+restaurants query라고 부름
+
+물론 레스토랑과 카테고리를 가져오지만, 대단한 graphQL 때문에 하나의 Query만으로도 많은 것을 request 할 수 있음
+
+그래서 const RESTAURANTS_QUERY라고 해주고, 이제 우리한테 필요한 것은 allCategories임
+
+그리고 내가 원하는 것은 ok, error 그리고 categories임
+
+카테고리에서는 id, name, coverImg, slug, restaurantCount를 가져옴
+
+거의 전부임
+
+이것이 allCategories query임
+
+그리고 또 다른 Query를 만들 수 있음
+
+우리는 API를 한번만 call하면 됨
+
+그게 바로 restaurants임
+
+restaurants의 경우 input을 보내야함
+
+좀 귀찮지만 page를 설정해야하기 때문임
+
+우선 ok, error, totalPages, totalResults, 그리고 results를 가져옴
+
+그리고 results는 여러 restaurant을 가지고 있음
+
+우리가 restaurants에서 원하는 것은 id임
+
+name도 필요하고, coverImg도 필요함
+
+그리고 category도 가져옴
+
+address도 가져옴
+
+owner, orders, menu는 필요없음
+
+아마도 isPromoted는 필요할 것임
+
+isPromoted를 추가함
+
+보다시피 정말 긴 query임
+
+만약 내가 원한다면 이 Query를 별도 파일로 분리할 수 있음
+
+Query가 너무 커지면 별도의 파일로 분리함
+
+하나 빠진게 있는데, 그것은 restaurants Query의 input인 page임
+
+그래서 input을 추가함
+
+input이라 부르고 type은 RestaurantInput임
+
+그리고 restaurants query에 input으로 $input을 줌
+
+엄청 큰 Query임
+
+지금까지 했던 것 중 가장 큰 Query 같음
+
+하나의 요청으로 많은 Query를 할 수 있음
+
+이제 npm run apollo:codegen을 할 시간임
+
+터미널에 npm run apollo:codegen 입력함
+
+모든게 정확한지 봄
+
+에러가 있음
+
+category field에서 원하는 field를 선택하라고 함
+
+Restaurant의 category에서 원하는 field를 선택함
+
+category에 name을 추가함
+
+왜냐하면 category는 타입이라서 원하는 데이터를 선택해야함
+
+graphQL Query에서 실수했는데, 그것을 다 알려줌
+
+정말 놀라움
+
+그러면 Query를 실행하고 results로 무엇을 받는지 확인해봄
+
+query를 실행해서 data, loading, error를 받음
+
+error는 필요없음
+
+useQuery에 Type을 쓸 수 있음
+
+바로 restaurantsPageQuery와 restaurantsPageQueryVariables가 됨
+
+이 Query에서는 처음에 에러가 나옴
+
+왜냐하면 input을 보내지 않을 것이기 때문임
+
+그런데 input은 required니까 Query에서 에러가 생김
+
+새로고침을 하고, inspect를 하면 아마 에러가 나올 것임
+
+Bad Request가 보임
+
+왜냐하면 우리가 page를 보내지 않아서 그럼
+
+그러면 error를 추가하고, 이게 맞는지 error를 console.log해서 확인해봄
+
+variable인 input이 제공되지 않았음
+
+우리는 어떤 variable도 보내지 않았음
+
+그래서 이제 variable을 보냄
+
+default로 page를 1이라고 할 것임
+
+우리가 전에 이렇게 만들었음
+
+이제 data를 console.log 해봄
+
+새로고침하고 console.log를 확인해보면 보다시피 allCategories가 있는 object를 받았음
+
+ok는 true고 categories가 있음
+
+BBQ, Sweet, 한국, Italian category를 추가했음(백엔드에서 createRestaurant를 Mutation할때 생성됨)
+
+그리고 또한 restaurants도 몇개 만들었음
+
+보다시피 잘 작동하고 있음
+
+Nomad's Place, Mint Choco 곳, 김치십, BBQ Hawaii, 김밥 is Love, Nico's Place restaurant를 만듦(백엔드에서 createRestaurant를 Mutation할때 생성됨)
+
+이게 파트 1이고, 보다시피 잘 작동함
+
+이 과정은 graphQL을 사용하기 때문에 반복되는게 많을 것임
+
+우리는 Query를 만들고, Type을 가져와서, Query를 실행하면 됨
+
+정말 지루하지만 좋음
+
+언제나 휘황찬란한 기술을 쓸 필요는 없음
+
+ReactJS에서 우리만의 반복적인 작업방식이 생긴 것은 정말 좋음
+
+팀으로 작업하면 더 큰 것을 만들 수 있으니까 NestJS에서처럼 하나하나 반복하는 것은 좋음
+
+우리는 restaurants 화면을 디자인 해봄
+
+이 섹션의 대부분은 TailwindCSS를 배우고 사용할 것임
+
+restaurant에는 type이 있기 때문에 그렇게 어렵지 않음
+
+categories부터 만들어봄

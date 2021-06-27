@@ -6272,3 +6272,251 @@ margin-top을 줌
 이미지를 얻는 방법은 마우스 우클릭을 하고 이미지 주소를 복사하고, 데이터베이스에 넣으면 됨
 
 카테고리 안에 넣음
+
+## 17.2 Restaurants List
+
+Tailwind CSS 로 할 수 있는 멋진 것을 봄
+
+이미지 위에 있을 때 색깔이 있음
+
+원에 색깔이 있음
+
+그런데 문제는 우버이츠에서 보면, Text 위로 갈 때도 원에 색깔이 생김
+
+이미지 위에 올려놓을 때 뿐만 아니라 텍스트 위에 올라갈 때에도 색깔이 바뀜
+
+이런 것은 아마 이 부분에 hover over하면 이미지에 색을 주도록 CSS 로 만들 수 있음
+
+그런데 이런 것을 위해 Tailwind CSS에는 group-hover라는게 있음
+
+group-hover는 selector임
+
+group-hover는 요소에 속성을 설정할 수 있음
+
+이 경우에는 이미지임
+
+그리고 group class가 hover-over면 작동함
+
+group-hover:bg-gray-100이라고 했음
+
+이제 우리가 할 일은 group에 group class를 추가하는 것임
+
+여기서 group은 카테고리의 컨테이너임
+
+group을 추가하면 됨
+
+그래서 Tailwind CSS를 사용하면 좋음
+
+이런 것을 위한 클래스도 준비되어 있음
+
+마우스를 Sweet, 한국, Italian에 올려도 잘 작동하는 것을 볼 수 있음
+
+group-hover만 씀
+
+다시 말하면, group-hover는 group:hover와 우리한테 필요한 element만 쓰면 됨
+
+따라서 group class와 group-hover를 같이 사용해야함
+
+좀 더 크게 만들고 싶은데, w-16으로 함
+
+그럼 레스토랑을 함
+
+원하면 카테고리를 만들 수 있음
+
+코로나 때문에 Pickup Only도 있음
+
+일단 시작하기 전에 Component로 만드는 것을 강력히 제안함
+
+Category Component가 될거고 분명 다른 스크린에서도 사용하게 될 것임
+
+그리고 우리가 만들 레스토랑도 마찬가지임
+
+우리는 이런 레스토랑을 만들고, 나중에 또 사용할 수 있도록 컴포넌트로 만듦
+
+그래서 Categories Component로 만들면 됨
+
+새로운 컨테이너를 만듦
+
+이 컨테이너는 레스토랑을 위한 것임
+
+보다시피 Typescript는 이미 추가 해줬음
+
+Optional chaining이라고 하는데, Typescript가 확인한다는 것을 의미함
+
+만약 results가 존재하지 않으면, Typescript가 멈추고 실행하지 않음
+
+에러가 생기지 않도록 만들어줌
+
+Optional chaining이 있으면 Typescript가 체크해서 에러가 없음 
+
+data도 마찬가지임
+
+먼저 Typescript는 data가 존재하는지 체크하고, 그렇다면 data.restaurants로 넘어감
+
+Typescript는 이것을 알고 있고, 자동으로 해줌
+
+우리가 API로부터 type을 생성하기 때문임
+
+예를 들어 API에서 results는 Restaurant의 array가 된다는 것을 알고 null 또는 undefined일 수 있다는 것을 알려줌
+
+Typescript는 이것을 알고 도와줌
+
+그러니 자동으로 생겨도 지우지 않음
+
+있는게 좋음
+
+만약 전부 존재한다면, 우리가 마지막으로 할 것은 map임
+
+이제 우리의 레스토랑을 만들어봄
+
+이미지가 있고, title이 있고, 카테고리가 있음
+
+이미지는 width가 있고 title과 카테고리에는 약간의 margin이 있음
+
+이것들은 만들기 쉬운 component가 될 것임
+
+우선은 이미지를 만듦
+
+이미지 만들 때 div를 사용할건데, backgroundImage를 쓰는게 쉽기 때문임
+
+일단 크기를 보기 위해 red로 함
+
+어떻게 보일까
+
+그리고 이제 div가 필요함 
+
+h1으로 함
+
+너무 큼
+
+h3로 함
+
+그리고 이것은 레스토랑의 이름이 됨
+
+그리고 카테고리를 만듦
+
+카테고리는 span으로 하고, { restaurant.category?.name }이라 함
+
+이제 이 컨테이너에 위아래로 padding 10을 줘서 크게 만듦
+
+얼마나 큰지 봄
+
+30으로 함
+
+존재하지 않음
+
+그러면 32로 함
+
+이정도면 충분함
+
+실제로 height를 계산하는 것보다 padding으로 크기를 조정하는게 훨씬 좋음
+
+그런데 지금은 선만 있음
+
+좋지 않음
+
+우리가 원하는 것은 바로 grid임
+
+이것은 3열의 grid임
+
+고맙게도, 우리의 TailwindCSS는 아주 쉬운 className이 있음
+
+grid가 생겼는데 gap을 잊으면 안 됨
+
+gap-7으로 해봄
+
+거의 다 했어
+
+padding이 너무 큰 것 같음
+
+이제 카테고리와 레스토랑 사이에 간격이 필요함
+
+이미지를 추가했음
+
+우버이츠에서 몇 개 이미지를 복사해왔음
+
+jpeg가 생겼음
+
+이전과 같은 방법으로 background에 넣을 수 있음
+
+어떻게 보일까
+
+나쁘지 않음
+
+그런데 bg-cover를 해야겠음
+
+몇 개는 해상도가 좋지 않지만 나중에 바꿈
+
+거의 다 했어
+
+이제 margin-bottom을 추가하면 좋아짐
+
+일단 bg-center를 함
+
+그리고 margin-bottom을 추가함
+
+이미지에 공간이 있음 
+
+title을 크게 만들어봄
+
+이정도면 괜찮음
+
+text를 좀 더 진하게 해봄
+
+그냥 xl로 함
+
+거의 다 한 것 같음
+
+이제 줄을 만듦 
+
+그리고 카테고리를 만듦
+
+먼저 카테고리에는 border-top을 만들 수 있음
+
+따라서 className에 border-t-2로 하고 border-gray-200이라 해봄
+
+어떻게 보일까
+
+restaurant.category가 없어서 그런 것 같음
+
+아마 데이터베이스에서 load되지 않아서 그럼
+
+데이터베이스에서 load되지 않은 것 같음
+
+흥미로운 것을 발견했음
+
+category가 null임 
+
+백엔드를 고쳐야겠음
+
+category를 load 해야함
+
+카메라에서 고침
+
+다음 영상에서 함
+
+일단 지금까지는 꽤 괜찮아 보임
+
+흥미로운게 있음
+
+간격이 있음
+
+그런데 수직 간격이 수평 간격보다 큼
+
+그래서 원하면 바꿀 수 있음
+
+gap을 사용하는 대신에 gap-x는 수평인데, 수평으로는 5로 하고, 수직인 y로는 10을 해봄
+
+수직은 공간이 더 있고 수평은 적음
+
+꽤 만족함
+
+백엔드를 고침
+
+category를 load하도록 만들어야하는데, 코드를 열어봐야함
+
+다음 영상에서는 카테고리를 마무리함
+
+그리고 클릭하면 카테고리로 넘어감
+
+여러 page가 있을테니까 pagination도 다뤄봄

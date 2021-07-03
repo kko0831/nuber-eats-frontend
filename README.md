@@ -6520,3 +6520,291 @@ category를 load하도록 만들어야하는데, 코드를 열어봐야함
 그리고 클릭하면 카테고리로 넘어감
 
 여러 page가 있을테니까 pagination도 다뤄봄
+
+## 17.3 Restaurants Pagination
+
+백엔드에서 Category를 eager로 만들고 왔음
+
+이제 카테고리가 있으니 끝낼 수 있음
+
+title이 있고, border도 있음
+
+border-top을 1로 할 수도 있고, padding-top을 3으로 할 수도 있음
+
+그리고 margin-top을 3으로 함
+
+2로 하면 더 좋을 것 같음
+
+그러면 끝남
+
+이제 작게 만들어봄
+
+그냥 opacity를 줄 수도 있음
+
+0.05부터 100까지 할 수 있음
+
+그러면 50으로 해봄 
+
+margin-top이 너무 큰 것 같음
+
+이제 레스토랑이 있어.
+
+그런데 우리는 이것을 Restaurant Component로 옮겨야함
+
+왜냐하면 이것을 다른 많은 스크린에서도 사용할 것이기 때문임
+
+restaurant.tsx라고 하고 props를 적어줌
+
+interface를 만들어봄
+
+뭐가 작동하지 않는지 확인함
+
+우선 React를 import 해야함
+
+coverImg, restaurant.name 그리고 category가 작동하지 않음
+
+categoryName은 존재할 수도, 아닐 수도 있음
+
+그리고 coverImg, name 그리고 categoryName을 넣음
+
+Typescript Component가 생겼음
+
+Typescript 문법에 맞지 않는게 있어서 에러를 알려줌
+
+우리는 coverImg와 name이 필요함
+
+이것들이 required임
+
+categoryName도 해줌
+
+일단 못생긴 코드를 만듦
+
+하지만 작동함
+
+코드를 작성하기 전에 이 코드를 어떻게 구성할지 생각하지 않음
+
+방금 본 것처럼 일단 코드를 만듦
+
+그런 다음에 했던 것을 깔끔하게 정리함
+
+이것이 최고의 코딩 방법이라고 생각함
+
+책에서 읽었는데, 이 방법이 마음에 들었음
+
+왜냐하면 우리가 무엇인가를 만들 때, 우리는 창작 모드에 있게 됨
+
+그래서 우리는 스크린에서 무엇인가를 빠르게 보고 싶음
+
+왜냐하면 아이디어가 있을 때, 우리는 빨리 스크린에 넣어서 확인해보고 싶음
+
+그것을 코드에 넣고 싶음
+
+코딩에 시간을 사용하는만큼 코드를 정리하는데 시간을 사용함
+
+그러니까 만약 5분을 코딩에 투자하면, 5분은 코드를 정리함
+
+처음부터 깔끔한 코드를 작성하려고 하지 않음
+
+그렇게 하면 나중에 큰 일이 생길 수도 있다고 생각함
+
+못생긴 코드를 작성해보고 작동하면, 정리하는 것이 더 좋음
+
+이제 Restaurant Component에서 필요한 모든 것을 알았음
+
+빨간 배경은 필요없음
+
+레스토랑 component는 끝났음
+
+말했다시피 이렇게 한 이유는 나중에 component를 사용할 것이기 때문임
+
+이것은 정말 중요함
+
+지금 예상되는게 있는데, 그것은 바로 우리가 레스토랑을 클릭할 것이라는 사실임
+
+그래서 우리는 restaurant ID가 필요함
+
+그러면 restaurant에 id도 보냄
+
+왜냐하면 우리가 클릭 할 때 ID가 필요해서 그럼
+
+id : string이라 하고 <Restaurant />으로 넘겨줌
+
+보다시피 Typescript가 prop이 없다고 불평하고 있음
+
+조만간 레스토랑을 클릭할 것을 알고 있음
+
+restaurant id 는 string이라고 했는데 숫자임
+
+""를 붙이면 string으로 바뀜
+
+이제 우리가 할 것은 Pagination을 구현하는 것임
+
+NestJS를 쓰는 백엔드로 돌아왔음
+
+그리고 service를 바꿈
+
+restaurants의 page 크기를 바꿈
+
+왜냐하면 지금 6개의 레스토랑이 있는데 한 페이지에 3개씩만 나오게 함
+
+그러면 우리는 2페이지를 볼 수 있음
+
+페이지 크기를 3으로 함
+
+새로고침하면 서버가 다시 시작됨
+
+이제 레스토랑이 3개뿐임
+
+말했다시피 2페이지를 원해서 이렇게 했음
+
+그래야 이것들이 어떻게 생겼는지 보여줄 수 있음
+
+이제 레스토랑 사이에 공간을 더 만듦
+
+Pagination 시간임
+
+우리가 totalPages와 totalResults를 얻었음
+
+totalPages를 먼저 함
+
+그리고 여기 page가 있는데 1로 하드코딩된 것을 볼 수 있음
+
+이것을 원하지 않음
+
+내가 원하는 것은 state에 page를 두는 것임
+
+그러면 page, setPage를 만들어서 default로 state를 1이라 함
+
+나중에 바꿀 예정임
+
+그러면 page만 쓰면 됨
+
+이제 다음으로 가는 버튼을 만듦
+
+만약 현재 페이지가 totalPages보다 작으면 다음 페이지가 있다는 것을 알려줘야함
+
+현재 페이지가 1이고, totalPages가 2이면, 더 load하거나 다음 페이지를 볼 수 있게 화살표를 보여줌
+
+그러면 레스토랑 밑에 다른 div를 만듦
+
+현재 페이지가 data?.restaurants.totalPages와 같지 않으면, 다음 페이지가 있다는 뜻임
+
+한번 봄
+
+Next Page를 볼 수 있음
+
+그럼 이제 제대로 된 방법으로 Pagination을 만들어봄
+
+항상 하던 것처럼 flex justify-center items-center를 씀
+
+margin-top을 10으로 함
+
+그리고 컨테이너에 padding bottom 20을 추가함
+
+잘 나옴
+
+Next page는 너무 못 생긴 것 같음
+
+예쁜 버튼으로 만들어봄
+
+button을 만들고 &rarr이라 해봄
+
+크게 만들어봄
+
+xl 아니면 2xl로 해봄
+
+이제 클릭 할 수 있음
+
+원한다면 배경색을 넣어도 됨
+
+그리고 텍스트를 넣을 수 있음
+
+fragment를 만듦
+
+사실 fragment가 필요없음
+
+근데 totalPages는 없음
+
+margin을 줌
+
+Page 1 of 2라 하는게 더 좋겠음
+
+우리가 클릭하면 페이지를 바꿈
+
+그러면 next page function을 만들어봄
+
+현재 페이지에서 +1한 값으로 setPage를 함
+
+setState에는 value를 보내거나 function을 보낼 수도 있음
+
+React.js는 function의 argument를 쓸 수 있게 해주는데, 이 argument(current)는 현재 state임
+
+어떻게 되는지 봄
+
+onNextPageClick을 onClick에 넣음
+
+새로고침을 클릭하면 보다시피 페이지 2로 바뀌었음
+
+정말 멋짐
+
+우리가 State를 변경했고 우리의 Query는 State에 달려있음
+
+만약 state를 변경하면 Query의 variable 또한 바뀜
+
+이것이 바로 React.JS가 멋진 이유임
+
+re-render 때문임
+
+우리가 State를 Query의 variable로 사용하기 때문에, State가 변하면 query가 다시 실행되고 페이지 2를 보여줌
+
+setPage에서 현재 페이지를 -1한 값을 Return하도록 같은 것을 만들어봄
+
+이제 쉽게 할 수 있음
+
+"1보다 크면"의 의미는 우리가 다른 페이지에 있다는 것임
+
+따라서 만약 page가 1보다 크면 똑같은 버튼을 넣어서 왼쪽 화살표로 바꾸고 onClick은 onPrevPageClick으로 함
+
+그러면 이제 어떻게 생겼는지 봄
+
+이제 우리는 CSS를 고쳐야 할 것 같음 
+
+전부 center로 가게 만듦
+
+다음으로 할 일은 grid를 할 수 있을 것 같음
+
+grid-cols-3으로 하면 엄청 큼
+
+그리고 text-center를 하면 중앙으로 이동하고 그리고나서 max-width를 xs로 함
+
+정말 작은 width임
+
+너무 작음
+
+md로 해봄
+
+그리고 items-center를 할 수 있음
+
+그리고 mx-auto를 하면 끝남
+
+뒤로 돌아가보면 잘 됨
+
+그러면 빈 div를 만들어봄
+
+grid 때문임
+
+우리는 비어있는 열을 만들어줌
+
+그럼 이제 돌아가면, 빈 컬럼이 있음
+
+모든게 좋게 보이려면 세 개의 element가 필요함
+
+우리는 더 멋진 것들을 만듦
+
+이제 margin은 필요없음
+
+다음 단계는, 우리가 레스토랑을 클릭하면 레스토랑으로 가야함
+
+카테고리에 있는 바베큐를 클릭하면 그 카테고리로 가야함
+
+그리고 무엇인가를 검색하려고 엔터를 누르면, 어디인가로 가게 만들고 싶음

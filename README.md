@@ -6808,3 +6808,243 @@ grid 때문임
 카테고리에 있는 바베큐를 클릭하면 그 카테고리로 가야함
 
 그리고 무엇인가를 검색하려고 엔터를 누르면, 어디인가로 가게 만들고 싶음
+
+## 17.4 Search part One
+
+지금 우리 웹사이트의 모습임
+
+모바일에서는 예쁘지 않음
+
+그래서 이것을 고쳐봄
+
+우선, 3개의 열로 디자인 되어있는데, 이것을 lg 이상의 화면에서만 가능하게 만듦
+
+그래서 lg:grid-cols-3을 하면 됨
+
+보다시피 잘 작동함
+
+large말고 medium이 좋겠음
+
+그럼 다시 해봄
+
+md에서는 3개 그리고 responsive하게 작동함
+
+다음 단계는 검색창임
+
+그리고 일반적인 화면에서는, 50%로 함
+
+그러면 1/2이 됨
+
+너무 작음
+
+이제 모바일은 됐음
+
+Tailwind가 반응형 디자인을 만들때 어떻게 작동하는지 이해하고 있기 때문임
+
+아무것도 붙어있지 않은 class는 모바일에 적용됨
+
+md: 같은게 붙는다면 md 사이즈나 그보다 큰 화면에 적용됨
+
+다음으로 내가 하고 싶은 것은 우리가 카테고리를 클릭하면 어디인가로 가고, 여기서 무엇인가를 검색하고 엔터를 누르면 어디인가로 가게 만들고 싶음
+
+React form을 사용할건데 React form을 사용하는 이유는 빠르게 작성할 수 있기 때문임
+
+useForm()을 쓰고 register를 가져옴
+
+이제 search를 register함
+
+그리고 { required : true }라 함
+
+원한다면 interface를 만들 수 있음
+
+어려운 일이 아님
+
+원하면 하면 됨
+
+그리고 handleSubmit이 필요함
+
+onSearchSubmit을 만듦
+
+우리가 할 일은 다른 페이지로 redirect하는 것임
+
+그러므로 getValues도 가져옴
+
+그리고 handleSubmit을 복사해서 form 안에 넣어줌
+
+원한다면 글자를 최소 3자로 할 수 있음
+
+그리고 getValues 전부를 console.log함
+
+우리는 name이 필요함
+
+name은 interface와 같아야함
+
+따라서 name은 searchTerm이 됨
+
+이제 어떻게 생겼는지 봄
+
+새로고침을 하고 inspect를 들어감
+
+console이 너무 큼
+
+key로 restaurant.id를 줌
+
+Category도 마찬가지임
+
+데이터베이스에서 id를 가져와야하는 이유가 하나 더 있음
+
+엔터를 하면, searchTerm을 얻을 수 있음
+
+이제 우리가 할 일은 다른 페이지로 redirect하는 것임
+
+이것을 위해 우리는 react-router에서 가져온 history를 사용함
+
+useHistory라 하면 react-router에서 history를 가져옴
+
+history.push()를 쓰면 push에는 path랑 state가 있음
+
+Path와 Search가 있음
+
+Search는 이런 것임
+
+우리는 push를 해서 pathname으로 가고 싶음
+
+이 경우에는 "/search"로 가고 싶음
+
+그러면 getValues로부터 searchTerm을 가져옴
+
+그럼 준비됐음
+
+search는 string이어야함
+
+어떻게 생겼는지 봄
+
+search라는 페이지가 없다는 것을 앎
+
+따라서 우리는 404를 보게 될 것임
+
+하지만 여기서 핵심은 redirect가 잘 되는지 보는 것임
+
+Redirect가 필요없음
+
+Route Not Found랑 똑같이 해봄
+
+Redirect는 아님
+
+다시 한번 해봄
+
+보이는 것처럼 search?korean임
+
+이것이 /search와 무엇인가를 URL로 함께 보내는 방법임
+
+searchTerm과 함께 보냄
+
+그러면 다시 해봄
+
+home으로 돌아와서 Korean으로 엔터를 하면 /search와 term=korean이 있음
+
+이것이 첫 단계였음
+
+이제 우리는 client에 page를 만들어야 하는데, search.tsx라고 함
+
+React를 import함
+
+이제 궁금한 것은 어떻게 URL로부터 term을 가지고 올 수 있을까임
+
+confirm-email에서 했던 것과 같음
+
+하지만 다른 방법으로 함
+
+보다시피 이것들은 모두 react-router의 hook임
+
+useLocation으로는 우리가 어디에 있는지 알 수 있음
+
+useHistory로는 어디인가로 이동할 수 있음
+
+location을 console.log 해봄
+
+뭐가 나오는지 봄
+
+우리가 404에 있다는 것을 알고 있음
+
+그리고 아직 /search를 볼 수 없음
+
+왜냐하면 logged-in-router에 넣지 않았음
+
+/search라 하고 exact는 필요없음
+
+pathname은 "/search"고 term도 확인할 수 있고, state가 undefined라고 나옴
+
+이것은 Route로 정보를 보낼 수 있는 또 다른 방법임
+
+한가지 방법은 여기에서 볼 수 있듯이 URL에서 하는 것임
+
+따라서 이 방법은 여기 보이는 것처럼 사용자에게 노출됨
+
+왜냐하면 사용자가 URL에서 볼 수 있기 때문임
+
+그리고 이것을 potato 같은 것으로 마음대로 바꿀 수 있음
+
+그래서 사용자에게 노출됨
+
+만약 이렇게 하고 싶지 않다면, search를 사용해서 redirect하는 대신에 state를 사용함
+
+state는 object인데 원하는 것들을 모두 보낼 수 있음
+
+이 경우에는 searchTerm을 바로 보낼 수 있음
+
+state는 한 곳에서 다른 곳으로 감
+
+이것이 무슨 말이냐면, home에서 /search로 넘어가는 경우 state가 설정된다는 것임
+
+만약 우리가 home에 있고 예를 들어 korean을 검색하면 localhost:3000/search를 볼텐데, 그 뒤에는 아무것도 없음
+
+검색어와 관련된 정보가 없음
+
+그런데 여기 location에는 state가 있고 searchTerm인 korean을 확인할 수 있음
+
+이것이 다른 경로로 데이터를 보낼 때 URL에 데이터를 포함시키지 않는 방법임
+
+종종 URL에 있는 데이터를 사용자에게 표시하고 싶지 않은 경우가 있음
+
+그런데 검색의 경우에는 사용자에게 검색어를 보여줘도 문제가 없을 것 같음
+
+그러나 가끔 URL의 정보를 사용자에게 표시하지 않고 페이지를 변경하고 싶을때가 있음
+
+여기서 한가지 놀라운 것은 새로고침을 하면 브라우저가 Route의 state를 기억하고 있음
+
+왜냐하면 Route의 state가 브라우저 메모리에 저장되기 때문임
+
+따라서 새로고침을 하면, React는 사라지고나서 다시 돌아오고, 브라우저는 Route의 state를 기억하고 있음
+
+그런데 이렇게 하면 검색 URL을 공유하고 싶어도 할 수 없음
+
+왜냐하면 이 URL은 모두에게 똑같이 보이기 때문임
+
+이제 우리가 만든 것으로 돌아와서 search에 대해서 말함
+
+우리는 아직 조건에 따라 달라지는 Query를 실행하는 방법을 모름
+
+Search로 가면, 우리는 Query를 보내야함
+
+보내려는 Query는 searchRestaurant임
+
+그리고 searchRestaurant은 input으로 query(searchTerm)와 page가 필요함
+
+이 query는 URL에서 가져옴
+
+하지만 URL에서 이 query를 가져오는데 시간이 걸릴 수 있음
+
+아니면 사용자가 URL에서 query를 삭제할 수도 있음
+
+그러면 Query가 실패하고 graphQL 에러가 발생함
+
+그래서 다음 영상에서 lazy Query라는 것을 보여줌
+
+게으른 Query임
+
+즉, Query가 바로 실행되지 않는 것임
+
+내가 불러야함
+
+직접 call 해야함

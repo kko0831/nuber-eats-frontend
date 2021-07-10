@@ -7048,3 +7048,367 @@ Search로 가면, 우리는 Query를 보내야함
 내가 불러야함
 
 직접 call 해야함
+
+## 17.5 Search part Two
+
+지금까지 작성한 Query는 즉시 실행되는 것뿐이었음
+
+대부분의 경우에는 문제가 없음
+
+그런데 가끔은 조건에 따라 Query를 하고 싶을 때가 생김
+
+여기에서 조건은, 사람들이 검색어 없이 /search에 갈 수 있다는 것임
+
+그래서 우리는 이 조건을 처리해줘야하고, 원하는 조건이 되면 Query를 실행하면 됨
+
+그래서 Lazy Query를 배우는게 정말 중요함
+
+우선 URL로부터 term을 가져와봄
+
+/search가 있고 =의 뒷부분을 가져오면 됨
+
+그리고 "?term="을 가지고 split을 함
+
+searchTerm을 console.log해서 뭐가 나오는지 확인해봄
+
+빈 string이랑 "korean"이 나왔음
+
+딱 우리가 원하던 것임
+
+그러면 Array를 열어주고 그냥 문법을 멋있게 사용해보는 것임
+
+그러면 "korean"이 나옴
+
+만약 searchTerm이 없으면 무슨 일이 벌어지는지 봄
+
+이처럼 undefined가 나옴
+
+그래서 우리는 이 경우를 먼저 처리해봄
+
+defensive programming으로 만약 searchTerm이 없으면 history.push 아니면 replace를 쓸 수도 있음
+
+push와 replace의 차이점은 replace를 사용하면 URL이 History API에 나오지 않음
+
+그런데 push를 하면, 뒤로가기를 할 때 History API에 나옴
+
+replace를 하면 나타나지 않음
+
+말 그대로 페이지를 대체하는 것임
+
+이것은 내가 원하는대로 하면 됨
+
+갑자기 생각났는데 여담으로 우선 restaurants로 와보면 아직 Helmet을 만들지 않았음
+
+Helmet은 helmet-async로부터 import 해야함
+
+아니면 쓰지 않는 다른 하나를 uninstall 하도록 함
+
+이것이 중요한 이유는, replace와 push가 어떻게 다른지 보여주고 싶기 때문임
+
+지금 Home에 있는데 완벽함 
+
+다시 "korean"으로 감
+
+그냥 갑자기 하는게 아니고 replace와 push의 차이를 보여주고 싶기 때문에 이렇게 함
+
+이제 replace를 배워봄
+
+우선 replace를 해서 Home으로 간다고 해봄
+
+replace를 배우기 위해 탭을 닫음
+
+왜냐하면 깔끔한 History 상태로 시작하고 싶음
+
+이제 다시 가봄
+
+뒤로가기를 하면 new tap으로 가고 있음
+
+말이 됨
+
+내 History를 볼 수 있음
+
+내 History에 접근할 수 있음
+
+push는 새 페이지를 push하고, 이전 페이지를 기록에 남김
+
+그런데 replace는 history에 남기지 않음
+
+일단 Edit Profile로 갔다가, Home으로 감
+
+Home에서 Korean을 검색하고 엔터를 침
+
+term으로 korean이 있음
+
+이제 다시 Home으로 가봄
+
+뒤로가기를 누르면, home, Edit Profile, home이 있음
+
+보다시피 home에서 korean을 검색한 것도 나와있음
+
+내용이 저장되어있음 
+
+이제 home으로 가봄
+
+home, edit profile, home, 그리고 search가 있음
+
+이처럼 search가 내 history에 있음
+
+그럼 탭을 닫고 하나를 다시 열어서 이제 Edit Profile로 감
+
+그리고 home으로 가서 korean을 검색함
+
+그런데 이번에는 term=korean을 지워봄
+
+그러면 여기서 조건이 실행됨
+
+이제 home으로 돌아왔는데 한번 생각해봄
+
+내가 만약 이것을 누르면 어디로 가질까
+
+search로 갈까 
+
+어디로 갈까
+
+어디인지 봄
+
+search korean으로 왔음
+
+이 navigation은 브라우저의 history 데이터베이스, 메모리에 저장되지 않음
+
+이것이 replace와 push의 차이임
+
+push는 어디인가로 가면 다시 돌아갈 수 있음
+
+하지만 replace는 기록되지 않기 때문에 돌아갈 수 없음
+
+Edit Profile로 가서 그 다음 search로 감
+
+이제 나는 home에 있음
+
+뒤로가기를 누르면 뭐가 나올까
+
+Edit Profile을 볼 수 있음
+
+보다시피 이전 navigation인 search는 없음
+
+기록에 없음
+
+다시 search로 갔다가 뒤로가기를 누르면 어디로 가게될까
+
+Edit Profile로 왔음
+
+보다시피 /search로 가는 것은 작동하지 않음
+
+이게 replace와 push의 차이임
+
+여기까지 여담이었고 지금 배운것이 정말 중요하다고 생각함
+
+이제 우리가 할 다른 일은 조건적으로 검색을 하는 것임
+
+예를 들면, searchTerm이 있는데 이 함수가 끝나도록 return함
+
+우리가 searchTerm을 찾으면, Query에 searchTerm을 전달할 수 있음
+
+state로 할 수 있음
+
+그게 하나의 옵션임
+
+setState 아니면 setTerm을 쓰면 됨
+
+다른 옵션으로는 그냥 Lazy Query를 만들 수 있음
+
+우리가 할 것임
+
+백엔드를 보면서 searchRestaurant Query를 작성해봄
+
+searchRestaurant은 input이 필요함
+
+input : $input으로 하고 그리고 searchRestaurant에서 그냥 다 가져오면 됨
+
+그리고 여기 restaurants는 조금 지루함
+
+그래서 무엇을 할거냐면 fragment를 만듦
+
+fragment는 Type의 일부분을 나타냄
+
+모든 곳에 복사 붙여넣기를 할 필요가 없음
+
+대신에 그냥 포함시키면 됨
+
+그럼 어떻게 하는지 보여줌
+
+src 폴더 안에 fragments.ts 파일을 새로 만듦
+
+그리고 fragment를 만들건데 원하는 이름 무엇이든 괜찮음
+
+Restaurant라고 해야하니까 이 부분은 중요함
+
+보다시피 항상 restaurant에서 필요한 것들임
+
+기본적인 것들임
+
+그래서 여기에 무엇을 하냐면 RestaurantParts라고 함
+
+그리고 fragment를 포함시켜야함
+
+따라서 RESTAURANT_FRAGMENT를 가져오면 됨
+
+이렇게 하면 복사하지 않아도 됨
+
+이제 쓸 수 있는 fragment가 생김
+
+그런데 query에 fragment를 포함시켜야함
+
+카테고리도 같은 방법으로 하면 됨
+
+만약 같은 Query 구조를 사용할 것 같으면, fragment를 만듦
+
+많은 fragment를 가질수 있음
+
+restaurants와 search에서는 Query가 완전히 같았음
+
+그럼 이제 실행해봄
+
+터미널에 npm run apollo:codegen 입력함
+
+오늘의 첫번째 에러임
+
+이 에러는 알아채기 꽤 쉬움
+
+RestaurantParts fragment를 찾을수 없음
+
+fragment가 codegen을 해서 만든 코드에서 발견되지 않음
+
+그럼 코드를 생성하는 파일을 봄
+
+그 파일은 apollo.config.js임
+
+src 폴더에서 확장자가 tsx인 파일들만 포함하고 있음
+
+하지만 fragments는 ts임
+
+그래서 tsx와 ts를 모두 포함시켜주면 됨
+
+이렇게 하면 되고 다시 실행해봄
+
+이제 기막히게 작동함
+
+searchRestaurant Query가 있는데 우리가 아직 모르는 Lazy Query를 사용해봄
+
+Lazy Query는 즉시 실행하지 않는 Query임
+
+모든 Query는 즉시 실행되고 있음
+
+Query를 작성하면 즉시 실행을 함
+
+data와 loading과 error를 바로 가져다줌
+
+그런데 가끔은 Query를 즉시 실행시키고 싶지 않을 때가 있음
+
+사용자가 버튼을 누를 때 실행하고 싶다던가 흔히 일어날 수 있는 일임
+
+버튼을 누를 때만 Query를 하고 싶을 수도 있음
+
+이 경우에는, 오직 searchTerm이 있을 경우에만 Query하고 싶음
+
+그럼 여기에 적어봄
+
+Lazy Query는 일반적인 Query와 다른 것을 Return함
+
+useLazyQuery를 함
+
+Lazy Query는 QueryTuple을 Return함
+
+useQuery처럼 Object를 return 하지 않음
+
+Tuple을 return함 
+
+이것은 Array가 됨
+
+그 말은 Query를 function으로 받는다는 것임
+
+mutation처럼 생겼지만 여기서 function을 얻음
+
+그러면 fetchNow라고 부를 수 있음
+
+loading, error 원하는 것 모두 있음
+
+이게 차이점임
+
+물론 data도 가질 수 있음
+
+이 function을 실행하면 data를 얻을 수 있음
+
+이것이 Lazy Query임
+
+Lazy Query에 우선 variables를 추가함
+
+이제 Query를 시작할 준비가 됐음
+
+하지만 아직 실행하지 않았음
+
+loading과 data를 console.log하고 called라는 것을 얻을 수 있는지 봄
+
+called는 query가 호출됐는지 알려줌
+
+브라우저로 돌아와서 search로 가서 inspect를 해봄
+
+load되지 않았다는거고 undefined는 data가 없다는거고 called는 호출되지 않았다고 알려줌
+
+많은 warning이 있음
+
+그 중 하나는 search에 있음
+
+history, location을 넣음
+
+search에서 나온 warning을 없애려고 함
+
+그냥 경고임
+
+큰일은 아님
+
+그냥 경고이고, 하나씩 고치면 됨
+
+만약 searchTerm이 있으면 준비된 Query를 호출하고 싶음
+
+variables를 입력하면 되는데, variables는 input에 default가 1인 page를 주고 query로 검색함
+
+그것은 searchTerm인데, query로 이름을 바꿈
+
+다시 한번 말하지만, 이것은 오직 /search에 query가 있는 경우에 일어남
+
+저장하자마자 자동으로 새로고침 됐음
+
+loading은 true고, undefined, 그리고 called는 true임
+
+그리고 loading이 false로 바뀌고 resource가 생겼음
+
+그리고 called는 true임
+
+보다시피 잘 작동했음
+
+이것이 Lazy Query임
+
+다시 말하지만 Tuple(Array)의 첫 element는 호출될 준비가 된 Query임
+
+이것을 callQuery라고 해도 상관없음
+
+그런데 URL에 아무것도 없으면 호출되지 않음
+
+이것이 조건부 Query를 하는 방법임
+
+우리가 전에는 몰랐던 것임
+
+보다시피 korean이 있는 restaurants를 찾지 못했음
+
+term nico로 restaurants가 있나 찾아봄
+
+잘 작동하는지 볼까
+
+restaurant이 있음
+
+그리고 fragment가 완벽하게 작동하고 있음
+
+Lazy Query는 놀라움
+
+즉시 실행하는게 아니라 원하는 경우에만 실행함

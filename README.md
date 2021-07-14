@@ -7412,3 +7412,234 @@ restaurant이 있음
 Lazy Query는 놀라움
 
 즉시 실행하는게 아니라 원하는 경우에만 실행함
+
+## 17.6 Category
+
+검색 화면을 잠시 멈춤
+
+왜냐하면 우리는 빨리 진행함
+
+Home으로 돌아감
+
+일단 먼저 스크린을 만듦
+
+category.tsx가 됨
+
+우리는 이미 어떻게 하는지 알고 있음
+
+이제, 어떻게 카테고리로 갈까
+
+정말 쉬움
+
+일단 카테고리를 만들고 있는 restaurants로 돌아감
+
+Category라는 Component를 만듦
+
+그러면 그냥 Category Component만 쓰면 됨
+
+일단 지금은 이 카테고리에 Link를 만듦
+
+Link는 카테고리로 이동하게 만듦
+
+category의 slug인 `/category/${category.slug}`로 가게 하면 됨
+
+Link는 react-router-dom에서 import 되어야함
+
+그러면 이 카테고리를 어떻게 받을 수 있을까
+
+아주 쉬움
+
+logged-in-router로 와서 key를 5로 바꾸고 path는 "/search/:slug"라 함
+
+이렇게 Route에 variable을 포함시키면 됨
+
+그리고 Category /를 넣으면 됨
+
+작동하지 않으니까 직접 import 해봄
+
+/category/:slug로 감
+
+새로고침 하면 Category를 찾을 수 없음
+
+이제 보게 될텐데, URL이 /category/bbq가 됨
+
+Category로 왔음
+
+작동하는 것처럼 보임
+
+URL에서 variable을 받는게 이렇게 쉬움
+
+원하는대로 URL을 보내야함
+
+/category와 category의 slug임
+
+bbq를 클릭하면 카테고리의 slug임
+
+어떻게 얻을까
+
+history일까, location일까
+
+location임
+
+location은 내가 어디에 있는지 알려줌
+
+history는 어디로인가 가게 만듦
+
+그게 차이점임
+
+location은 내가 어디에 있는지 알려주고 history는 어디로인가 보내줌
+
+그럼 Category로 감
+
+그리고 location을 받음
+
+다시 말하지만, 모두 react-router-dom이 제공하는 hook임
+
+그리고 useEffect()를 씀
+
+그리고 location을 넣고, location을 console.log 해봄
+
+클릭하고 console.log를 봄
+
+location은 object인데, hash, key, pathname이 있음
+
+pathname은 bbq임
+
+하지만 이것으로는 부족함
+
+/category/를 split해서 할 수도 있지만 location을 사용하는 대신 useParams에서 params를 쓸 수 있음
+
+이것이 또 다른 옵션임
+
+그럼 어떤 것이 더 나은지 비교해봄
+
+params를 console.log해서 새로고침을 하면 parameter가 있음
+
+slug: bbq가 있음
+
+보다시피, 이것이 더 좋은 선택같음
+
+pathname을 쓰는 것보다 더 좋은 선택인 것 같음
+
+pathname은 검색한 모든게 나옴
+
+그래서 term=lalala라고 하면 보다시피 location에서만 접근 가능함
+
+그런데 route에 몇가지 parameter가 있기 때문에 가져올 수 있음
+
+slug가 어디에서 오냐면, 내 router에서 옴
+
+potato로 바꾸면 patato: "bbq"임
+
+location을 사용하는 대신 parameter를 쓰면 됨
+
+그러면 useEffect도 사용할 필요가 없음
+
+왜냐하면 params.slug만 쓰면 됨
+
+무엇인가 잘못됐다고 알려주고 있음
+
+왜냐하면 parameter type에는 slug가 없음
+
+parameter가 빈 object로 보이기 때문임
+
+그래서 원하면 type을 추가할 수 있음
+
+그럼 이제 JavaScript가 좋아함
+
+params에 slug가 있다는 것을 알 수 있음
+
+이제 category Query를 작성할 수 있음
+
+category는 slug를 가진 categoryInput이 필요함
+
+Query를 작성함
+
+category에 input이 필요함
+
+input이 여기 있고 ok, error, totalPages, totalResult, restaurants, 그리고 category를 가져옴
+
+이미 fragment가 있으니까 사용함
+
+RESTAURANT_FRAGMENT에는 RestaurantParts가 있음
+
+바로 사용하면 되고, 우리는 category도 받을 수 있음
+
+category를 한 번 더 사용해야함
+
+그러면 restaurants로 가서 또 다른 fragment를 만듦
+
+CategoryParts가 됨
+
+그리고 fragments로 와서 이름은 백엔드에 있는 이름과 같아야함
+
+CategoryParts가 생겼음
+
+CategoryParts가 있으니까 CATEGORY_FRAGMENT를 포함시킴
+
+FRAGMENTS가 아니라 FRAGMENT임
+
+이제 category를 써봄
+
+원한다면 pagination을 위한 fragment를 만들어도 될 것 같음
+
+ok, error, totalPages, totalResults를 가진 PAGINATION_FRAGMENT라 하면 됨
+
+왜냐하면 이것들은 Category, Restaurants 페이지에 나타나고 searchRestaurant 페이지에도 나옴
+
+그러니까 PAGINATION_RESULT_FRAGMENT를 만들어봐도 될 것 같음
+
+하고 싶다면 해봄
+
+항상 하듯이 분할 정복(Divide & Conquer)을 함
+
+CATEGORY_FRAGMENT를 넣으면 됨
+
+category Query를 만들었음
+
+실행해봄
+
+터미널에 npm run apollo:codegen 입력함
+
+Query를 작성해봄
+
+Type은 이미 가지고 있음
+
+그리고 category query를 사용함
+
+바로 variables를 추가해봄
+
+slug는 params.slug로 함
+
+이제 console.log(data)를 함
+
+새로고침 해봄
+
+category가 있음
+
+restaurants는 Nomad's place랑 BBQ Hawaii 2개가 있음
+
+왜 totalResults가 null이지
+
+백엔드에 버그가 있는 것 같음
+
+고쳐야겠음
+
+백엔드의 restaurants.service.ts에서 category에 해당하는 레스토랑을 검색하는 부분인 findCategoryBySlug의 CategoryOutput DTO는 PaginationOutput을 exdends하고 있기에 함수내부에서 검색된 레스토랑 갯수 count기능을 담당하는 totalResults를
+return에 포함시킴
+
+category도 있음
+
+한번 흐름을 타면 즐기면 됨
+
+fragment를 만들어서 사용하고, types를 생성하고, 필요한 variable을 포함시키면 됨
+
+category와 search가 있는데 Lazy Query에 대해 배웠고, Parameter도 배웠음
+
+보다시피, 에러가 정말 적게 나왔음
+
+내가 좋은 프로그래머라서 그런게 아니라 모두 TypeScript 덕분임
+
+정말 적은 에러가 나왔음
+
+우리가 무엇을 request 해야하는지 정확히 알고 있기 때문임

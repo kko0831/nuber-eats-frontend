@@ -7643,3 +7643,97 @@ category와 search가 있는데 Lazy Query에 대해 배웠고, Parameter도 배
 정말 적은 에러가 나왔음
 
 우리가 무엇을 request 해야하는지 정확히 알고 있기 때문임
+
+## 17.7 Code Challenge
+
+이 섹션에서 우리는 많은 것을 배웠음
+
+우선 router를 다루는 법을 배웠음
+
+useParams, useLocation, useHistory를 쓰는 법을 배웠음
+
+replace와 push의 차이점도 알게 됐음
+
+그리고 우리는 Link에 있는 arguments도 배웠음
+
+`/category/${category.slug}`가 router에 어떻게 반영되는지 알게 됐음
+
+그리고 가장 중요했던 것은 Lazy Query에 대해 배운 것임
+
+Lazy Query는 즉시 호출되지 않고 원할때만 호출됨
+
+만약 주소창에 term이 없으면, 우리는 replace를 함
+
+만약 term이 주소창에 있으면, 우리는 Query를 원할 때 호출할 수 있음
+
+그리고 TailwindCSS를 다루는 것도 많이 봤음
+
+그리고 Components를 만들 때 interface를 사용해서 버그로부터 안전하다는 것도 앎
+
+이제 챌린지가 있음
+
+category sweet에 아무것도 없음
+
+그리고 korean을 검색해도 아무것도 보이지 않음
+
+restaurants에서 어떻게 그런 모든 것들을 구현할 수 있는지 보여줬음
+
+restaurants에서 pagination도 했으니까, 통합하는 법과 pagination도 앎
+
+grid도 했기 때문에 어떻게 restaurants를 보여줄지도 알고 있음
+
+이제 Lazy Query도 할 수 있고, 이제 혼자서 TailwindCSS를 연습할 때임
+
+따라서 코드 챌린지는 카테고리 화면을 구현하는 것임
+
+알고 있겠지만, useParams로 category를 얻는 방법도 알려줬음
+
+그러니 할 수 있음
+
+그리고 다음은 Search 화면을 구현하는 것임
+
+이제 URL로부터 뭔가를 가져오는 법도 앎
+
+원할때 Query를 실행하는 방법도 앎
+
+그리고 restaurants를 보여주는 방법도 앎
+
+Restaurant Component가 이미 있기 때문에 오래 걸리지 않을 거라는 것임
+
+그러니까 Restaurant grid Component를 만들 수도 있음
+
+왜냐하면 Home에서 했던 같은 방법으로 restaurants를 보여줄 수 있음
+
+그리고 BBQ 카테고리 또한 똑같은 방식으로 만들 수 있음
+
+예를 들어, korean을 검색하면 home처럼 3개의 restaurant을 보여줄 수 있음
+
+시간이 많이 걸리지 않음
+
+스크린들을 만들면서 우리가 했던 것들을 연습할 수 있음
+
+TailwindCSS를 이용해서 예쁘게 만들어봄
+
+우리는 챌린지에 필요한 모든 것을 구현했음
+
+Pagination도 했고, parameters도 했으며, Lazy Query도 했음
+
+다 해봤음
+
+restaurants 뭐든 다 해봤음
+
+그러니 챌린지를 하고 다음 영상에서는 Restaurant의 세부 페이지를 구현해봄
+
+restaurant 화면으로 간 뒤, 거기서 주문을 할 수 있도록 만듦
+
+그것을 다 마치면, subscriptions는 하지 않을거고, 실시간도 아직 하지 않음
+
+driver, restaurant owner도 하지 않음
+
+클릭하면, 주문을 할 수 있게만 만듦
+
+React 하는 것을 멈춘 다음에 테스트를 해봄
+
+왜냐하면 우리가 테스트 해야할 많은 Component를 만들었기 때문임
+
+코드 챌린지를 끝내고, 레스토랑의 세부 화면을 마치면 테스트를 시작함

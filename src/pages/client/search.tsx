@@ -1,7 +1,9 @@
 import { gql, useLazyQuery } from "@apollo/client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useHistory, useLocation } from "react-router-dom";
+import { Pagination } from "../../components/pagination";
+import { Restaurant } from "../../components/restaurant";
 import { RESTAURANT_FRAGMENT } from "../../fragments";
 import {
   searchRestaurant,
@@ -24,6 +26,9 @@ const SEARCH_RESTAURANT = gql`
 `;
 
 export const Search = () => {
+  const [page, setPage] = useState(1);
+  const onNextPageClick = () => setPage((current) => current + 1);
+  const onPrevPageClick = () => setPage((current) => current - 1);
   const location = useLocation();
   const history = useHistory();
   const [callQuery, { loading, data, called }] = useLazyQuery<
@@ -48,9 +53,35 @@ export const Search = () => {
   return (
     <div>
       <Helmet>
-        <title>Search | Nuber Eats</title>
+        <title>
+          {`Search Term: ${location.search.split("?term=")[1]}`} | Nuber Eats
+        </title>
       </Helmet>
-      <h1>Search page</h1>
+      {!loading && (
+        <div className="max-w-screen-2xl pb-20 mx-auto">
+          <h1 className="text-2xl font-medium">{`Search Term: ${
+            location.search.split("?term=")[1]
+          }`}</h1>
+          <h2 className="text-base my-2">{`Result: ${data?.searchRestaurant.totalResults} Restaurants`}</h2>
+          <div className="grid md:grid-cols-3 gap-x-5 gap-y-10">
+            {data?.searchRestaurant.restaurants?.map((restaurant) => (
+              <Restaurant
+                key={restaurant.id}
+                id={restaurant.id + ""}
+                coverImg={restaurant.coverImg}
+                name={restaurant.name}
+                categoryName={restaurant.category?.name}
+              />
+            ))}
+          </div>
+          <Pagination
+            page={page}
+            totalPages={data?.searchRestaurant.totalPages}
+            onNextPageClick={onNextPageClick}
+            onPrevPageClick={onPrevPageClick}
+          />
+        </div>
+      )}
     </div>
   );
 };

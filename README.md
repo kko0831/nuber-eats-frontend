@@ -7737,3 +7737,187 @@ React 하는 것을 멈춘 다음에 테스트를 해봄
 왜냐하면 우리가 테스트 해야할 많은 Component를 만들었기 때문임
 
 코드 챌린지를 끝내고, 레스토랑의 세부 화면을 마치면 테스트를 시작함
+
+## 17.8 Restaurant part One
+
+이번 영상에서는 레스토랑의 세부 화면을 만들어봄
+
+마무리를 하고나서 주문은 나중에 만들어볼려고 함
+
+그 이유는 주문을 하기 위해 음식이 필요하기 때문임
+
+그리고 중요한 것은 아직 음식을 upload 할 방법이 없다는 것임
+
+그리고 postico를 이용해서 음식을 만들고 싶지는 않음
+
+왜냐하면 어떻게 사진을 업로드하고, 어떻게 옵션을 입력할지 보여주고 싶음
+
+기억할지 모르겠지만, 옵션들은 JSON일 뿐임
+
+그래서 나는 postico를 이용해서 음식을 upload하고 싶지 않음
+
+대신에 무엇을 할거냐면, 헤더 부분을 만들어보려고 함
+
+다시 말하지만, 우리는 계속해서 Tailwind CSS를 연습할 것이고, 다음 섹션으로 넘어가서 테스트를 진행함
+
+사용자 인증과 카테고리, 그리고 pagination을 테스트 해봄
+
+그리고 테스트가 끝나면 다음 단계로 레스토랑 대시보드를 만듦
+
+레스토랑 대시보드에는 레스토랑을 생성하는 것도 만듦
+
+왜냐하면 레스토랑을 만드는 form이 있음
+
+그리고 dish를 생성하는 것도 만듦
+
+그것도 form임
+
+레스토랑에 dish를 올리고 뭐 그런 것들임
+
+그리고 준비가 끝나면 주문 파트를 만듦
+
+왜냐하면 dish가 없다면 주문 파트는 의미가 없기 때문임
+
+그래서 우리는 레스토랑 대시보드를 만들어서 dish를 올릴 때까지 기다림
+
+그리고 드라이버 대시보드도 만듦
+
+그러면 앱에 있는 세 유저의 관점에서 주문과 subscription 등을 테스트해 볼 수 있음
+
+그러면 이제 레스토랑 페이지를 만들기 시작해봄
+
+pages에서 client 폴더에 만듦
+
+restaurant.tsx라고 함
+
+이번이 우리가 테스팅으로 넘어가기 전 마지막으로 TailwindCSS를 연습하는게 됨
+
+GraphQL Apollo Query를 테스트하기 전 마지막임
+
+다시 한번, 우리는 먼저 Component를 만들어야함
+
+그리고 router에 Component를 추가해야함
+
+router로 가볼까
+
+이것은 /restaurant/:id가 됨
+
+지금 여기서는 component인 Restaurant을 import하고 있음
+
+나는 pages에서 Restaurant을 import함
+
+이 Restaurant page의 이름을 RestaurantDetail 같은 다른 이름으로 바꿔도 됨
+
+이제 파트 2임
+
+restaurant으로 가게 만들어봄
+
+어떻게 할까
+
+클릭해서 가게 만듦
+
+그러면 components의 Restaurant으로 가서 Link를 만듦
+
+Link는 react-router-dom에서 옴
+
+그리고 말했다시피 props에 id가 있음
+
+그러면 id를 가져와서 ${id}를 붙임
+
+이것이 스텝 2였음
+
+이제 Link가 생겼음
+
+여기를 클릭하면 /restaurants/4로 옴
+
+restaurant이 보임
+
+이제 레스토랑의 ID를 가져와야함
+
+restaurant page에서 하면 됨
+
+어떻게 ID를 가져오지
+
+useParams로 parameters를 가져올 수 있음
+
+react-router-dom은 우리에게 3개의 hook을 줌
+
+사실 다른 것도 있음
+
+하지만 중요한 것은 useLocation, useHistory, 그리고 useParams임
+
+useLocation은 우리가 어디있는지, URL을 알게 해주고, useHistory는 이곳저곳 돌아다닐 수 있게 change, replace, push를 할 수 있음
+
+그리고 useParams는 우리에게 parameter를 줌
+
+먼저 있는지 확인부터 해봄
+
+이제 playground로 와서 우리가 쓸 query를 찾아보면 그것은 바로 restaurant임
+
+input은 variable이어야함
+
+그리고 안에 query를 쓰면 되는데 여기 input은 $input임
+
+우리가 받고 싶은 것은 error, ok, 그리고 restaurant이 됨
+
+그리고 우리가 이미 fragment를 가지고 있음
+
+여기서 쓸 fragment는 RestaurantParts임
+
+fragment를 사용하면 import 해야함
+
+이제 types를 만듦
+
+터미널에 npm run apollo:codegen 입력
+
+Query를 사용할 준비를 마쳤음
+
+loading, data를 가져오고 useQuery()로 RESTAURANT_QUERY를 사용함
+
+variables가 필요함
+
+input은 restaurantId임
+
+restaurantId는 parameters로부터 가져오면 됨
+
+parameters에는 id가 있음
+
+Typescript가 불평하고 있음
+
+왜냐하면 parameters는 빈 object여야하기 때문임
+
+그러면 이제 Interface를 만듦
+
+id는 string이여야함
+
+useParams에 IRestaurantParams를 씀
+
+restaurantId는 string이고, params.id도 string이 됨
+
+이제 data를 console.log해서 Query가 성공적인지 봄
+
+restaurantId는 number여야함
+
+string은 number Type에 할당할 수 없음
+
+그래서 restaurantId는 integer여야함
+
+그런데 params.id는 string임
+
+우리는 이렇게 +를 하면 더 이상 불만이 나오지 않음
+
+우리는 restaurant이 있음
+
+이것은 우리 리스트에 있는 어떤 레스토랑에서도 동작함
+
+보다시피 새로운 것은 아무것도 없음
+
+우리가 원하는 것을 얻는 방법을 앎
+
+어떻게 Query를 작성하는지 알고, fragment로 코드를 재사용하는 방법도 알고 있고, URL에서 어떻게 parameter를 가져오는지도 알고, 그리고 꽤 잘 작동했음
+
+Typescript는 우리가 실수하는 것을 잘 잡아줬으니까 놀랄 일은 없음
+
+다음 영상에서는 말했다시피 연습을 해봄
+
+TailwindCSS로 이 header를 만듦

@@ -46,7 +46,6 @@ export const Category = () => {
       },
     }
   );
-  console.log(data);
   return (
     <div>
       <Helmet>

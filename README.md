@@ -8035,3 +8035,159 @@ h6 className에도 똑같이 함
 Component 테스트도 하고 흐름도 테스트함
 
 유저가 로그인하고, 어떻게 클릭을 하게 만드는지, 그런 모든 것들을 어떻게 하는지 보여줌
+
+## 18.0 Tests Setup
+
+마침내 테스팅을 할 차례가 왔음
+
+여기서 우리는 정말 멋진 testing library를 사용함
+
+이것을 왜 사용하는지 나중에 알게 됨
+
+그리고 jest를 사용할건데 jest는 create-react-app에 이미 설정되어있음
+
+그래서 우리는 아무것도 준비할 필요가 없음
+
+이것은 마치 백엔드의 NestJS에서 사용한 것과 비슷함
+
+둘 다 jest를 돌릴 수 있음
+
+jest는 expect, mock 이런 것들을 했었음
+
+이미 프로젝트에 jest가 포함되어 있고 App.test.tsx에 이미 작성된 테스트도 있음
+
+앞으로 우리가 만들 것과 정말 비슷함
+
+test가 있는데 백엔드에서 썼던 것처럼 it을 쓸 수도 있음
+
+그리고 어떻게 작동하는지 모르겠지만 나중에 알게 됨
+
+우선은 테스트를 조금 셋업해봄
+
+create-react-app은 package.json에서 jest 설정을 할 수 있는데, jest에 무슨 설정을 할 수 있는지 알 수 있는 가장 좋은 방법은 잘못된 설정을 해보는 것임
+
+터미널에 npm run test 입력
+
+npm run test로 테스트를 작동시켜보면 warning이 나타남
+
+"권한 밖입니다. create-react-app은 아래의 옵션들만 override할 수 있습니다."라고 나옴
+
+jest를 설정할 수 있는 방법은 정말 다양함
+
+jest에서 더 많은 설정을 해야한다면 eject를 하면 됨
+
+그리고 webpack 파일을 가지고 무엇이든지 할 수 있음
+
+그런데 eject를 하지 않아도 component를 잘 테스트할 수 있는 방법을 보여주려고 함
+
+어떤 ejection도 필요하지 않음
+
+보다시피 우리가 설정할 수 있는 옵션들이 나와있음
+
+우선 component의 coverage를 확인해봄
+
+기억날지 모르겠지만, 우리는 파일이 얼마나 cover됐는지 알 수 있는 coverage라는게 있음
+
+이것을 통해서 우리가 만든 테스팅이 얼마나 부족한지 확인할 수 있음
+
+터미널에 npm test -- --coverage 입력
+
+npm test -- --coverage를 실행해봄
+
+보다시피 all files라 나와있지만 아무 파일도 보이지 않음
+
+그래서 무엇을 해야하냐면 --watchAll을 못쓰게 만들어야함
+
+그래서 --watchAll=false를 추가함
+
+물론 에러가 있음
+
+걱정할 필요는 없음
+
+아무튼 이렇게 하면 우리 app 모든 부분의 coverage를 확인해서 보여줌
+
+별로 좋지는 않음
+
+우리는 reportWebVitals 같은 것은 테스트할 필요가 없음
+
+fragments, constants, apollo는 테스트할 필요가 없고 component들만 테스트하고 싶음
+
+그래서 방금 보여준 설정 중에서 하나를 수정해봄
+
+그리고 jest가 특정 폴더에서만 테스트 파일을 찾을 수 있도록 만듦
+
+components, pages, routers에 있는 모든 것들을 테스트해봄
+
+collectCoverageFrom을 써봄
+
+jest라 해봄
+
+이 안에 collectCoverageFrom을 넣음
+
+어디에서 coverage를 검사하라고 할거냐면, components 안에서 모든 폴더의 모든 tsx 파일의 coverage를 검사하라고 할 것임
+
+tsx인 이유는 component를 검사하기 위함임
+
+pages도 똑같이 해줌
+
+routers도 마찬가지로 해봄
+
+우리가 coverage를 확인하려는 파일들을 나타냄
+
+이제 다시 한 번 돌려봄
+
+다시 돌리기 전에 script를 만듦
+
+test:cov라고 함
+
+단어 전체를 쓰고 싶다면 이렇게 하면 됨
+
+터미널에 npm run test:coverage 입력
+
+이제 npm run test:coverage를 실행할 수 있음
+
+에러들을 고치면서 여러 가지들을 배움
+
+이제 components, pages, pages/client, pages/user를 검사하고, 나중에는 더 많은 pages를 검사함
+
+그리고 routers를 검사하고 logged-out-router는 이미 테스트된 것으로 나오는데, 이것은 아무것도 하지 않는 component라 그런 것 같음
+
+그래서 이미 테스트된 것으로 나옴
+
+여기까지 셋업을 해봤고, 하나 더 테스트 해보고 싶은 것은 바로 app임
+
+이것도 component니까 테스트해봄
+
+그러니까 app.tsx라는 새로운 파일을 만듦
+
+에러를 고쳐봄
+
+index는 "./components/app"에서 App을 가져오면 됨
+
+우리는 셋업을 마쳤고, 보다시피 generated를 포함하고 있지 않음
+
+그리고 우리는 쓸모없는 constants를 테스트할 필요가 없음
+
+우리는 components를 테스트하는 것에 몰두함
+
+이제부터는 마인드를 바꾸고 생각하는 방식을 바꿔야함
+
+code 자체를 테스트하는게 아니고 user의 관점에서 components를 테스트하기 때문임
+
+이 말을 계속 반복함
+
+백엔드에서는 우리가 무엇을 해야할지 알 수 있었음
+
+그런데 여기서는 백엔드에서 했던 것과 분명히 다름
+
+mock하고 function call들을 체크하는 것들은 하지 않음
+
+터미널에 npm run test:coverage 입력
+
+이제 npm run test:coverage를 실행하면 에러가 나옴
+
+테스트가 없음
+
+필요한 것은 다 준비됐고 이제 app.tsx 테스트를 시작해봄
+
+정말 쉬울수도, 아닐수도 있음

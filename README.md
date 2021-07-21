@@ -8191,3 +8191,291 @@ mock하고 function call들을 체크하는 것들은 하지 않음
 필요한 것은 다 준비됐고 이제 app.tsx 테스트를 시작해봄
 
 정말 쉬울수도, 아닐수도 있음
+
+## 18.1 App Tests
+
+첫번째 테스트를 작성해봄
+
+app부터 시작해봄
+
+우리의 application임
+
+테스트는 어떻게 만들면 될까
+
+NestJS에서는 파일의 이름에 .spec을 붙였었음
+
+frontend에서도 똑같이 하면 됨
+
+app.spec.tsx라 함
+
+이렇게 하면 작동할거고 테스트로 인식함
+
+그리고 이런 방법도 있음
+
+이렇게 __tests__ 폴더를 만듦
+
+이 폴더는 너가 원하는만큼 만들면 됨
+ 
+하나는 여기에 두고 pages, routers에 만들어도 됨
+
+여기에 두는 모든 파일들은 테스트가 됨
+
+그리고 꼭 .spec을 붙일 필요는 없음
+
+그냥 app.tsx라 해도 테스트가 될 것임
+
+docs에서 __test를 검색해보면 설명을 볼 수 있음
+
+__tests__에 js 파일을 만들거나 test.js 또는 spec.js 파일이면 됨
+
+물론 js를 ts로 바꿀 수도 있음
+
+우리는 typescript를 쓰니까 원하는대로 하면 됨
+
+어떤 사람들은 각 component마다 폴더를 만들어서 app.tsx, app.spec.tsx 파일을 만듦
+
+그런데 나는 __tests__ 폴더를 만들어서 테스팅을 함
+
+원하는 방식대로 하면 됨
+
+그리고 icon으로 구별하는 것을 좋아해서 이 파일을 app.spec.tsx로 이름을 바꿈
+
+둘 중에 하나만 만족하면 되지만 icon을 구별하고 tests 폴더를 쓰는게 좋아서 그럼
+
+어떻게 테스트를 작성하면 될까
+
+프론트엔드에서 테스트를 작성하는 것은 백엔드에서 하는거랑 정말 비슷함
+
+기억날지 모르겠는데, 백엔드에서는 무엇인가 describe를 하고 테스트를 만들었음
+
+우선, component를 가지고 작업할거니까 React를 "react"에서 import함 
+
+그리고 원하는 아무거나 describe를 하면 됨
+
+예를 들어 potatoes도 되고 어떤 것도 가능함
+
+테스트하려는 component의 이름을 넣음
+
+꼭 이름을 이렇게 적을 필요는 없음
+
+그냥 App이라고만 해도 됨
+
+원하는 대로 함
+
+그리고 백엔드에서처럼 describe 안에는 function을 넣음
+
+individual test로 it()라 하고 테스트의 이름을 적으면 됨
+
+내가 가장 먼저 하는 테스트는 "renders OK"임
+
+그러면 어떻게 App이 잘 render됐는지 테스트할까
+
+정답은 직접 App을 render 해보는 것임
+
+중요한 것이 있는데 보다시피 여기에 react-dom에서 import하는 render가 있음
+
+여기서 import하면 안되고, render를 import할 곳은 @testing-library/react임
+
+처음으로 testing library를 쓰고 있음
+
+이것으로 render를 해볼거고 다른 테스트에서 이 testing library가 얼마나 멋진지 알게 됨
+
+이것을 보면 component를 render할거라는 것을 예상할 수 있음
+
+render function에는 우리가 테스트하고 싶은 실제 component를 주면 됨
+
+그리고 render function을 call하고나면 정말 많은 것들을 쓸 수 있게 해줌
+
+render function이 정말 좋은 것들을 쓰게 해주는데 그것은 나중에 알아봄
+
+이제 첫번째 테스트인 "renders OK"가 준비됐음
+
+에러 나타날 준비를 해봄
+
+터미널에 npm run test 입력
+
+npm run test를 해보면 첫번째 에러가 나타났음
+
+무슨 문제가 있을까
+
+엄청 큼
+
+보다시피 App을 render하려고 하는데 에러가 나왔음
+
+에러는 context에서 "client"를 찾을 수 없다고 나와있음
+
+보다시피 apollo와 관련된 에러 같음
+
+에러가 생긴 라인에서 useMutation을 쓰고 있음
+
+그런데 무슨 파일에서 문제가 생긴거지
+
+바로 login임
+
+login 화면에 loginMutation이 있으니까 테스트의 일부분은 작동하는 것 같음
+
+왜냐하면 LoggedOutRouter를 render하고, 그 안에 Login이 render될 때 useMutation을 쓰는 loginMutation에서 에러가 생김
+
+이것은 바로 context에 client가 없기 때문임
+
+어떻게 app.tsx를 render하고 있지
+
+app.tsx는 index에 의해 render되고 있음
+
+보다시피 index에는 ApolloProvider, HelmetProvider, App이 있음
+
+그러면 여기서 에러가 생기는게 납득이 감
+
+그런데 나는 이 에러를 아직 고치고 싶지 않음
+
+아예 안 고칠 수도 있음
+
+왜냐하면 login page에 있는 useMutation을 신경 쓸 필요가 없음
+
+유저가 LoggedOutRouter나 LoggedInRouter를 보고 있는지 테스트하고 싶음
+
+그것만 알고 싶음
+
+loginMutation이나 client 이런 것들은 신경쓰지 않음
+
+나중에 login 화면을 테스트할 때 하면 되니까 지금은 정말 신경 쓸 필요 없음
+
+내가 지금 신경쓸 것은 isLoggedIn이 true일 때, false일 때 보여줘야할 것을 잘 보여주는지임
+
+그래서 백엔드에서 했던 것처럼 component를 mock함
+
+component가 있는지만 알고 싶음
+
+component의 내용, login page, graphql 등등 이런 것들은 신경쓰지 않음
+
+그렇게 하면 정말 안 됨
+
+그러면 mock을 해봄
+
+우리는 mock하는 방법을 앎
+
+백엔드에서 많이 해봤으니까 설명하지 않음
+
+그리고 LoggedOutRouter를 mock함
+
+implementation을 mock하면 됨
+
+logged-out-router는 파일이고 이것은 LoggedOutRouter라는 component를 return함
+
+LoggedOutRouter는 logged-out이 적힌 span을 return하게 만듦
+
+정말 쉬움
+
+그러면 이 테스트는 통과함
+
+보다시피 통과하고 있음
+
+전에 말했듯이 여기 있는 renders OK에서 render는 정말 많은 것들을 쓰게 해줌
+
+예를 들어, 여기서 render를 call하면 이 function들을 모두 사용할 수 있음
+
+엄청 많은 get이 있고, find를 할 수 있고, container, debug도 쓸 수 있음
+
+debug가 무엇을 하는지 알아봄
+
+debug를 call 해봄
+
+debug는 테스트를 하는 관점에서 app이 어떻게 생겼는지 보여줌
+
+보다시피 logged-out을 rendering하고 있음
+
+우리는 app이 어떻게 rendering하는지 확인할 수 있음
+
+여기서는 보통 html을 render함
+
+renders LoggedOutRouter로 바꿈
+
+그리고 render에서 또 다른 것을 사용할 수 있음
+
+여기서는 getByText를 써봄
+
+그리고 getByText()라 함
+
+우리가 가져오고 싶은 텍스트는 logged-out임
+
+한번 확인해봄
+
+getByText가 텍스트를 찾지 못하면 어떻게 되는지 봄
+
+에러가 생겼음
+
+logged-out을 가진 element를 찾지 못했음
+
+그리고 페이지에 뭐가 있는지 보여주고 있음
+
+첫번째 테스트가 잘 통과하고 있음
+
+이제 LoggedInRouter를 render 해봄
+
+"renders LoggedInRouter"로 바꿈
+
+logged-out을 logged-in으로 바꿈
+
+이제 debug는 더 이상 필요 없고, LoggedInRouter를 mock 해봄
+
+LoggedInRouter가 될거고 logged-in으로 바꿈
+
+작동하는지 확인해봄
+
+우리 app에 condition이 있기 때문에 안 됨
+
+바로 isLoggedIn인데, 테스트에서 유저가 login을 안 해서 false를 return하기 때문임
+
+그래서 "renders LoggedInRouter"가 통과되지 않음
+
+그러면 isLoggedIn의 value를 바꾸고 mock 해야겠다고 생각함
+
+우리는 이런것 하나도 할 필요가 없음
+
+전에 했던 방식으로 variable을 세팅하면 됨
+
+그러면 테스트에서 ReactiveVar를 설정할 수 있음
+
+내가 test component를 만든다고 생각하면 이 부분을 그대로 테스트하고 싶지는 않음
+
+component를 바꿔주는 interaction을 만들고 싶음
+
+물론, login을 다시 만들거라면 token 등등 다른 것들이 필요하니까, 여기서는 유저의 interaction을 다시 만들어봄
+
+interaction은 유저가 login을 하면 isLoggedInVar로 바꿔줌
+
+isLoggedInVar는 ReactiveVariable임
+
+그리고 여기에 우리가 원하는 value로 바꿔주면 됨
+
+그러면 또 다른 문제가 생김
+
+"테스트를 할 때, state를 update하는 코드는 act() 안에 있어야합니다"라고 나와있음
+
+act는 유저가 한 행동이라고 생각하면 됨
+
+그래서 우리는 알려준대로 해결해도 되고 아니면 @testing-library/react를 쓸 수도 있음
+
+어떻게 할거냐면 await waitFor(()=>{ isLoggedInVar(true) })라고 하고 async를 추가해야함
+
+그러면 어떻게 될까
+
+보다시피 잘 통과하고 있음
+
+state를 바꾸고 있는데 waitFor()에서 무엇을 하고 있는것일까 
+
+말그대로 state가 refresh하고 쓸 수 있도록 기다려줌
+
+debug()를 써봄
+
+그리고 app이 어떻게 생겼는지 확인해봄
+
+보다시피 app이 logged-in이 되었음
+
+그러면 이것이 잘 작동한다는 뜻이고, 이렇게 App component를 테스트 해봤음
+
+이제 coverage를 확인해봄
+
+터미널에 npm run test:coverage 입력
+
+그리고 app이 어떻게 됐는지 확인해봄

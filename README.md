@@ -8757,3 +8757,133 @@ button은 여기까지고 coverage를 한 번 더 확인해봄
 중요한 것은 output이 무엇인지, 유저가 보게 되는 것이 무엇인지임
 
 implementation은 테스트하지 않음
+
+## 18.3 FormError and Restaurant Tests
+
+이제 form-error를 테스트해봄
+
+어렵지는 않음
+
+props만 테스트하면 끝남
+
+render를 import함
+
+이제는 visual studio code에서 testing-library로 자동완성 해줌
+
+당연히 작동하겠지만, errorMessage가 제대로 나오는지도 확인해봄
+
+getByText를 가져옴
+
+coverage를 확인해봄
+
+초록색으로 바뀌었음
+
+이제 restaurant을 테스트해봄
+
+header에는 graphql이 있어서 따로 설명할게 있음
+
+그러면 form-error, restaurant 테스트를 하나의 영상에 담아봄
+
+이제 restaurant.spec.tsx 파일을 만듦
+
+coverage를 보면 cover되지 않은 구간이 11-17임
+
+무엇이 있는지 한 번 봄
+
+분명히 에러가 있을 것임
+
+한번 봄
+
+testing-library의 render를 쓰고, Restaurant을 render함
+
+Restaurant에는 props가 필요한데, 그 props들은 id="1" coverImg="x" name="nameTest" categoryName="catTest"라고 함
+
+그런데 개발자에게 이렇게 쉬운 일은 없음
+
+에러가 있음
+
+에러는 Router 바깥에서 Link를 쓰면 안된다고 말해주고 있음
+
+말이 됨
+
+Router 바깥에서 Link를 쓰면 안됨
+
+그것이 react Router의 규칙임
+
+그러면 무엇을 해야 하냐면 Router로 감싸줘야함
+
+그럼 import를 해봄
+
+우리는 react에서 하는 방식으로 component를 rendering하고 있음
+
+이 component에는 규칙이 있음
+
+우리가 테스트하고 있는 restaurant component는 Router로 감싸져있음
+
+왜냐하면 restaurant component는 LoggedInRouter 안에서 보여짐
+
+Router로 감싸면 에러가 나오지 않음
+
+다시 한 번 저장함
+
+보다시피 rendering이 잘 작동하고 있음
+
+이제 render에서 쓸만한 것들을 꺼내봄
+
+component의 모습을 확인하기 위해 debug를 가져옴
+
+그리고 debug()를 call함
+
+보다시피 Link가 있음
+
+nameTest, catTest도 있음
+
+이제 내가 props로 보낸 것들이 잘 갔는지 테스트해봄
+
+그리고 Link가 있는지도 테스트할 수 있음
+
+무엇을 할거냐면 getByText를 가져옴
+
+getByText("nameTest")라고 하면 잘 찾아냄
+
+그리고 catTest도 찾아봄
+
+둘 다 잘 작동함
+
+call한 debug()를 보면, Link도 확인할 수 있음
+
+Link는 component의 첫 부분에 있음
+
+component의 시작 부분에 있음
+
+이제 container를 쓸 수 있음
+
+expect()를 먼저 쓰고, container.firstChild를 하면 많은 것을 쓸 수 있는데 우리는 여기서 href를 확인할 수 있음
+
+toHaveAttribute()를 씀
+
+우리가 확인하고 싶은 attribute는 "href"임
+
+prop에 따르면 value는 "/restaurants/1"이 됨
+
+좀 더 구조적으로 만들려면, restaurantProps object를 만듦
+
+coverImg도 있음
+
+그리고 "nameTest" 대신에 restaurantProps.name을 체크하면 됨
+
+이렇게 하면 에러가 덜 남
+
+toHaveAttribute에는 ${restaurantProps.id}를 씀
+
+이 정도면 꽤 탄탄한 테스트인 것 같음
+
+이제 debug()를 지움
+
+아주 잘 작동함
+
+coverage도 확인해봄
+
+restaurant이 100%임
+
+다음에는 Header를 테스트 해봄

@@ -8479,3 +8479,281 @@ debug()를 써봄
 터미널에 npm run test:coverage 입력
 
 그리고 app이 어떻게 됐는지 확인해봄
+
+## 18.2 Button Tests
+
+어떤 테스트는 엄청 복잡하고, 어떤 것은 정말 쉽고, 또 어떤 것은 중간정도 됨
+
+예를 들어, 여기 있는 것이 중간에 있는 거라고 볼 수 있음
+
+대단한 것은 안 했음
+
+getByText가 찾으려고 하는 것을 못찾으면 테스트에 통과하지 못함
+
+정말 중요함
+
+아직 expect는 하나도 쓰지 않았지만 다음 테스트부터는 쓸지도 모르겠음
+
+그것은 바로 button임
+
+그러면 button을 열고 button.spec.tsx 파일을 만듦
+
+이제 button이 어떻게 작동해야하는지 봄
+
+button에는 canClick이라는 condition이 있고, loading도 있음 
+
+이것이 중요함
+
+그러면 테스트를 만들어봄
+
+왜냐하면 우리는 button에 props를 보냄
+
+전에 했던 것으로 그대로 해주면 됨
+
+그리고 여기서 Button을 render함
+
+이 Button에는 canClick이라는 prop이 있음
+
+button을 오른쪽에 띄움
+
+canClick은 boolean이어야하니까 true라고 하고, loading은 false, actionText는 "test"라고 함
+
+테스트를 만들었음
+
+테스트가 어떻게 작동됐을까
+
+node에서 확인해보면 통과했음
+
+button이 잘 작동함
+
+한 가지 알려줄게 있음
+
+만약 이 문구를 테스트에서 확인하고 싶다면, verbose flag를 쓰면 됨
+
+package.json의 test에 --verbose를 추가하면 됨
+
+그러면 다시 테스트해봄
+
+보이는 것처럼 테스트를 확인할 수 있음
+
+원하는대로 하면 됨
+
+그런데 내용이 길어질테니 지움
+
+확실하게 체크하는 것이 안심이 된다면 추가하도록 함
+
+button이 잘 render되고 있는데, 더 자세하게 어떤 내용으로 render하는지 확인해봄
+
+actionText가 제대로 rendering되는지 확인해보고 싶음
+
+그리고 button의 어느 부분이 render되지 않았는지 알아보게 coverage를 확인해봄
+
+다시 한 번 돌려봄
+
+이미 button을 render 했음
+
+conditions 부분임
+
+그러면 render가 제공하는 function 중 debug를 다시 사용해봄
+
+debug()를 많이 씀
+
+이제 debug하려고 console.log 할 필요가 없음
+
+debug가 알아서 console.log 해주니까 걱정할 필요 없음
+
+우리 app이 어떻게 생겼는지 한번 봄
+
+button이 있고 test라 써져있음
+
+그러면 getByText를 써봄
+
+같은 prop이 있음
+
+getByText가 잘 통과했음
+
+만약 이 component를 다시 render하고 싶으면 어떻게 하면 될까
+
+왜냐하면 이제 false인 loading을 true로 바꾸고 싶음
+
+그러면 rerender라는 것을 쓰면 됨
+
+똑같이 rerender라고 함
+
+element를 다시 render하고 싶음
+
+loading을 true로 바꿈
+
+그리고 debug를 다시 call함
+
+원래 쓰던 debug를 쓰면 됨
+
+그리고 getByText()로 "Loading..."을 찾음
+
+존재하는지 확인해봄
+
+보다시피 test가 있고, prop을 바꿔서 button을 rerender하면 loading을 볼 수 있음
+
+그러니까 둘 다 작동한다는 것임
+
+다른 text를 가지고 rerender함
+
+loading이 false니까 getByText("test")가 작동함
+
+우리는 component를 render하고 있고, props를 기반으로 한 state 변화를 확인하고 있음
+
+보다시피 우리는 세부적인 implementation을 테스트하는 것이 아님
+
+세부적인 implementation은 react의 관점에서 component가 작동하는 방식임
+
+우리는 이것을 테스트하는게 아님
+
+그래서 testing-library/react가 멋진 이유임
+
+왜냐하면 유저의 관점에서 테스트할 수 있게 해줌
+
+필요없으니까 이제 debug를 지움
+
+테스트는 통과함
+
+이제 무엇을 할거냐면 테스트의 implementation을 바꿈
+
+다시 한 번 testing-library/react가 대단하다는 것을 알 수 있음
+
+implementation은 이런 것임 
+
+이런 것을 삼항 조건 연산자(ternary operator)라고 하는데, loading이라 하고 물음표 ,"Loading..." 이런 것이 implementation임
+
+우리는 이런 것을 테스트할 필요 없음
+
+우리가 테스트해야할 것은 유저들이 볼 수 있는 output임
+
+예를 들어 우리는 implementation을 테스트하지 않는 testing-library 방법을 사용하기 때문에, 이 component의 implementation을 바꿔도 output만 테스트함
+
+그리고 !loading도 추가함
+
+이런식으로 implementation을 바꿔도 테스트가 잘못되지 않음
+
+왜냐하면 우리는 코드를 테스트하는 것이 아니고 코드의 output을 테스트함
+
+우리는 유저의 관점에서 component를 테스트함
+
+테스트는 여전히 작동함
+
+이것은 정말 중요함
+
+왜냐하면 우리는 button의 코드를 테스트하는 것이 아닌데, 우리가 코드를 테스트해야하는 것으로 생각할 수가 있음
+
+coverage를 보면 cover되지 못한 라인을 보게 됨
+
+그런데 안타깝게도 그 라인은 implementation 라인이니까 cover되지 않음 
+
+대부분은 100%의 라인이 cover됨
+
+그런데 가끔은 cover하지 못하는 라인이 있을 수 있음
+
+그것은 유저가 button에서 보게 될 output만 테스트하기 때문임
+
+우리는 component가 이렇게 되어있든 아니든 상관없음
+
+이것은 정말 신경 쓸 필요가 없는 것임
+
+그러니까 두 경우 모두 테스트에서 실패하지 않음
+
+굉장히 좋은거니까 여기 rerender를 다시 보여주고 싶음
+
+그런데 나는 이 테스트를 나누는 것이 더 보기 좋을 것 같음
+
+나만 그럴 수도 있으니까 그냥 냅두고 싶으면 냅둬도 됨
+
+나는 그저 어떻게 component를 rerender하는지 보여주고 싶음
+
+여기 it("should render OK")는 완벽함
+
+완전 똑같이 만들어봄
+
+rerender를 지우고 loading을 true로 바꿈
+
+그리고 getByText("Loading...")만 놔두면 됨
+
+나는 테스트를 분리하고 싶어서 이렇게 함
+
+이렇게 안해도 됨
+
+그런데 이렇게 하면 더 많은 것을 알 수 있음
+
+coverage를 한 번 더 확인해보면 button에서 여전히 cover되지 않은 라인이 있음
+
+16번 라인이 있음
+
+16번 라인은 condition임
+
+이 canClick을 cover해야함
+
+canClick을 false라고 해봄
+
+그리고 debug()를 call함
+
+canClick이 하는 일은 className을 바꿔주는 것임
+
+이 둘 중에 하나가 됨
+
+그러면 이 className인지 체크하면 됨
+
+그러면 어떻게 체크하면 되지
+
+정말 간단함
+
+우리는 container라는 것을 사용함
+
+render가 container를 쓸 수 있게 해주는데, container는 여기 있는 div임
+
+이것이 render에서 쓸 수 있는거고, container의 children이 무엇을 가지고 있는지 체크할 수 있음
+
+그리고 React가 아닌 VanillaJS로 api를 사용해서 element를 만질 수 있음
+
+그러면 이 className이 있는지 확인해봄
+
+그리고 여기서 드디어 jest를 사용해봄
+
+그리고 user event를 못하게 하는 pointer-events-none class가 있는지 체크함
+
+모두 통과하고 있음
+
+이제 실패하는지도 확인해봄
+
+항상 테스트가 실패하는 경우를 만들어보는 것이 좋음
+
+잘 작동함
+
+이렇게 button을 테스트해봤음
+
+보다시피 엄청 복잡하지는 않지만, rerender를 하고, props를 바꾸는 방법을 배웠고 getByText를 써봤음
+
+그리고 container를 사용해서 모든 것을 체크할 수도 있음
+
+firstChild, getByText, class가 있는지, click이 됐는지, style이 있는지 모든 것을 확인할 수 있음
+
+그냥 옵션을 봄
+
+여기 보면 toHave 등등 정말 많음
+
+button은 여기까지고 coverage를 한 번 더 확인해봄
+
+만약 이전 영상에서 잘 이해가 안됐다면 이번 영상에서 좀 해결됐길 바람
+
+만약 아직도 이해되지 않았다면 계속 연습을 해봄
+
+언젠가 이해가 됨
+
+100%를 달성했음
+
+중요한 것은 implementation을 테스트하지 않는다는 것임
+
+이런 것들은 신경 쓰지 않음
+
+이것은 if~else로 만들 수도 있음
+
+중요한 것은 output이 무엇인지, 유저가 보게 되는 것이 무엇인지임
+
+implementation은 테스트하지 않음

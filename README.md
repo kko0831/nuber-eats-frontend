@@ -8887,3 +8887,271 @@ coverage도 확인해봄
 restaurant이 100%임
 
 다음에는 Header를 테스트 해봄
+
+## 18.4 Testing Header and 404
+
+보다시피 header의 "renders OK" 테스트를 거의 다 만들었음
+
+잘 작동해야하는데 안됨
+
+문제는 client임
+
+왜냐하면 header에서 useMe query를 쓰고 있음
+
+useMe는 apollo랑 관련된 것임
+
+좋은 소식은 apollo에 testing을 할 수 있는 도구가 있다는 것임
+
+apollo에서 쓸 수 있는 테스팅 도구가 있는데, MockedProvider라는 것임
+
+component를 테스트할 때, 어떤 때는 MockedProvider를 쓰고 어떤 때는 다른 것을 사용함
+
+둘 다 사용법을 보여주고, 장단점을 알려줌
+
+무엇을 사용할지는 내가 선택하면 됨
+
+그러면 MockedProvider는 어떻게 작동할까
+
+정말 쉬움
+
+우리는 import만 하면 됨
+
+MockedProvider를 import하고, Header를 MockedProvider 안에 render함
+
+그러면 Router 바깥에서 Link를 사용하지 말라고 나옴
+
+맞는 말임
+
+Header를 보면 어떻게 생겼지
+
+안에 Link가 있음
+
+그러면 또 다른 것으로 감싸줘야함
+
+먼저 import함
+
+Router로 감싸줌
+
+보다시피 지금 우리는 이 component가 render될 수 있게 condition을 맞춰주고 있음
+
+이제 잘 render되고 있음
+
+문제가 되지는 않겠음
+
+그러면 이제 체크를 해야하는데 Header를 보면 condition이 있음
+
+그럼 본능적으로 useMe hook을 mock 해야겠다고 생각함
+
+문제는 component 안에서 무엇인가를 mock하면 안됨
+
+hook 자체를 mock하면 안되고 hook에 결과를 주는 것을 mock 해야한다는 것임
+
+예를 들어, 나는 이 useMe response를 mock하지 않음
+
+대신 서버에 보내는 graphql request를 mock함
+
+hook 말고 request를 mock함
+
+다행히 MockedProvider로 할 수 있음
+
+MockedProvider는 mocks라는 prop을 받는데 mocks는 query, mutation, result를 mock 할 수 있게 해줌
+
+말 그대로 결과를 만들어서 테스트할 수 있음
+
+예를 들어 이 variable을 가지고 query를 만들고, 이 output을 만들어 result를 테스트함
+
+이제 직접 해봄
+
+header.spec으로 와서 MockedProvider에 mocks로, mocks는 여러 mock의 array가 됨
+
+그리고 ME_QUERY를 export 해줘야함
+
+정말 중요함
+
+ME_QUERY를 export해서 mock에서 같은 query를 사용함
+
+ME_QUERY가 아직 import 되지 않았음
+
+import를 먼저 함
+
+이제 result도 mock 할 수 있음
+
+정말 중요한건데 result는 여기에 작성한 형태여야함
+
+type도 모두 같아야함
+
+me : {  }하고 안에 붙여넣기함
+
+그리고 value를 작성함
+
+중요한 것은 id는 number여야하고, verified는 true여야함
+
+query를 request하고 있고, query의 result를 mock하고 있음
+
+useMe를 mock 할 필요는 없음
+
+query의 result만 mock하면 됨
+
+정말 좋음
+
+console.log로 component가 어떤 data를 받는지, mock이 잘 되는지 확인해봄
+
+작동이 안됨
+
+작동이 되지 않는 이유는 알다시피 query는 즉시 일어나는게 아님
+
+query가 끝나기까지 시간이 좀 걸림
+
+그래서 apollo에서는 response를 기다려서 해결하라고 알려주고 있음
+
+이것은 timeout이고, 0초에 result를 받는거니까 아무것도 아닌 것 같지만 result를 기다리기는 함
+
+result를 기다리도록 만들어봄
+
+MockProvider를 줄임
+
+result를 기다린 다음에 테스트를 진행함
+
+async를 추가함
+
+그러면 또 다른 에러가 나타남
+
+이 에러는 우리가 state를 update해서 나타나는건데, 우리는 state update도 기다려줘야함
+
+그래서 어떻게 할거냐면 await waitFor()를 씀
+
+이것은 async여야함
+
+우리가 component를 render하면 mock과 함께 render됨
+
+그리고 0초지만 어쨌든 Promise를 resolve하기 위해 기다림
+
+그리고 이 모든 것을 waitFor() 안에 넣었음
+
+왜냐하면 우리가 website(react)의 state를 바꿔서 rerender를 trigger하고 있음
+
+rerender를 기다려야하고, Promise도 기다려줘야 됨
+
+이제 저장을 함
+
+여기에는 query의 loading state가 있고, 여기를 보면 mock한 response가 있음
+
+이제 verified가 true인 것을 볼 수 있음
+
+debug()를 call함
+
+Please verify your email이라는 문구가 없음
+
+이제 "renders verify banner"로 만듦
+
+또 다른 테스트를 만들어봄
+
+우리는 verified만 바꾸면 됨
+
+renders without verify banner는 유저가 verified라는 것임
+
+그런데 renders verify banner는 유저가 verified가 아니라는 것임 
+
+그래서 이 경우에는 banner를 만들어냄
+
+이제 debug는 필요없고 getByText를 가져옴
+
+이번에는 내가 생각하는 element가 없다는 것을 확인하고 싶음
+
+component에 특정 text가 없다는 것을 확인하고 싶음
+
+getByText는 내가 찾고자 하는 것을 찾지 못하면 실패하게 됨
+
+get 어쩌고 하는 것들은 찾지 못했을 때, 테스트를 실패하게 만듦
+
+실패하고 싶지 않다면, 정확히 말해 무엇인가 존재하지 않는다는 것을 확인하고 싶다면 query를 사용하면 됨
+
+query는 실패하지 않고 null을 return함
+
+그래서 queryByText로 같은 내용을 확인해봄
+
+그리고 getByText 대신에 queryByText를 사용함
+
+다시 한 번 강조함
+
+getByText는 찾지 못했을 때 실패하게 만듦
+
+그런데 queryByText를 보면 HTMLElement 또는 null을 return함
+
+그러니 에러는 없음
+
+너무 복잡하니까 내가 만든 console.log를 모두 지워버림
+
+모든 것이 잘 통과하고 있음
+
+getBy와 queryBy의 차이는 정말 중요함
+
+다시 한 번 설명함
+
+getBy는 element를 찾지 못하면 테스트에 실패함
+
+그래서 무엇인가 존재하지 않는지 확인할 때는 queryBy를 사용하면 됨
+
+queryBy가 찾지 못했을 때는 null을 return함
+
+이것이 딱 내가 원하던 것임
+
+나는 banner가 null인지 expect 했음
+
+header를 테스트해봤음
+
+coverage를 확인해봄
+
+다시 한 번 돌려서 얼마나 진행됐는지 봄
+
+빠르게 404 page를 테스트해봄
+
+이것을 테스트하는게 오래 걸리지는 않음
+
+404.spec.tsx 파일을 만듦
+
+render를 쓰고 NotFound를 render한다고 함
+
+render를 import하지 않았음
+
+이 테스트를 빠르게 돌려봄
+
+통과하지 못함
+
+통과하지 못한 이유는 우리가 여기에 helmet을 사용하고 있어서 그럼
+
+index에는 HelmetProvider가 있음
+
+또 다시 Link를 바깥에서 쓰지 말라고 나옴
+
+이것을 좀 더 좋게 만드는 방법이 있는지 궁금해함
+
+계속 같은 것을 반복하지 않는 방법이 있으니까 알려줌
+
+일단 지금은 고생 좀 해봄
+
+이제 404가 작동하는 것을 볼 수 있음
+
+NotFound가 render 되었으니 기분이 좋음
+
+그런데 또 무엇을 할 수 있냐면 document의 title을 테스트해볼 수 있음
+
+보다시피 테스트에 실패했음
+
+왜냐하면 Helmet이 바로 바꿔주지 않기 때문임
+
+그러면 Helmet을 좀 기다려주면 됨
+
+그리고 여기에 async를 추가하면 됨
+
+실패하는지도 확인해봄
+
+잘 작동하고 있음
+
+이런 식으로 Helmet을 사용하는 component를 테스트할 수 있음
+
+보다시피 여기 document.title처럼 기본적인 javascript, vanillaJS를 사용하고 있음
+
+react로는 아무것도 할 필요가 없음
+
+testing-library 정말 좋음

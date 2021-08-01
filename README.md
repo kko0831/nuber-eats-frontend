@@ -9155,3 +9155,319 @@ NotFound가 render 되었으니 기분이 좋음
 react로는 아무것도 할 필요가 없음
 
 testing-library 정말 좋음
+
+## 18.5 Login Tests part One
+
+이제 login page 테스트를 시작해봄
+
+이 테스트는 우리가 만드는 것 중에 가장 복잡함
+
+login과 create-account 모두 복잡함
+
+다 만들고나면 볼만함
+
+이미 에러가 하나 있는데 client를 찾을 수 없다는 에러임
+
+graphql에 문제가 있는거니까 이런 에러에는 익숙함
+
+우리가 header에서 무엇을 했었는지 잘 생각해보면 component를 mockedProvider로 감쌌었음
+
+그렇게 했었는데 지금은 그렇게 하지 않음
+
+왜냐하면 mockedProvider에서 mutation을 테스트하는 것은 내 기준에서 좋음
+
+mutation을 mock 할 수 있고, mutation의 variables를 보낼 수도 있음
+
+그리고 result를 테스트하고 expect를 할 수도 있음
+
+나는 이 테스트에 좀 더 깊이가 있었으면 좋겠음
+
+login page를 보면 꽤 복잡함
+
+form이 있기 때문임
+
+user가 email과 password를 입력하고 에러가 없다면 form에서 email, password를 가지고 login mutation을 call함
+
+그렇다면 mutation이 form에 있는 email, password로 call 되는지 체크할 수 있고, mutation이 딱 1번 call 되는지도 체크할 수 있음
+
+그런데 apollo graphql이 제공하는 테스트 방법으로는 이것들을 테스트할 수 없음
+
+왜냐하면 query를 이렇게 작성해야하고 provider를 만들어야되며, mutation을 function으로 테스트할 수도 없음
+
+그리고 내가 실수하고 싶지 않아도, 분명히 실수를 하게 됨
+
+그래서 mock-apollo-client라는 것을 사용함
+
+이것을 만든 사람이 여기에 더 좋은 테스트를 할 수 있어서 library를 만들었다고 했음
+
+내가 딱 하고 싶었던 것으로 예를 들어봄
+
+나는 login mutation이 1번 call 되는 것을 expect하고, 특정 argument로 call 되는지 expect하고 싶음
+
+loginMutation이 내가 input에 입력한 email, password로 call 되는지 expect하고 싶음
+
+보다시피 좀 더 많은 제어를 할 수 있음
+
+이 library는 한 주에 5만 명이 다운로드하고 있음
+
+사람들이 사용하고 좋아하니까 나중에는 이 library가 여기에 채택됨
+
+왜냐하면 이것은 mutation을 테스트하는데 별로 좋지 않음
+
+mutation을 하면 result를 테스트할 수 있지만 variables는 테스트할 수 없으니까, call 같은 것들은 테스트하지 못함
+
+터미널에 npm i mock-apollo-client@1.0.0 --save-dev 입력
+
+다 되면 여기 있는 Login을 수정함
+
+우리의 header는 apollo graphql에서 제공하는 mockedProvider로 감싸져있음
+
+이제는 component를 진짜 ApolloProvider로 감쌀건데 client는 mockClient가 됨
+
+한 번 해봄
+
+진짜 ApolloProvider를 import함
+
+이제 client가 필요하니까 client를 만듦
+
+createMockClient를 import하면 @apollo/client/testing에서 가져올텐데 이게 아님
+
+방금 다운로드한 mock-apollo-client에서 createMockClient를 가져옴
+
+전에는 provider 전체를 mocking 했다면 지금은 client만 mocking 하고 있음
+
+이제 render를 함
+
+당연히 render를 못함
+
+cannot read property 'add' of undefined라는 에러가 있는데 이것은 정말 이상한 에러임
+
+이 에러는 Helmet 때문에 생기는 에러임
+
+HelmetProvider를 추가함
+
+이제 보면 Router 바깥에서 Link를 쓰지 말라고 나옴
+
+login page에서 Link를 사용하고 있음
+
+BrowserRouter가 아니라 Router임(rename을 사용했기 때문임)
+
+이제 act 안에 있지 않은 테스트가 update가 되었다고 나옴
+
+우리는 state가 변하는 update를 await하지 않았음
+
+Login은 잘 render 됐지만 state에 변화가 있었음
+
+말했다시피 state가 바뀌는 것을 await 해줘야함
+
+그러면 누가 state를 바꾸고 있지
+
+바로 여기 있는 useForm임
+
+useForm이 state를 바꾸고 있음
+
+아무튼 useForm이 state를 바꾸고 있으니까 무엇을 하면 되냐면, 이 모든 것을 await waitFor() 안에 넣어주면 됨
+
+waitFor()는 state가 바뀌는 것을 await하게 해줌
+
+여기는 async로 해야함
+
+이제 모든 것이 다 괜찮아짐
+
+보다시피 아무 문제 없이 render가 되었음
+
+여기까지 셋업을 해봤음
+
+그래도 계속 해봄
+
+어느 라인이 테스트가 되지 않았는지 확인해봄
+
+이제 render가 됐고, 무엇을 테스트했고 무엇을 안했는지 봄
+
+login에서 44-48, 58-60이 안됐음
+
+이것은 implementation이라 테스트할 수 있을지 모르겠음
+
+이것이 render 됐다는 것은 component가 작동한다는 것임
+
+이제 mutation을 테스트해야하는데, implementation은 테스트하지 않음
+
+onSubmit을 mock하지 않음
+
+loginMutation도 mock하지 않음
+
+우리는 실제 login 과정을 trigger함
+
+물론 백엔드로 가는 것은 아님
+
+어쨌든 실제 login 과정을 trigger함
+
+그것이 우리가 테스트하고 싶은 것임
+
+우리는 코드를 테스트하고 싶은게 아니라 유저에게 생길 일을 테스트하고 싶음
+
+유저가 클릭하고, 입력하고, 에러를 볼건데 이런 것들을 테스트해봄
+
+이제 잘 render하고 있음
+
+첫번째로 하고 싶은 테스트는 바로 이것임
+
+쉬운 것부터 시작함
+
+title을 테스트해봄
+
+이것을 하기 전에 앞으로 많은 render를 하게 될텐데 이 모든 것을 계속 작성하고 싶지 않음
+
+그러니까 beforeEach를 씀
+
+그리고 이 안에서 component를 셋업함
+
+물론 여기서 render에 바로 접근할 수는 없음
+
+나중에 접근하도록 만들거고 mockedClient도 접근할 일이 있음
+
+지금은 it("should render OK")만 하고 title을 체크해봄
+
+여기 있는 것을 확인하면 모든 것이 render 됐다는 것을 알려줌
+
+이 Helmet이 state를 바꾸기 때문에 await waitFor()를 써야함
+
+잘 작동함
+
+실패하게 만들어서 잘 작동하고 있는건지 확인해봄
+
+아주 잘 작동하고 있음
+
+우리는 앞으로 많은 테스트를 만들기 때문에 beforeEach를 사용함
+
+이것이 첫번째 테스트임
+
+다음으로 하고 싶은 테스트는 error를 trigger 하는 것으로 해봄
+
+잘 작동하는지 확인해봄
+
+어떻게 하면 될까
+
+정말 간단함
+
+이 부분을 작성할 때 코드가 술술 적히는 것 같음
+
+많은 것들을 await 해야하니까 async를 사용함
+
+그리고 input에 접근해야하니까 여기에 접근할 수 있어야함
+
+render에 접근할 수 있으면 될 것 같음
+
+그러면 render를 여기에 가져와서 renderResult라 해봄
+
+이것은 let으로 하면 될 것 같음
+
+render는 RenderResult type을 return함
+
+import 됐고, 이제 renderResult = render()라 함
+
+이제 renderResult에 접근할 수 있게 됐음
+
+getBy는 아무것도 찾지 못하면 fail함
+
+우리는 getByPlaceholderText를 사용함
+
+placeholder text로 가져올 수가 있음
+
+이 경우에는 email만 가져옴
+
+getByPlaceholderText("Email")로 하면 됨
+
+여기에 regular expression을 쓸 수도 있음
+
+i는 insensitive(대소문자 구분 안함)라는 뜻임
+
+이제 아무 문제 없이 잘 작동함
+
+모두 잘 통과했음
+
+이제 email을 가져왔는데 무엇을 할 수 있냐면, await waitFor()에 user testing module의 userEvent를 import해서 사용할 수 있음
+
+말그대로 event를 발생시킬 수 있음
+
+보다시피 우리가 직접 input의 value를 바꾸는게 아님
+
+유저가 하는 방식을 우리가 똑같이 할 수 없음
+
+그런데 이렇게 type을 하면 type function이 있음
+
+이것이 좋은 이유는 우리가 implementation call인 change event를 직접 할 필요가 없음
+
+우리가 원하는 것은 그저 type임 
+
+유저가 type을 하면 정말 많은 event를 trigger함
+
+key down event, onchange event 등등 많은 event를 trigger함
+
+그래서 우리는 email element에 type을 함
+
+그리고 이번에는 쓸 수 없는 email을 type 해봄
+
+기억할지 모르겠지만 email에는 일정한 pattern이 요구됨
+
+그래서 쓰지 못할 email을 type 해봄
+
+"this@wont"라고 해봄
+
+이것은 쓸 수 없음
+
+이제 debug를 가져와서 우리의 html이 어떻게 생겼는지 확인해봄
+
+html이 어떻게 생겼지
+
+아주 잘 만들어졌음
+
+내가 type을 했는데 이 조건을 trigger하고 있음
+
+이제 getByText를 가져오면 getByText는 바로 Please enter a valid email임
+
+getByRole도 사용할 수 있음
+
+이것도 우리에게 정말 좋은 기능을 선사하는데 무엇을 할 수 있냐면, 예를 들어 form-error로 가서 여기에 role="alert"를 추가해봄
+
+이제 여기에 getByRole을 쓰고 여기서 error를 많이 받음
+
+보다시피 정말 많은 role을 만들 수 있음
+
+그래서 alert를 씀
+
+role에 potato를 쓸 수는 없으니까 alert라 함
+
+대소문자 상관하고 싶지 않다면 아까처럼 regular expression을 쓸 수도 있음
+
+우리는 implementation을 테스트하고 싶지 않음
+
+email을 가져다가 value를 직접 바꾸고 싶지 않고, 말 그대로 내가 유저인 척하고 싶음
+
+이 element는 테스트 되었음
+
+이제 이것을 테스트 해야함
+
+이것은 email이 입력되지 않았을 때 발생하는 에러임
+
+이것을 위해서 await를 또 씀
+
+그리고 waitFor()를 씀
+
+그리고 userEvent.clear()를 사용함
+
+clear는 input에서 모든 value를 지움
+
+깨끗하게 없애버림
+
+그리고 여기에 debug를 또 다시 call함
+
+무엇을 받았는지 봄
+
+input이 있고 보다시피 Email is required라는 다른 에러가 생겼음
+
+이번에는 이것을 trigger하고 있음
+
+다음 영상에서 봄
+
+userEvent를 사용해서 form을 테스트하는 것을 끝내고 mutation을 테스트해봄

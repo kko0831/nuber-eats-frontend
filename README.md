@@ -9471,3 +9471,175 @@ input이 있고 보다시피 Email is required라는 다른 에러가 생겼음
 다음 영상에서 봄
 
 userEvent를 사용해서 form을 테스트하는 것을 끝내고 mutation을 테스트해봄
+
+## 18.6 Login Tests part Two
+
+이쯤돼면 우리가 만든 app이 어떻게 작동했는지 헷갈릴수가 있음
+
+form은 keyword에 변경이 있을 때마다 input의 유효성을 체크함
+
+서버를 구동시키면 compile을 함
+
+그러면 login 창이 나오는데, 여기에 무엇인가 입력했을 때 잘못된게 있다면 'please enter a valid email'이라고 나옴
+
+우리가 처음에 테스트한 부분임
+
+그리고 이것을 지우면 'Email is required'라고 나옴
+
+이렇게 우리는 simulating을 해봤음
+
+form이 어떻게 작동하는지 다시 설명하자면, form은 input의 유효성을 즉시 체크해줌
+
+어떻게 작동하는지 다시 설명해주고 싶었음
+
+이제 'Email is required' 에러를 끝내고 password 에러로 넘어감
+
+expect(errorMessage).toHaveTextContent(/email is required/i)는 분명히 통과함
+
+좀 오래 걸렸음
+
+모든 것이 잘 통과했음
+
+email validation 에러를 잘 확인할 수 있음
+
+이제 password validation 에러를 확인하는지 테스트해봄
+
+우리 password에 최소 길이 제한은 없으니까 더 이상 필요없음
+
+이번에는 password is required를 보이게 만들어봄
+
+그리고 form submit을 trigger할건데, 우리가 password를 입력하지 않을 것이기 때문에 password is required를 보게 됨
+
+이 똑같은 것을 가져와서 여기에 붙여넣고 이번에는 실제 사용 가능한 email을 입력함
+
+그리고 바로 submit을 함
+
+submit을 하기 위해서 우선은 button을 가져와야함
+
+이 button에 role을 "button"이라고 해봄
+
+getByRole("button")이라 함
+
+어떻게 되는지 확인할 수 있도록 userEvent.click(submitBtn), 그리고 debug()도 함
+
+이 debug는 어떻게 나올까
+
+우리는 button을 click했음
+
+button을 click하도록 만듦
+
+그리고 password is required가 나왔음
+
+그러면 이제 errorMessage를 받을 수 있음
+
+getByRole("alert")로 가져옴
+
+click을 하게 만들고 html의 output을 가져와서 체크할 수 있음
+
+아주 잘 통과하고 있음
+
+이것이 제대로 통과한 것인지 확인할 때는, test 내용을 통과하지 못하게 바꾸고 통과하는지 안하는지 확인해보면 됨
+
+여기 에러가 나옴
+
+우리는 이 에러를 테스트했고 이번에는 login을 클릭하면 mutation을 하는지 테스트해봄
+
+이번에는 다른 테스트를 만들어볼건데, 당연히 async를 사용할거고 여기에 실제 form을 만들어봄
+
+중요한 것은 이 formData에는 유효한 데이터가 들어가야함
+
+실제로 db에 저장된 data일 필요는 없음
+
+여기에 await waitFor(() => {})를 만들고 입력을 함
+
+우선 email, password를 가져오고, 이전과 같이 getByPlaceholderText(/password/i)를 함
+
+먼저 button을 찾아봄
+
+여기 있는 button을 가져와서 userEvent.click(submitBtn)하면 mutation을 submit함
+
+그런데 우리는 mutation을 테스트하고 싶음
+
+어떻게 하면 되지
+
+정말 쉬움
+
+mockClient.setRequestHandler()를 call하고 provider로 가는 mutation, query를 가진 request를 가로채면 됨
+
+그러면 사용할 수 있는 mockClient를 만들어야겠음
+
+여기서 하는 것은 variable을 공유하는 것뿐임
+
+만약 beforeEach 안에 선언하면 여기서 사용할 수 없음
+
+그래서 밖에서 생성하고 값을 지정한 다음에 사용함
+
+이제 여기서 mutation을 하게 만듦
+
+mutation을 call하기 전에 이 setRequestHandler method를 call함
+
+여기에서 setRequestHandler를 만들건데, 말했다시피 실제 mutation을 사용함
+
+LOGIN_MUTATION에 export를 추가함
+
+정말 중요함
+
+아래 mockClient.setRequestHandler()에 실제 mutation인 LOGIN_MUTATION을 추가함
+
+우리가 원한다면 mockResolvedValue를 사용해서 implementation을 mock 할 수 있음
+
+우리가 알고 싶은 value는 login을 보면 알 수 있음
+
+ok, token, error가 있음
+
+항상 data에 작성해야함
+
+작동됐다고 가정하고 ok:true, token:"XXX", error:null이라 해봄
+
+이제 login component 안에 console.log를 추가함
+
+그리고 어떤 data를 받았는지 확인해봄
+
+백엔드에서 mocking을 많이 해봤으니까 여기에 mockedMutationResponse를 만들었음
+
+mockedClient.setRequestHandler(LOGIN_MUTATION, mockedMutationResponse)를 했음
+
+그리고 테스트를 돌려보면 에러가 생김
+
+data 안 login에 줘야함
+
+왠지 이건 잘 작동할 것 같음
+
+우리가 mutation의 response를 mocking하고 있음
+
+이제 이것은 mocked function이기 때문에 이렇게 할 수 있음
+
+여기에서 expected와 received를 볼 수 있음
+
+이 console.log data는 실제 component에 작성된 것임
+
+그래서 작동된다는 것을 확인할 수 있고 response의 data를 mocking 할 수 있음
+
+이것이 우리가 받은 데이터임
+
+그래서 loginInput을 복사해서 여기 toHaveBeenCalledWith({}) 안에 붙여넣고, formData를 가지고 call 했는지 테스트해봄
+
+보다시피 이 모든 것을 테스트하고 있음
+
+보다시피 mock-apollo-client에서 가져온 mockedClient로 테스트하는 방법이 더 좋음
+
+왜냐하면 response를 mocking 할 수 있고 mutation 전체를 확인할 수 있기 때문임
+
+우리는 form에 무엇인가 입력했고 그 내용이 mutation을 call하는데 쓰였음
+
+보다시피 모든 것이 다 잘 작동하고 있음
+
+coverage를 확인해봄
+
+그리고 무엇을 테스트 해야할지 알아봄
+
+login에 45~58, 117번 줄이 남았음
+
+mutation에 에러가 있는 경우를 체크해야함
+
+아직 안한게 있었음

@@ -9643,3 +9643,237 @@ login에 45~58, 117번 줄이 남았음
 mutation에 에러가 있는 경우를 체크해야함
 
 아직 안한게 있었음
+
+## 18.7 Login Tests part Three
+
+마지막으로 테스트할 것은 여기 form에 에러가 생겼을 경우 나타나는지 확인하는 것임
+
+이것을 테스트할 한가지 방법으로는 "shows error on mutation"이라는 테스트를 만듦
+
+아니면 여기에 error를 작성해서 예를 들어 "i'm an error"라고 함
+
+이것은 말도 안됨
+
+이론적으로 ok, token을 받는다면 에러가 없음
+
+이런 일은 절대 생기지 않음
+
+token을 받는다면 error는 없음
+
+그런데 이것을 하려는 이유는 이 라인을 cover하기 위해서임
+
+이것은 "mutation-error"라고 함
+
+그리고 여기에 debug를 call해서 어떻게 보이는지 확인해봄
+
+말했다시피 서버에서 이런 경우는 절대 생기지 않음
+
+그런데 프론트엔드에서 테스트할 수는 있음
+
+mutation에 error가 있다면 mutation-error를 보여줌
+
+그러면 mutation에 error가 있는 경우 error message를 받음
+
+다시 한번 말하지만 이렇게 하는 이유는 코드 작성을 줄이기 위해서임
+
+원한다면 그냥 이 모든 것을 복붙해서 이 부분만 error:"mutation-error"로 바꿔주면 됨
+
+그냥 테스트할 수는 있음
+
+한 번 해볼까
+
+그리고 여기는 mutation-error가 됨
+
+이것이 통과하는지 한번 봐봄
+
+이제 login function은 끝났음
+
+coverage를 봐볼까
+
+100%까지 얼마나 남았나 확인해봄
+
+보다시피 100%의 라인이 cover됐음
+
+uncovered line으로는 45-58이 있음
+
+이것이 가장 테스트하기 어려움
+
+왜냐하면 45-58을 보면 이것들이 component 안에 있는 function임
+
+이런 것들을 implementation이라 볼 수 있는데, functional component 안에 있는 function은 테스트할 수 없음
+
+한번 보여줌
+
+이렇게 하면 아무것도 하지 못함
+
+localStorage가 call 되는 것을 테스트함
+
+이것을 위해 꼭 해야할게 있는데 mutation을 하기 전에, 우리는 이것을 spyOn함
+
+여기에는 아무것도 작성하지 말고 작동되는지만 확인해봄
+
+작동되는지만 확인함
+
+에러가 나오겠지만 우리는 내용을 확인함
+
+보다시피 expected에 0개의 argument로 call 되었다고 나오지만, received에는 "nuber-token", "XXX"라고 나옴
+
+이렇게 spy가 잘 작동하고 localStorage.setItem을 spy하고 있음
+
+여기 Storage.setItem이 있음
+
+잘 작동하고 있음
+
+말그대로 setItem을 잘 보고(spy) 있음
+
+원한다면 localStorage가 "nuber-token"과 "XXX"로 call 되고 있는지 테스트해볼 수 있음
+
+"XXX"는 우리가 mocking한 token임
+
+그러면 이렇게 하면 되겠지
+
+이것은 잘 통과함
+
+왜냐하면 spy하고 있는 localStorage를 받음
+
+이제 우리가 원하는 token으로 call 된다는 것을 알 수 있음
+
+잘 작동함
+
+coverage를 다시 한 번 확인해볼까
+
+보다시피 여전히 45-58이 남아있음
+
+아무것도 바뀐 것이 없음
+
+아쉽게도 여기까지는 처리하지 못함
+
+component 안에 있는 function을 테스트할 수 없음
+
+component의 function을 테스트한다면 implementation을 테스트한다는 것임
+
+우리는 implementation을 테스트할 필요는 없음
+
+이것을 보고 implementation을 테스트했다고 생각할 수도 있음
+
+function이 call 됐는지 테스트하는거니까 그 말이 맞을 수도 있음
+
+이것은 완전히 implementation이지만, mutation은 이 email과 password로 call 되야하니까 만약 이것을 바꾸더라도 아무 일이 없어야함
+
+그런데 mutation을 바꾸고 input을 바꾸면 당연히 작동되지 않음
+
+아쉽게도 모두 100%로 만들 수는 없지만, lines에서 100%, functions에서 100%, branch에서 85%, statements에서 100%를 달성했음
+
+테스트할 수 없는 line들만 빼면 꽤나 만족스러운 결과임
+
+이제 login 테스트가 끝났음
+
+굉장히 생산적이었고 배운게 많음
+
+빠르게 복습해봄
+
+우선 우리는 모든 조건에 맞도록 component를 만들었음
+
+왜냐하면 이 component는 Router, HelmetProvider, ApolloProvider가 필요함
+
+그래서 mock-apollo-client라는 라이브러리를 사용하기로 했음
+
+이것을 사용하는 이유는 내가 말했다시피 mutation을 살펴보고 싶어서 그럼
+
+apollo를 테스트하는 기본적인 방법은 이렇게 테스트하는 것을 허락하지 않음
+
+mutation의 output만 테스트할 수 있게 해줌
+
+그러니까 form에 입력한 내용으로 mutation을 call 했는지는 테스트할 수 없음
+
+그래서 mock-apollo-client를 사용함
+
+이것은 필요할 때 쓰고 필요없을 때는 다른 것을 쓰면 됨
+
+나는 query를 확인할 때 보통 방법을 사용하고, mutation을 확인하고 싶을 때는 mock-apollo-client를 사용함
+
+그리고 여기에 client를 만들었음
+
+그런데 공유를 하고 싶어서 밖에 만들었음
+
+그리고 component들을 render 했음
+
+render에는 정말 많은 좋은 function이 있음
+
+문제는 이것을 여러 곳에서 써야하니까 이렇게 밖에서 만들었음
+
+이렇게 공유를 하고, 첫번째로 한 테스트는 모든 것을 잘 render 하는지 확인하는거였음
+
+이것을 위해서 "Login"이 title에 있는지 확인을 했음
+
+그리고 validation error가 잘 나타나는지 테스트했음
+
+placeholder가 email인 곳에 쓸 수 없는 email을 type했음
+
+이것은 testing-library의 userEvent를 사용해서 만듦
+
+보다시피 clear, click, dblClick, select, deselect, upload, type, tab, paste, hover, unhover를 할 수 있음
+
+정말 많은 것을 할 수 있음
+
+우리는 우리가 찾은 email에 쓸 수 없는 email을 type함
+
+그리고 role이 "alert"인 errorMessage를 찾았음
+
+무조건 errorMessage component에 role="alert"가 있어야함
+
+그렇지 않으면 작동하지 않음
+
+그리고 errorMessage가 textContent로 우리가 원하는 문구를 가지는지 확인함
+
+그리고 email을 clear 했음
+
+그러면 에러로 Email is required가 나옴
+
+그럼 잘 작동함
+
+display password required errors도 같음
+
+유효한 email을 type하고 submitBtn을 click하면, getByRole을 사용해서 submitBtn을 찾아서 click하면 Password is required라는 에러가 나옴
+
+다음으로 가장 긴 것이 있는데, form을 submit하면 mutation을 call하는지 확인함
+
+이것을 위해서 email, password, submitBtn을 가져오고 formData object를 만들었음
+
+formData object는 우리가 mutation에 어떤 것을 입력해서 call 했는지 체크하는데 쓰임
+
+그리고 처음에 공유한 mockedClient를 사용해서 requestHandler를 이렇게 overwrite했음
+
+이 mutation이 실행되면 response가 mockedMutationResponse가 될거라는 것임
+
+mutation의 response는 data, login, ok, error 등등을 가진 mockResolvedValue임
+
+그리고 form에 formData에서 가져온 유효한 email, password를 type하고 click하면, 어떤 에러도 없음
+
+그러면 mockedMutationResponse가 1번 call 됐는지 테스트할 수 있고, 이것이 formData에서 가져온 data가 form에 입력되어서 call됐는지도 테스트할 수 있음
+
+마지막에는 치트키를 조금 썼지만, 백엔드에서 절대 일어나지 않을 mutation을 만들었음
+
+ok가 true고 token이 "XXX"인데 error도 있음
+
+백엔드에서 이런 경우는 절대 생길 수 없음
+
+항상 ok와 token을 받던가 error만 받는 경우만 있음
+
+이것은 내가 mutation-error를 표시하는지 테스트하고 싶어서 만듦
+
+물론 잘 작동함
+
+그리고 implementation을 어떻게 spy하는지 보여줬음
+
+implementation을 테스트했을 때 coverage에 포함되지 않는다는 것도 보여줬음
+
+우리는 다 테스트할 필요가 없음
+
+할 수 있는만큼 cover하면 됨
+
+우리는 implementation을 테스트할 수 없기 때문에 cover 할 수 없다는 것도 앎
+
+우리는 output만 테스트할 뿐임
+
+다음은 create account임

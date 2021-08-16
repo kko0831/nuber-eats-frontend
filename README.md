@@ -9877,3 +9877,143 @@ implementation을 테스트했을 때 coverage에 포함되지 않는다는 것�
 우리는 output만 테스트할 뿐임
 
 다음은 create account임
+
+## 18.8 CreateAccount Tests part One
+
+이번에는 create account test를 만들면서 연습해봄
+
+새로운 것도 배울거지만 login에서 한 것을 복습하는 것에 가까움
+
+우선 이 코드들을 개선 시켜봄
+
+먼저 여기 보이는 것처럼 만들어봤음
+
+당연히 에러가 나옴
+
+왜냐하면 바로 client 때문임
+
+<ApolloProvider>로 <CreateAccount />를 감쌈
+
+여전히 에러는 남아있음
+
+helmet, react-router에 문제가 있음
+
+왜냐하면 어쨌든 항상 helmet이랑 react-router를 사용해야함
+
+그러니까 이렇게 하는 대신에 직접 우리의 render를 만들어봄
+
+왜냐하면 helmet, react-router 같은 많은 것들을 import할 필요없게 만들어줌
+
+그런데 ApolloProvider는 직접 해야함
+
+어떤 component는 graphql을 사용하고 어떤 것은 사용하지 않음
+
+그래도 helmet, router를 항상 import 할 필요없게 만들어주는 utils를 만들 수 있음
+
+그래서 test-utils.tsx라는 파일을 만듦
+
+이 파일은 이 매뉴얼을 따라서 만들어봄
+
+AllTheProviders라는 component를 만들었는데, 이 component는 children이 필요함
+
+children은 우리가 사용해야하는 모든 provider들에 둘러싸여 있음
+
+예를 들어 HelmetProvider를 추가해봄
+
+그리고 react-router도 해봄
+
+"react-router-dom"에서 BrowserRouter를 Router로 import하면 됨
+
+이제 우리는 component를 계속 같은 것들로 감쌀 필요가 없어졌음
+
+이것의 type을 React.FC라 해야 children에서 문제가 생기지 않음
+
+그리고 customRender를 만들건데 여기에는 ui와 options를 가지고 call 할 수 있음
+
+ui는 ui를 말하는데 이것의 type은 React.ReactElement라 할 수 있음
+
+wrapper는 여기 있는 AllTheProviders를 말하고, options는 any로 하면 됨
+
+여기에 :any를 추가함
+
+그리고 options는 ?를 붙여서 선택적으로 받을 수 있게 만듦
+
+꼭 required일 필요가 없음
+
+이제 @testing-library/react에서 가져온 render와 작별인사를 함
+
+그리고 testing-library가 아니라 우리가 만든 test-utils에서 render를 import함
+
+그러면 helmet에 관련된 에러는 없음
+
+utils에서 만든 render를 사용하기 때문임
+
+이제 보다시피 helmet 에러가 아님
+
+이 에러는 state를 바꾸는 것을 await 해야하기 때문에 생김
+
+그러니까 async를 추가하고, test-utils에서 모든 것을 export 했기 때문에 여기서 모든 것을 import 할 수도 있음
+
+예를 들어 waitFor가 있음
+
+다 된 것 같음
+
+한 번 볼까
+
+아주 잘 rendering하고 있음
+
+이제 이것을 beforeEach 안으로 옮김
+
+"renders OK"는 createAccount가 header에 적합한 title을 가지고 있는지 확인하는 테스트임
+
+renders OK에서 title을 확인하고 있음
+
+다음으로 넘어감
+
+이제 mockedClient와 renderResult를 공유함
+
+type이 MockApolloClient였음
+
+이제 여기 있는 HelmetProvider는 필요없음
+
+직접 나의 render를 만들어봤음
+
+그리고 여기서 가져오는 render 말고 "../../test-utils"에서 render를 가져옴
+
+이제 test-utils를 render하고 있음
+
+404에서는 에러가 나오지 않음
+
+왜냐하면 우리가 만든 render를 사용하고 있음
+
+404가 잘 작동하고 있음
+
+코드를 보면 훨씬 보기 좋아진 것을 알 수 있음
+
+지금이 다시 뒤로 돌아가서 고치기 좋은 때임
+
+다른 test들을 어서 고쳐봄
+
+우리는 여기서 create account를 계속 진행해봄
+
+여기서 render가 잘 되고 있고, create account를 좀 더 살펴보면 이런 에러를 테스트해볼 수 있음
+
+password도 마찬가지로 에러가 존재함
+
+여기 있는 minLength는 필요없음
+
+여기서 하는 작업은 거의 다 비슷함
+
+준비를 마쳤고 직접 render를 만들어서 코드를 개선해봤음
+
+더 보기 좋아졌고 ApolloProvider는 render에 넣지 않기로 결정했음
+
+왜냐하면 어떤 때는 ApolloProvider가 필요하지만 어떤 때는 MockApollo가 필요할 때도 있음
+
+login test를 만드는 것은 다음 영상부터 시작함
+
+계속 비슷한 작업을 함
+
+에러를 만들고, 그것을 테스트함
+
+create-account를 클릭하는 것도 테스트해봄

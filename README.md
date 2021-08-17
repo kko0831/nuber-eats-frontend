@@ -10017,3 +10017,229 @@ login test를 만드는 것은 다음 영상부터 시작함
 에러를 만들고, 그것을 테스트함
 
 create-account를 클릭하는 것도 테스트해봄
+
+## 18.9 CreateAccount Tests part Two
+
+이제 validation error를 만들어봄
+
+그리고 여기에서 발생할 에러를 만들어봄
+
+코드 작성을 줄이게 하나의 function에 작성함
+
+renderResult는 신비한 것들로 가득차 있음
+
+여기에서 getByRole과 getByPlaceholderText를 가져옴
+
+그리고 email을 가져올건데 getByPlaceholderText(/email/i)를 사용함
+
+password도 똑같이 해줌
+
+그리고 button을 가져옴
+
+await waitFor()을 씀
+
+state가 바뀌는 것을 기다리기 위해 waitFor를 call함
+
+그리고 userEvent를 사용해서 email에 쓸 수 없는 email을 type함
+
+expect(errorMessage).toHaveTextContent(/Please enter a valid email/i) 테스트는 통과할거고, 결과가 나오는 동안 계속 진행해봄
+
+이제 무엇을 할거냐면 email을 clear함
+
+먼저 await waitFor()를 쓰고, email을 clear함
+
+그리고 여기에 똑같이 해봄
+
+errorMessage는 Email is required가 됨
+
+이번에는 쓸 수 있는 email을 씀
+
+email에 "working@email.com"을 type함
+
+그리고 userEvent.click(button)을 함
+
+여기 button이 있음
+
+에러는 없고, 이것을 trigger하면 "Password is required"를 보게 됨
+
+다시 message를 가져와서, errorMessage가 /password is required/i의 텍스트를 가지는지 expect함
+
+여기를 password is required로 바꿈
+
+처음에는 잘못된 email을 입력하고 enter a valid email이라는 message를 받았음
+
+그리고 email을 clear하고나서는 email is required를 보게 됐음
+
+쓸 수 있는 email을 입력했을 때는 form을 submit해서 password is required를 볼 수 있음
+
+이제 테스트를 확인해봄
+
+결과를 처리하는동안 또 다른 테스트를 만들어봄
+
+it("submits mutation with form values") 그리고 이것은 async가 되야함
+
+이제 테스트 결과를 확인해봄
+
+다 잘 작동되고 있음
+
+여기 있는 것처럼 만들어볼건데, email이 필요하고 password는 필요없을 것 같음
+
+나중에 password가 필요할 수도 있음
+
+여기 모든 것이 다 필요함
+
+여기에 붙여넣음
+
+우리는 또 다시 formData를 만들어야함
+
+create-account를 살펴보면 role이 있음
+
+role이 필요한데 우리는 UserRole.Client를 사용하면 됨
+
+이제 formData를 만들었고 type을 해봄
+
+그리고 userEvent를 사용해서 email에 formData.email을 type함
+
+그리고 role은 default로 선택되어 있으니까, userEvent.click(button)을 함
+
+save하기 전에 체크할게 있는데, login에서 했던 것처럼 loginMutation response를 만듦
+
+여기 mockedMutationResponse가 있음
+
+우리는 mockedLoginMutationResponse라 해봄
+
+엄청 긴 이름이지만 상관 없음
+
+그리고 mockResolvedValue를 사용해서 이 function을 mock함
+
+아무 것도 받지 않음
+
+우리가 variables를 보내야함
+
+mutation은 이렇게 생겼음
+
+login에서 했던 것처럼 data, mutation의 이름, 그리고 fields를 작성하면 됨
+
+이 경우에는 data, mutation의 이름으로 createAccount, ok, error가 됨
+
+data, createAccount, ok는 true라 함
+
+그리고 error도 true로 해봄
+
+errorMessage도 테스트해보고 싶음
+
+그러면 "mutation-error"라 함
+
+이것이 우리의 mockResolvedValue가 됨
+
+이제 mockedClient.setRequestHandler()에서 실제로 사용하는 query를 갖다씀
+
+그러니까 이 query를 export하고, 거의 모든 mutation들을 이렇게 만들어줘야함
+
+이제 create-account에서 CREATE_ACCOUNT_MUTATION도 import 해줌
+
+그리고 여기에 넣어주고, handler로 mockedLoginMutationResponse를 넣어줌
+
+create-account를 보면 createAccountInput이라는 것으로 call됨
+
+createAccountInput에 필요한 것은 email, password, role임
+
+그러면 mutation이 우리가 입력한 내용으로 call됐는지 체크함
+
+createAccount가 통과하길 기다려봄
+
+오늘 처음 나온 에러임
+
+거의 다 됐는데, 여기서 생긴 에러는 window.alert가 사용할 수 없다는 내용임
+
+이게 무슨 말이냐면 코드가 이 지점까지 실행했다는거니까 테스트가 잘 작동한다는 것임
+
+알다시피 window.alert()를 사용할 수 없다고 나왔지
+
+원한다면 테스트할 수 있음
+
+그렇게 하려면 여기에 jest.spyOn(window, "alert") 그리고 mockImplementation(() => null)로 하면 window.alert가 null을 return하는 function이 됨
+
+아무 것도 아닌게 되는 것임
+
+expect(window.alert).toHaveBeenCalledWith() 안에 이 text를 가져오면 됨
+
+이렇게 window.alert()를 spyOn하고 있고, 기존 implementation을 우리가 만든 implementation으로 바꿨음
+
+그리고 window.alert()가 "Account Created! Log in now!"로 call되는지 테스트함
+
+보다시피 잘 작동하고 있음
+
+이 말은 mutation mocking이 잘 작동한다는 것임
+
+ok가 true니까, 이게 call 됐다는건데 정말 멋짐
+
+그리고 이것을 어떻게 mock하는지 보여주고 싶음
+
+이것은 정말 많이 쓰임
+
+기억할지 모르겠지만 우리는 history, location, parameters를 사용하고 있는데, 이 모든 것은 useHistory 같은 hook에서 가져옴
+
+useParameters도 있고 useLocation도 있음
+
+그래서 hook을 어떻게 mock하는지 알려주고 싶음
+
+여기서는 react-router-dom에서 hook을 가져오고 있음
+
+일단 여기까지만 해도 만족함
+
+보다시피 테스트를 실패했으니까 잘 작동한다는 말임
+
+이렇게 테스트를 작성해봤음
+
+어렵지 않지
+
+셋업 이런 것들만 이해하면 어렵지 않음
+
+코드를 읽고 이해하는 것도 어렵지 않음
+
+테스트가 잘 통과하고 있음
+
+coverage를 확인해봄
+
+100%까지는 바라지도 않음
+
+그렇게까지는 만들지 못할 것 같음
+
+왜냐하면 이것을 테스트할 수 있을지 모르겠음
+
+어떻게 될지 봄
+
+다음 영상에서는 library에서 가져온 hook을 mock하는 방법을 알려줌
+
+그것도 정말 재밌음
+
+coverage를 확인해볼까
+
+같은 부분에서 말썽임
+
+login을 봄
+
+45-58에서 cover가 안됐음
+
+이것은 테스트할 수 없음
+
+이것은 마치 variable 같음
+
+잊은게 있는데 mutation을 실패하면 error message를 받음
+
+이것을 한 번 확인해봄
+
+여기에는 "mutation-error"가 들어감
+
+내가 이것을 하는 이유는 모든 가능한 경우를 trigger하고 싶어서 그럼
+
+물론 이런 경우가 실제로 일어나지 않을거라는 것을 앎
+
+ok가 true라면 error가 없음
+
+나는 단지 component에서 모든 경우를 테스트하고 싶어서 그럼
+
+다음 영상에서는 필요하다면 어떻게 history를 mock하는지 보여줌
+
+보다시피 모든 것이 잘 통과함

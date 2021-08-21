@@ -10243,3 +10243,155 @@ ok가 true라면 error가 없음
 다음 영상에서는 필요하다면 어떻게 history를 mock하는지 보여줌
 
 보다시피 모든 것이 잘 통과함
+
+## 18.10 CreateAccount Tests part Three
+
+만약 component에 있는 library에서 가져온 hook을 테스트하고 싶다면, 그리고 그 library에 ApolloMock 이런게 없다면 library를 mock 해야함
+
+이것을 mock 해야 history가 이걸로 call 됐는지 체크할 수 있음
+
+어떻게 하는지 지금 바로 보여줌
+
+그렇다고 coverage 문제를 해결해주지는 않음
+
+아무튼 library를 mock 해봄
+
+jest.mock()으로 "react-router-dom"을 mock함
+
+그리고 이것은 object를 return 할건데, 이 경우에는 이 object가 useHistory를 mocking 한다고 해봄
+
+useHistory는 또 다른 function을 return하는 function이 됨
+
+이 function의 이름은 push임
+
+그리고 jest.fn()으로 만듦
+
+여기에서 react-router-dom을 mocking하고 있고, react-router-dom은 여기 있는 useHistory hook을 return하는 object가 됨
+
+그리고 이것을 call하면 여기 있는 push를 return함
+
+콘솔에서 테스트를 보면 보다시피 에러가 있음
+
+이 에러는 우리가 react-router-dom을 전부 다 override 했다는 것을 알려줌
+
+여기서 우리가 만든 implementation으로 react-router-dom 전체를 바꿔버림
+
+여기 useHistory를 작성한 것 때문에 그럼
+
+react-router-dom에는 useHistory 말고도 쓰이는 것이 많은데 그것을 다 바꿔버림
+
+우리가 react-router-dom을 망가트려버림
+
+기억날지 모르겠지만 우리가 만든 render는 react-router-dom에서 Router를 import하고 있음
+
+BrowserRouter를 import하고 있음
+
+여기서 우리는 새로운 implementation을 만들었고 jest가 모듈을 대체함
+
+그러니까 새로운 implementation을 만들어서 여기서 사용하는 BrowserRouter가 없음
+
+하나의 function만 가지고 있음
+
+그래서 react-router-dom에는 useHistory만 있음
+
+내가 이렇게 library 전체 또는 library에서 하나의 function만 mock하고 싶을 수도 있음
+
+그런데 이렇게 하면 모든 것이 고장나버림
+
+그렇게 하고 싶지 않으면, 여기에서 모든 function의 mock을 작성해야함
+
+그래서 나중에 useParams를 쓴다면 그 mock도 작성해야된다는 것임
+
+그런데 그것은 너무 별로임
+
+그래서 jest.requireActual()에 대해 알려줌
+
+이것은 실제 모듈을 require함
+
+여기에 "react-router-dom"이라 하면 됨
+
+그리고 이것을 const realModule로 바꿈
+
+그러면 이제 실제 react-router-dom에서 너가 mock하고 싶은 function을 mock 할 수 있음
+
+이렇게 하면 고장나지 않음
+
+우리가 일부분만 mock하고 싶어할테니까 이것은 정말 중요함
+
+여기서 save를 하고, 알아서 재작동을 시켜주지 않음
+
+보다시피 아주 잘 작동하고 있음
+
+CreateAccount에서 submits mutation with form values가 우리가 만든 mock으로 작동하고 있음
+
+만약 내가 바꾼 것이 있다면 그것을 다시 돌려놓음
+
+안으로 옮김
+
+여기서 우리가 이것을 mocking하고 있음
+
+이것을 spyOn 할 수 있다는 뜻임
+
+그래서 여기 alert 이후에 expect를 할건데, history.push()가 우리가 세팅한 router인 "/"로 call 됐는지 확인해봄
+
+history.push()가 "/" route로 call 됐는지 확인해봄
+
+그럴려면 이 jest.fn()을 밖으로 옮겨서 pushMockImplementation = jest.fn()이라 함
+
+이제 pushMockImplementation이 어떤 것으로 call 됐는지 확인해봄
+
+여기까지만 하고 어떤 것으로 call 됐는지 확인해봄
+
+jest.mock() is not allowed to reference any out-of-scope variables를 고칠 수 있는 방법은 variable을 만들어서 'mock'을 prefix(변수 이름 앞에 붙이면 됨)하는 것임
+
+mockPush로 해봄
+
+그러면 작동함
+
+여기를 mockPush로 바꿈
+
+그리고 또 다른 에러가 생김
+
+이것은 "/"로 call 된다고 해야하기 때문임
+
+이렇게 variable을 mock하면 되고, 원한다면 hook을 mock 할 수 있음
+
+expected에 0개의 argument로 call 되었다고 나오고 있음
+
+이걸로 call 되어야 하겠지
+
+이렇게 하면 작동됨
+
+작동시켜서 coverage를 확인하면 create account 테스트를 마친 것을 알 수 있음
+
+이 테스트는 통과함
+
+모든 것이 완벽하게 통과하고 있음
+
+그리고 coverage를 확인하면 coverage는 초록색임
+
+물론 여기에는 implementation이기 때문에 테스트할 수 없는 라인도 있음
+
+결과는 정말 만족스러움
+
+이제 모듈을 고장내지 않고 mock하는 방법을 알게 됐음
+
+이것은 jest를 써서 배울 수 있는 것 중에 정말 중요한 것임
+
+말했다시피 뭐 하나가 call 됐는지 확인하기 위해 모듈 전체를 못쓰게 만들 수는 없음
+
+그런데 웬만하면 모듈을 mocking 하지마
+
+왜냐하면 mock을 할 수 있게 해주는 package가 있을 수도 있음
+
+내가 useQuery, useMutation, response 등등을 mock 할 수가 있는데, 이럴 때 mutation을 실행시켜주는 package가 있으면 정말 좋음
+
+mock-apollo-client를 쓰던가 공식적인 apollo testing 방법도 있음
+
+아무튼 mock을 해야한다면 이렇게 하면 됨
+
+requireActual은 정말 좋음
+
+그리고 mock이 끝나면 mock을 다시 돌려놔야함
+
+왜냐하면 다른 테스트에서 useHistory를 쓰고 싶은데 mock된 useHistory를 쓰지 않을 수 있음

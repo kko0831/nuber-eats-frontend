@@ -10395,3 +10395,71 @@ requireActual은 정말 좋음
 그리고 mock이 끝나면 mock을 다시 돌려놔야함
 
 왜냐하면 다른 테스트에서 useHistory를 쓰고 싶은데 mock된 useHistory를 쓰지 않을 수 있음
+
+## 18.11 Conclusions
+
+이것이 바로 내가 만든 아름다운 들판임
+
+노랗게 바랜 것도 있지만 고칠 수가 없음
+
+이제 이 부분을 노란색, 녹색 들판으로 만들 차례임
+
+웬만하면 녹색으로 만듦
+
+이 component들에는 테스트하는 방법을 모르는게 없을 것임
+
+query와 mutation을 어떻게 mock하는지 보여줬고 form을 어떻게 다룰지, component가 render를 했는지 안했는지, 그리고 click, delete하는 모든 방법을 알려줬음
+
+예를 들어, client의 category를 보면 query를 mock하는 방법이 있음
+
+정말 쉬움
+
+그리고 restaurants에는 Helmet을 체크하는 방법도 있음
+
+이제 어떻게 하는지 앎
+
+또 나왔음
+
+query를 mock하는 방법이 여기 있음
+
+방법을 잊었다면 header를 확인해봄
+
+여기서 처음으로 query를 mock 해봤음
+
+알다시피 await를 해야함 
+
+이제 query를 mock하는 방법을 완벽히 앎
+
+그러면 이제 원하는 response를 받을 수 있음
+
+edit-profile에서는 form을 다루고, title을 체크하고 error가 있다면 이것을 어떻게 trigger하는지도 앎
+
+그런데 여기에는 error를 만들지 않았음
+
+button을 click하는 것까지 모두 다 할 줄 앎
+
+이 빨간 부분을 테스트하는 방법 중 알려주지 않은 것은 없음
+
+form, click, mutation과 query를 mocking하는 방법, state를 loading하는 것 전부 다 알려줬음
+
+이제 내가 도전할 차례임
+
+이것을 직접 다 테스트하지는 않음
+
+그러면 수업이 엄청 길어짐
+
+말했다시피 우리는 다 배웠음
+
+계속 반복적인 것을 할테고, 누구도 여기서 배울게 없음
+
+그냥 길고 지루한 강의가 됨
+
+이번 섹션은 여기까지 함
+
+jest를 가지고 테스트를 하는 것은 여기까지임
+
+이제는 end-to-end test로 넘어감
+
+보다시피 여기에서는 모든 component들을 개별적으로 테스트하고 있는데, 이제는 다 함께 테스트해봄
+
+이것은 Cypress라는 것으로 해봄

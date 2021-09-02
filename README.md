@@ -10463,3 +10463,245 @@ jest를 가지고 테스트를 하는 것은 여기까지임
 보다시피 여기에서는 모든 component들을 개별적으로 테스트하고 있는데, 이제는 다 함께 테스트해봄
 
 이것은 Cypress라는 것으로 해봄
+
+## 19.0 Installing Cypress
+
+이 섹션이 너무 기대됨
+
+왜냐하면 우리는 cypress로 작업하기 때문임
+
+Cypress는 Mac, Windows, Linux에서 멋지게 end-to-end 테스트할 수 있게 해줌
+
+Cypress는 최고임
+
+이제 가장 먼저 할 것은, Cypress를 설치해야함
+
+터미널에 npm install cypress@6.0.1을 입력함
+
+첫 번째 설치이기 때문에 시간이 걸릴 수도 있음
+
+Mac, Windows나 Linux에서 실제 프로그램을 다운로드하고 설치해줌
+
+그냥 기다려야함
+
+react 설치하는 것만큼 빠르지 않음
+
+아마 그것보다 좀 더 걸릴 것임
+
+그럼 설치하고 끝나고 다시 봄
+
+Cypress 한 개가 설치됐고 Cypress를 실행해야함
+
+그럼 npx cypress open을 해줌
+
+터미널에 npx cypress open 입력함
+
+-> Failed to deserialize the V8 snapshot blob. This can mean that the snapshot blob file is corrupted or missing 에러가 발생했는데 터미널에 npx cypress install --force 입력하여 해결함
+
+-> cypress verification timed out 에러가 발생했는데 터미널에 npx cypress verify 입력하여 해결함  
+
+그리고 이제 내가 보게 되는 것은, 컴퓨터에 software를 여는 것임
+
+그리고 처음에 Mac에서는 시간이 조금 걸림
+
+왜냐하면 권한이나 뭐 그런 것을 물어봄
+
+만약에 error를 보게 된다면, 그냥 모든 권한을 허용해 주고 npx cypress를 다시 실행해줌
+
+그리고 이제 여기 보면 우리는 말 그대로 cypress라고 하는 software를 열었음
+
+보다시피 이미 이런 integration 테스트라든지 몇몇 테스트들의 예시가 차고 넘침
+
+충분히 멋짐
+
+우리는 cypress.json이라는 파일을 가지고 있음
+
+이것은 비어있음 
+
+그리고 우리는 여기 cypress 폴더도 가지고 있음
+
+그럼 어떻게 cypress가 움직이는걸까
+
+기본적으로 cypress에서는 우리가 만들었었던 test를 적음
+
+beforeEach, describe, it이든 뭐든 우리는 이 모든 것을 어떻게 하는지 배움
+
+그런데 이것은 기본적으로 page에서 navigate하게 해주고, 어떤 것이 존재하는지 확인하고 버튼이 여기 있는지 확인해 주기도 하고, 클릭도 할 수 있게 해주고 cookie를 set하기도 하고 get할 수도 있게 해줌
+
+말 그대로 모든 것을 테스트할 수 있음
+
+그래서 만약 이것이 어떻게 동작하는지 알고 싶다면, 우리가 해야 할 일은 integration folder 안에 folder랑 file들을 만드는 것임
+
+그것은 여기 Cypress 안에서 보일 거고, 우리는 '19 integration specs 실행하기'를 클릭함
+
+여기를 누르면 이것이 Chrome 87인가 뭔가를 실행함
+
+그리고 보다시피 이 웹사이트로 이동해서, 거기서 우리가 작성한 모든 테스트를 실행함
+
+그래서 우리는 웹사이트로 감
+
+그리고 이게 웹사이트에서 모든 테스트를 실행함
+
+여기에 테스트를 하고 있음
+
+작동되는 것이 보임
+
+우리 웹사이트에서 activities들을 실행하고 있음
+
+그리고 각 activity는 하나의 테스트임
+
+이것이 cypress임
+
+이 부분에서 우리가 배움
+
+그래서 chrome을 닫음
+
+여기 stop(버튼)을 누름
+
+그리고 examples라는 폴더를 지움
+
+왜냐하면 이제 우리가 우리의 테스트를 만들려고 하기 때문임
+
+그리고 이제 우리는 cypress로 가서, 그 안에서 tsconfig.json이라는 파일을 만듦
+
+이것은 cypress 폴더 안에 typescript를 구성함
+
+왜냐하면 cypress 안의 typescript 구성은, 우리 react application의 typescript 구성과는 다르기 때문임
+
+여기에 compilerOptions를 작성해줌
+
+처음에는 allowJs를 써줌
+
+왜냐하면 우리는 js 파일이 있으니까 그리고 이것은 사실(true)임
+
+그리고 우리는 baseUrl을 써줌
+
+baseUrl은 기본적으로 cypress가 설치된 곳이 어디인가 하는 것임
+
+그것은 node_modules 안임
+
+그리고 우리는 여기에 include라고 해줘야함
+
+그리고 이것은 array이고, 우리는 모든 폴더를 포함(include)하고 싶음
+
+그리고 또한 우리는 어떤 type들을 더하고 싶음
+
+그래서 여기에 'types'를 적어줌
+
+내가 적고 싶은 것은 cypress임
+
+여기에 'input 파일을 덮어쓸 수 있기 때문에 이러한 파일을 작성할 수 없습니다.'라는 error가 있을 수도 있음
+
+이것은 기본적으로 typescript가 cypress(로 구성된) code를 build할 수 없기 때문에 하는 말임
+
+만약에 cypress 코드를 build 할 수 있다면, 이것이 index나 index.js같은 것으로 교체될 수 있기 때문임
+
+typescript는 우리가 일반적인 javascript를 build 한다고 생각하지만 사실은 그렇게 안 함
+
+그래서 우리는 "outDir"에 뭐가 적혔든 이 경고를 고침
+
+가끔 시간이 좀 걸림
+
+역시 보다시피 고쳐졌음
+
+우리는 tsconfig를 가지고 있음
+
+그리고 이게 cypress임
+
+그리고 이제 우리 첫 번째 테스트를 만들어봄
+
+그래서 'first-test.ts' 파일을 만듦
+
+그리고 여기에 describe를 사용함
+
+여기 보다시피, 이 describe는 Jest에서 오지 않았음
+
+이것은 mocha에서 왔음
+
+그냥 이것은 cypress가 Jest 대신에 mocha를 사용하기 때문임
+
+그래서 react-js 테스트에서는 '이것은 jest에서 왔습니다'를 보게 됨
+
+이 경우에는 mocha에서 왔지만, 이것은 library가 다를 뿐, 말 그대로 같은 기능임
+
+이제 여기 우리는 우리의 test suite를 설명(describe)해줌
+
+그리고 그것은 "first test"나 어떤 거든 괜찮음
+
+그리고 이제 cypress에 대한 간략한 설명을 해줌
+
+그래서 우리는 first test라고 설명함
+
+it안에 'homepage로 가야합니다.'라고 예를 듦
+
+그리고 이전에 했던 거라서 이것은 엄청 쉬움
+
+이제 우리는 우리 키보드에 해야 할 일이 있음
+
+우리가 여기에 type을 cypress라고 더했기 때문에 이런 일이 일어남
+
+cy, 이것은 cypress를 의미함
+
+그리고 우리는 visit를 해주고 localhost:3000으로 감
+
+일단 여기서 멈추고, 아니면 이렇게 title() 해줌
+
+should("be") 해주고 아니면 should("eq") 해줌
+
+그리고 Login이랑, 그리고 Nuber Eats 해줌
+
+이렇게 생겨야 할 거 같음
+
+그래서 우리는 localhost 포트 3000번을 방문하고 title은 Login | Nuber Eats랑 같아야함
+
+게다가 보기에도 엄청 좋음
+
+그래서 실행시켜봄
+
+절대 잊지 않아야 할 것이 있음
+
+우리 react application을 실행시켜야 할 필요가 있음
+
+그래서 우선 우리는 react application을 실행해야함
+
+터미널에 npm run start를 입력하고 이것이 한번 실행되면 우리는 cypress를 실행하러감
+
+그래서 npx cypress open 해줌
+
+개발 서버를 시작하고 있음
+
+여기를 zsh로 바꾸고, 그리고 우리는 run npx cypress open을 함(터미널을 새로 열고 npx cypress open 입력함)
+
+그리고 이제 보다시피 우리는 cypress에서 볼 수 있음
+
+우리는 한 개의 test만 가질 거고 그게 바로 첫 번째 테스트(first test)임
+
+그래서 이제 우리 웹사이트가 실행되고 있음
+
+그리고 나서, 이제 테스트해 볼 시간임
+
+그래서 우리는 "1개의 integration spec 실행하기"를 클릭함
+
+이제 chrome 87을 엶
+
+그리고 우리는 localhost 포트 3000으로 감
+
+우리가 'Login | Nuber Eats'로 타이틀이 나오기를 원했었는데 그렇게 됐음
+
+이렇게 우리는 첫번째 end-to-end 테스트를 만들었음
+
+이제 한번 망쳐봄
+
+그리고 내가 새로고침 했을 때, 보다시피 테스트가 즉시 새로고침 됐음
+
+그리고 보다시피, 여기 타이틀이 (기대한 것과) 같지 않음
+
+이것이 바로 cypress였음
+
+다음 시간에 우리는 로그인 화면에 end-to-end 테스트 진짜로 다뤄봄
+
+우리는 브라우저를 컨트롤 할 수 있고 우리는 브라우저에 테스트를 실행시킬 수 있음
+
+모든 것이 작동하는지 한번 확인하고, 이 테스트가 통과되는지 확인하고 cy를 확인할 수 있는지 확인함
+
+모든 것이 작동하는지 보고, describe()는 mocha에서 온 거고, it()도 mocha에서 온 거고, cy는 cypress로 왔는지도 확인해줌

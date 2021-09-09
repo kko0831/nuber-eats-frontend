@@ -10705,3 +10705,255 @@ should("be") 해주고 아니면 should("eq") 해줌
 모든 것이 작동하는지 한번 확인하고, 이 테스트가 통과되는지 확인하고 cy를 확인할 수 있는지 확인함
 
 모든 것이 작동하는지 보고, describe()는 mocha에서 온 거고, it()도 mocha에서 온 거고, cy는 cypress로 왔는지도 확인해줌
+
+## 19.1 Our First Cypress Test
+
+그럼 이제 진짜배기를 만들어봄
+
+그런데 내가 하고 싶은 것이 하나 있음
+
+매번 visit() 안에 "localhost 3000포트 어쩌구 저쩌구"하는 것을 하고 싶지 않음
+
+그래서 우리는 cypress.json으로 감
+
+여기에다가 "baseUrl"해주고, 그리고 이것은 http://localhost:3000이 됨
+
+나는 매번 'localhost:3000으로 가'라고 적기 싫음
+
+그리고 만약에 궁금하다면, setting은 여기 있음
+
+갖고 있는 setting을 볼 수 있음
+
+이 모든 것이 다 확인할 수 있는 setting임
+
+그리고 여기를 보다시피, 우리는 그냥 baseUrl에서 localhost:3000을 바꿀 수 있음
+
+그리고 내가 바꿀 수 있는 setting들임
+
+그래서 우리는 이거 다 끝냈음
+
+그래서 우리는 이것을 안 해줘도 됨
+
+그냥 이렇게 하면 됨
+
+이제 cypress가 어떻게 움직이는지 봄
+
+다시 실행시켜봄
+
+테스트가 제대로 작동함
+
+바로 작동해야함
+
+잘 됨
+
+'localhost:3000'임
+
+그래서 이것은 우리한테도 빨라질거고 cypress에서도 빠름
+
+그럼 이제 진짜로 할 것에 대해서 말해봄
+
+그래서 예를 들어서 이 경우에는 home 페이지로 가야함
+
+이것은 괜찮음
+
+그래서 이것은 작동함
+
+그런데 이 경우에는 describe('Log In')으로 함
+
+그럼 어떻게 되냐면 login 페이지가 떠야함
+
+그래서 이 테스트는 작동함
+
+첫번째로, email을 클릭할 수 있고, password를 클릭할 수 있고, form을 채워 넣을 수 있음
+
+그래서 'form을 채워넣을 수 있습니다.'라고 함
+
+그리고 cy를 다시 해주고, visit()하고 메인( "/" )으로 감
+
+그리고 여기에 우리는 get이라고 불리는 것을 사용함
+
+그리고 이제 get은, 예를 들어서, 여기다가 어떻게 email을 가지고 오는지, 우리는 여기에 selector playground라는 무엇인가를 가지고 있음
+
+그래서 여기를 클릭함
+
+그리고 보다시피 난 내가 원하는 것을 선택할 수 있음
+
+그래서 이 경우에는, 예시로 name이 됨
+
+그래서 나는 그냥, get만 씀
+
+그래서 나는 email을 가지게 될 거고, 여기에는 type()을 적고, 유효한 이메일을 적어줌
+
+그리고 나는 get을 해줄 거고 password를 get함
+
+그리고 type()함
+
+벌써 실행해버림
+
+보다시피 타이핑 중임
+
+엄청 잘 됨
+
+그리고 이제 내가 원하는 것은 button임
+
+여기와서 button이라 적음
+
+보다시피, 내가 어떻게 하면 버튼을 가질 수 있는지 알려주고 있지만, 좀 이상함
+
+썩 그렇게 좋지는 않음
+
+element를 가져오는 방식이 Tailwind class name처럼 CSS class name을 쓰는 방식임
+
+그렇게 좋은 방법은 아님
+
+우리는 일단 계속해서 진행할거고, 나중에 고침
+
+그리고 우리는 button이 should()한다고 해줌
+
+그리고 여기에 엄청 많은 옵션들이 있음
+
+이 경우에는, 우리는 have.class를 사용함
+
+아니면 우리는 not.have.class를 사용할 수도 있음
+
+그리고 우리가 원하지 않는 class는 pointer-events-none임
+
+그래서 이제 새로고침하면 보다시피 꽤 빠름
+
+자동으로 잘 작동하고 잘 됨
+
+보다시피 여기에 버튼이 있는데 이 class가 없음
+
+그래서 form을 채울 수 있다는 의미임
+
+여기서 우리는 할 일을 만들어둠 
+
+log in은 나중에 하고, 이제 여기서 우리는 'email이랑 password validation(검증) 에러를 할 수 있다'라고 함
+
+그러니 error를 엄청 빨리 만들어봄
+
+그래서 가지고 여기로 옴
+
+그래도 한번 해봄
+
+우리는 cy.visit()를 하고, get('.text-red-500')을 적어줌
+
+여기서는 should("have.text")라고 함
+
+그리고 value는 'please enter valid email'임
+
+첫번째로 email을 가지고 와야 하고, type()을 해줌
+
+이것이 작동하는지 한번 봄
+
+보면, 'form을 채워 넣을 수 있음'을 볼 수 있음
+
+다음은 'email이랑 password validation(검증) 에러를 할 수 있다'가 보이고, 여기 보다시피 작동함
+
+왜냐하면 '유효한 이메일을 넣으세요'라는 문장을 갖는 span이 있음
+
+그래서 이것은 작동함
+
+이제 보다시피 가장 첫번째로 cypress는 너무 쿨함
+
+이렇듯 user가 하듯 나의 website를 테스트할 수 있음
+
+다루는 범위를 보면 우리는 react testing library 그리고 jest를 사용하고 있음
+
+그런데 다른 하나는, 나의 user가 어떻게 상호작용하는지를 보는 것과 그 상호작용을 테스트하는 것임
+
+근데 element들을 이런 식으로 갖는 것은 진짜 별로임
+
+그래도 감사하게도 우리는 cypress testing library라고 불리는 것을 설치할 수 있음
+
+원하면 --save-dev 해도 됨
+
+터미널에 npm install @testing-library/cypress@7.0.2 --save-dev 입력  
+
+그리고 이것이 우리한테 해줄 수 있는 것은 react testing Library에서 우리가 사용했던 것으로 element를 가지게 하는 것임
+
+만약 잊어버렸다면 예시로 component로 가봄
+
+button으로 가봄
+
+우리가 이것을 설치하면, 'getByText'와 같은 것을 사용해서 element를 가지고 올 수 있음
+
+우리는 getByText, getByRow, getByContainer를 할 수 있음
+
+testing-library/cypress를 설치해야 가능함
+
+그래서 이것이 설치될 거고 끝나는 동안에, 여기 types에 추가함
+
+그래서 이제 cypress와 함께 이런 type들을 더했음
+
+그리고 cypress/support/commands.js로 가서 붙여넣기해줌
+
+그리고 이제 우리는 여기로 와서 이런 식으로 get하는 것 대신에, 예를 들어서, findByPlaceholderName을 사용할 수 있음
+
+잘 작동함
+
+만약 자동완성에서 이것이 보이지 않는다면, 만약에 testing library가 제공하는 방법이 보이지 않는다면, 그것은 typescript를 재시작시킬 수 있게 vs code를 재시작해야 한다는 의미임
+
+그런데 첫번째로 이렇게 testing library cypress 관련해서 적어줘야 하고, 명령문을 이렇게 import 해줘야함
+
+첫번째 테스트로 가서, find를 확인해보고 이것이 작동하면, 그것은 너가 시작해도 좋다는 의미임
+
+만약 그렇지 않으면, vs code를 다시 시작함
+
+그래서 우리는 이렇게 get하는 것보다, 이렇게 향상시킬 수 있음
+
+우리는 findByPlaceholderText()를 써줄 수 있음
+
+react components를 테스트할 때 우리는 전에 썼던 방식과 똑같이 써줄 수 있음
+
+그리고 여기에는 findByRole("alert")를 써줌
+
+이것이 훨씬 나음
+
+그리고 여기 똑같은 것을 해줌
+
+그리고 여기도 findByRole 해줌
+
+이메일을 찾을 수 있고, 이메일 type을 해줄 수 있고, alert를 찾을 수도 있음
+
+여기에도 email을 찾을 수도 있고, password도 찾을 수 있고, 타입도 체크함
+
+보다시피 훨씬 더 좋아 보임
+
+이제 다시 실행시켜봄
+
+시작할 준비가 됐음
+
+터미널에 npx cypress open 입력함
+
+그리고 여기에 잊지 않고 npm run start 해줌(다른 터미널에 npm run start 입력함)
+
+내 type들을 새로고침 해야만 해서 껐었음
+
+그래서 이제는 작동하고, 진행하면 됨
+
+그래서 이 test가 통과하는지 한번 본 다음에, 다음 영상으로 넘어감
+
+우리는 이제 진짜로 우리의 end-to-end test를 만듦
+
+우리는 '로그인'이랑 '회원가입'을 테스트함
+
+'프로필 수정'이랑 몇몇 상호작용에 관해서도 테스트함
+
+그것들을 마치고 나면, 'forms', 'local storage', 등등을 배울 거고, 그리고 어떻게 연결을 'intercept'하는지에 관해서도 알아봄
+
+왜냐하면 가끔 request를 별로 보내고 싶지 않거나, 마치 mock처럼 그 request를 가로채고 싶을 경우가 있음
+
+모든 것은 언제나 mock 같음
+
+이제 이것을 실행시켜봄
+
+다시 시작해봄 
+
+"1 integration spec"을 다시 클릭해줌
+
+이것이 실행되는지 한번 봄
+
+되는지 보고, 다음 영상으로 넘어감
+
+log in 페이지로 가야함

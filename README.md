@@ -10957,3 +10957,213 @@ react components를 테스트할 때 우리는 전에 썼던 방식과 똑같이
 되는지 보고, 다음 영상으로 넘어감
 
 log in 페이지로 가야함
+
+## 19.2 Login E2E
+
+보다시피 instruction을 연결하는 것은 우리가 전에 했던 것만큼 쉽지는 않았음
+
+왜냐하면 이것은 react testing library고 이것은 그저 계속 연결하는 것을 허용하지 않음
+
+그래서 이것을 위해서는 우리가 몇몇을 분리해야만 함
+
+예를 들어서, 우리가 findByPlaceholderText를 쓸 때, 또 다른 cy로 분리해야함
+
+이것이 기본적으로 그럼
+
+여기서 type()은 할 수 있는데, 그 다음 것은 또 분리해줘야만 함
+
+단지 그들이 그렇게 정했기 때문에 이렇게 하는 것임
+
+그래서 우리는 여기에 cy 해주고, 우리는 또 find를 cy 해줌
+
+기본적으로 이렇게 해야함 
+
+이것이 보여야할 거고, 연결시킬 수 없음
+
+find instruction들은 연결시킬 수 없음
+
+그런데 다른 것은 그렇게 해도 됨
+
+그래서 email을 한번 찾으면, 이메일을 type 할 수 있음
+
+password를 찾으면, password를 type 할 수 있음
+
+만약 원한다면, user = cy라고 선언해줄 수도 있음
+
+내 생각에는 이것이 너의 코드를 훨씬 보기 좋게 만듦
+
+그 이유는 cy를 user로 바꿀 수 있기 때문임
+
+그래서 아마도 이것이 나음
+
+아마도 이것이 보기 좋음
+
+이제 이 모든 테스트는 통과해야함
+
+form을 채워 넣어야함
+
+그리고 보다시피 프로페셔널하게 잘 작동함
+
+그래서 모든 것이 잘 통과함
+
+모든 것이 find 되고, 모든 것이 잘 움직임
+
+이제 이것이 우리가 해야 하는 것들임
+
+만약에 내가 이렇게 findByPlaceholderText 하길 원하면 그럼 user.findBy 어쩌구 저쩌구를 쓰고, 아니면 cypress인 cy.find 어쩌구 저쩌구를 씀
+
+만약에 모든 것을 하나로 연결하고 싶다면, 가장 좋은 방법은 findBy를 쓰는 대신에 get을 쓰는 것임
+
+그럼 이제 진짜 login 테스트를 만들어봄
+
+먼저, login 페이지 열기를 했고, 'form을 채울 수 있음'도 했음
+
+우리는 login은 나중에 하고 password에 대한 테스트부터 끝냄
+
+"유효한 이메일을 입력해 주세요"라고 쓰는데 이것은 여기 그대로 있을 거고, 우리는 다시 findByPlaceholder를 씀
+
+그리고 다시 email이 됨
+
+그리고 여기에는 아무것도 type하지 않음
+
+그래서 우리는 clear()를 씀
+
+input 칸을 비우고, 그리고 우리는 alert를 찾음
+
+"이메일이 필요합니다"라는 문구가 필요함
+
+이 테스트가 작동하는지 봄
+
+login 페이지가 나와야 하고, 'form을 채워 넣을 수 있음'이 보이고 'email / password validation error'도 볼 수 있음
+
+다음으로 우리는, 이메일에 대해서 또 하나 할 것이 있음
+
+여기 보이듯, 유효한 이메일 형식이어야함
+
+그리고 나서 login을 클릭함
+
+email을 쓰고, password를 클릭한 다음에 이렇게 'password 필요함'이라고 나와야함
+
+그러니까 email을 쓰고 난 다음, password를 쓰도록 해야함
+
+그럼 여기까지 무슨 일이 일어나는지 한번 봄
+
+우리는 그냥 password 칸을 클릭함
+
+그러니까 이렇게 칸을 클릭하고, 무엇인가 적어넣고 그리고 삭제함
+
+클릭하고, 적고, 그 다음에 지움
+
+그래서 우리는 password에다가 type()을 해주고, 그 다음에 clear()해줌
+
+error를 만드는지 한번 봄
+
+이제 저기에 'password가 필요함'이 있게 됐음
+
+그래서 이것이 우리가 가져야 할 alert임
+
+이제 우리는 alert를 가지게 될 거고, 그건 'password가 필요합니다'가 됨
+
+그리고 그 모든 assertion들이 일어나는지 살펴봄
+
+email/password 유효값 확인과 에러 생성 테스트가 잘 작동함
+
+이제 이것을 이동시킴
+
+어디냐면, 'can fill out the form' 위로 이동시킴
+
+왜냐하면 'form을 채울 수 있음(can fill out the form)'은 사실 login으로 감
+
+그리고 난 이미 이 웹사이트에 이 email로 계정을 가지고 있음
+
+그리고 password는 121212임
+
+즉, 이것을 입력하면 login을 할 수 있음
+
+그래서 여기서 우리가 하려고 했던 '로그인하기' 테스트를 함
+
+그러고 나서 button을 찾고 button을 클릭함
+
+이제 여기서 멋진 것은 user.window().its()를 할 수 있다는 것임
+
+이것(its)은 window의 property임
+
+여기에 localStorage라고 함
+
+이것은 constant 안에 있음
+
+그래서 우리는 localStorage.nuber-token 해주고 .should("be.a.string") 해줌
+
+"be.a" 하고, (value로) "string" 해줌
+
+보다시피, window localstorage의 nuber-token에도 접근할 수 있음
+
+이것을 저장할 때, 빠르게 이곳으로 와야함
+
+왜냐하면 내가 저장하는 순간 이것은 실행됨
+
+우리는 실제로 login함
+
+실제로 우리 back-end로 감
+
+그래서 이 모든 것을 하게 됨
+
+빨리 Chrome으로 가서, login 페이지를 봄
+
+validation error들을 볼 수 있음
+
+'can fill out the form'도 볼 수 있음
+
+잘되고 있음
+
+우리는 로그인 했음
+
+우리는 심지어 여기 있는 nuber-token까지 테스트했음
+
+그리고 아마도 몰랐을 수 있겠지만, 원한다면 다시 이 액션들의 모든 단계들을 역추적할 수 있음
+
+login을 클릭했고 window를 하니, localStorage.nuber-token도 뜨고 잘 작동함
+
+만약에 다시 저장하면 무슨 일이 일어날까
+
+우리가 (다시) 로그인할까
+
+우리는 로그인 못 함
+
+이 친구는 우리 token을 기억 못 함
+
+이것이 좋은 것임
+
+왜냐하면 우리가 재시작할 때마다 우리는 log out 안 해도 됨
+
+아무튼 보다시피, 이제 테스트가 완전 잘 작동함
+
+심지어 local 저장소에서도 테스트가 가능함
+
+그런 것들을 테스트 할 수 있음
+
+이것으로 로그인 페이지의 테스트를 마침
+
+우리는 이제 sign up page 해야함
+
+하기 전에 여기서 sign up을 시뮬레이션 해봄
+
+user.visit("/")라고 작성함
+
+그리고 우리는 create-accounts라고 적음
+
+이것이 log out이 되어있어야함
+
+log out이 되는지 아닌지 한번 봄
+
+왜냐하면 내가 log in 되어있으면 create account를 못 봄
+
+여기 보다시피, 이 테스트에서 내가 한번 로그인하면, localStorage가 작동하고 있음
+
+이것은 좋은 것이기는 함
+
+그런데 여기 sign up 부분에서 더 이상 log in 되어있지 않음
+
+여기서 보듯, 이 테스트들이 다 분리되어 있음
+
+우리는 create account를 테스트함

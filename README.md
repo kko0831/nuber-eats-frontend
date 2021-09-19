@@ -11469,3 +11469,213 @@ Nuber-token은 string이여야함
 기회가 되면 한번 해봄
 
 우리는 이것이 다시 일어나지 않도록 intercept함
+
+## 19.4 Create Account E2E part Two
+
+우리가 할 수 있는 또 한 가지는, user가 한번 등록되면, 여기에서 확인(assert)해볼 수 있음
+
+user라고 해주고, 그리고 title()해주고, 여기에 "Log In | Nuber Eats"라고 적어줌
+
+그래서 이 방법은 우리가 계정을 만든 뒤에 우리가 또 다른 페이지로 넘어갔다는 것을 재확인해주고 있음
+
+이것이 더 좋은 방법일 것이라 생각함
+
+작동하지 않음
+
+login 부분 엄청 빨리 보고 옴
+
+cypress를 이용해서 어떻게 request를 가로챌거야
+
+엄청 쉬움
+
+내가 할 것은, 문자 그대로 'cypress.intercept()'를 사용하는 것임
+
+아니면 이 경우에는 user.intercept()하면 됨
+
+여기서 intercept라고 작성함
+
+이 intercept가 작동하는 원리는, 어떤 HTTP request에 대한 stub(mock), 또는 spy하는 것을 허용함
+
+그래서 이것으로 무엇을 할 수 있냐면, 'http request의 body, headers 그리고 URL을 변경'할 수 있음
+
+예를 들어서, header를 만들어 보내고 싶을 때, back-end한테 '나 테스트하고 있어' 이런 식으로 header를 써서 보내도록 설정해줄 수 있음
+
+또는, cypress가 보내는 모든 request는 '테스팅: true'라는 headers와 함께 보내져야 한다고 해줄 수 있음
+
+아니면 여기 보듯이, 진짜 http response를 변경할 수도 있음
+
+이것이 딱 우리가 원하는 것임
+
+우리는 계정 만들기의 response를 변경하기를 원함
+
+그 response는 지금 'user가 이미 존재합니다'라고 말하고 있음
+
+우리는 이 response를 수정해서, react.js가 성공적으로 계정이 생성되었다고 생각하게 만듦
+
+그래서 이렇게 생겼음
+
+우리는 cy. 또는 user.으로 intercept()만 하면 됨
+
+어떤 것을 intercept하고 싶은지 적고, req를 받음
+
+그리고 원하는 것으로 응답하면 됨
+
+보다시피 심지어 res.body에 expect를 쓸 수도 있음
+
+그래서 만약 response에 대해 궁금한 것이 있다면, response를 감시할 수 있다는 것을 의미함
+
+아니면 다른 메세지를 res로 보낼 수도 있음
+
+이것이 딱 우리가 해야 할 일임
+
+그럼 여기서 intercept()함
+
+우리는 localhost:4000/graphql을 intercept함
+
+그런데 하기 전에 여기서 빠르게 테스트를 실행함
+
+그리고, 검사(inspect)를 클릭하고 네트워크로 이동해봄
+
+그리고 graphql로 검색함
+
+response가 정확하게 어떻게 생겼는지 보고 싶기 때문임
+
+그래서 계정을 만드려고 하는데 이메일이 이미 존재하고 있다고 함
+
+그래서 이것이 어떻게 생겼을까
+
+이것이 response임
+
+'data', 'createAccount', 뒤에 있는 이 모든 것도 그래서 이것을 복사해서, 이제 우리는 intercept함
+
+이것이 내가 갖게 되는 response임
+
+이것을 우리가 바꿈
+
+우리는 http://localhost:4000/graphql을 intercept()함
+
+그리고 req라는 object를 받고 request를 받음
+
+그리고 우리는 req를 reply()함
+
+그리고 reply는 response를 가짐
+
+여기에서 res.send() 해줄 수 있음
+
+그리고 우리는 원하는 data를 보낼 수 있음
+
+그런데 이 경우에는 ok가 true가 됨
+
+그리고 error는 null이 됨
+
+그래서 우리는 localhost의 graphql을 intercept 할 수 있음
+
+그리고 우리는 reply를 해서, 이 user가 database에 존재하지 않았더라면 일어났을 일을 발생시킴
+
+그래서 이 부분을 진짜로 존재하는 user로 바꾸고, 그리고 여기에는 121212를 해줌
+
+그래서 이제 user가 (실제로 존재하는데) 존재하지 않는 척 함
+
+그리고 우리를 login 화면으로 가게 해줄거고, 로그인이 잘 되게 함
+
+저장하고 cypress로 감
+
+그리고 모든 테스트를 새로고침함
+
+그럼 validation errors가 나오고 이제 우리는 계정을 만듦
+
+계정이 만들어졌다고 생각함
+
+잘 작동함
+
+그런데 여기 error가 있음
+
+request를 intercept하고 있음
+
+그런데 여기서는 로그인할 때, 이 request가 여전히 계속해서 가로챔(intercept) 받고 있어서 그럼
+
+그럼 우리는 token을 못 받음
+
+나는 request를 intercept 했음
+
+그래서 이 request는 가로채지고 있었음
+
+이것은 기본적으로 만약에 우리가 createAccount나 login mutation을 보내거나, 아니면 query me 등등 뭐가 됐든지 간에 이런 것들을 보내면, 이것이 여전히 우리가 createAccount의 ok가 true인 것으로 응답함
+
+그런데 이것은 우리가 원하는 것이 아님
+
+그래서 고칠 수 있는 한가지 방법은 게을러지는 것임
+
+우리는 login 부분을 지울 수 있음
+
+계정 만들기 부분에 로그인이 필요하지는 않기 때문임
+
+그냥 보여주고 싶었을 뿐이고, 굳이 그렇게 하지 않아도 됨
+
+그냥 보여주고 싶었음
+
+그래서 다시 돌아가서, 수정하는 방법은, 우리가 버튼을 클릭할 때, 1초 기다리고 로그인에 리다이렉트하면, 이것은 우리가 사실 계정을 만들었다는 것을 의미하고 그래서 이 부분을 만족함
+
+우리는 모든 것을 여기에서 함
+
+내가 보여주고 싶은 것은 우리가 무슨 request들을 가지는지 봐야됨
+
+왜냐하면 지금은 여기서 모든 mutation에게 모든 쿼리에게 이것으로 reply하기 때문임
+
+그래서 여기에서 어떤 req를 받는지 보여줌
+
+그래서 req.body를 console.log()함
+
+그러면 우리의 cypress로 감
+
+그러면 보게 됨
+
+여기 req.body가 보임
+
+그리고 loginMutation이 보임
+
+이것은 우리가 아까 봤던 error임
+
+위로 올라가보면, req.body가 있음
+
+보다시피 req.body는 createAccountMutation이나 loginMutation을 가지고 있음
+
+그리고 operationName으로 접근할 수 있음
+
+그러니까 operationName을 req.body로부터 가지고 와서, 만약에 operationName이 있고 operationName이 createAccountMutation이면 우리는 intercept함
+
+그것이 아니면 우리는 아무것도 안 함
+
+이것이 작동하는지 한번 봄
+
+그리고 이제 계정 만들기를 해야함
+
+이메일, 패스워드, reply를 보내고, 그리고 이제 작동함
+
+우리는 로그인하고 token도 받고 response intercept 되지도 않았음
+
+이렇게 해서 intercept의 전문가가 되었음
+
+가끔 모든 것을 intercept하고 싶을 수는 있는데, 거의 대부분 특히 graphql로 작업할 때는, 모든 것을 intercept하고 싶지 않음
+
+만약에 REST로 작업하면, 예를 들어서 '/login'은 intercept 할 수 있음
+
+그러면 '/account'는 intercept되지 않으리라는 것을 앎
+
+만약 지금처럼 graphql로 작업한다면, 그리고 몇몇 것들만 테스트하고 싶다면, 그럼 operationName을 살펴봐야함
+
+이것은 매우 중요함
+
+왜냐하면 어떤 것을 intercept하고 싶다면 이런 것을 정말 많이 하게 됨
+
+예를 들어서 레스토랑을 만드는 것을 테스팅할 때, 아마도 intercept를 써야함
+
+왜냐하면 매번 테스트를 실행할 때마다 레스토랑을 만들고 싶지 않음
+
+이것이 계정 만들기 문제를 고치는 방법임
+
+이제 어떻게 intercept가 작동하는지 알게 되었음
+
+create account 부분을 마침
+
+프로필 편집으로 이동해서, 어떻게 진행되는지 살펴봄

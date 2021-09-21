@@ -11679,3 +11679,281 @@ request를 intercept하고 있음
 create account 부분을 마침
 
 프로필 편집으로 이동해서, 어떻게 진행되는지 살펴봄
+
+## 19.5 Custom Commands
+
+보여주고 싶은 것이 있음
+
+나만의 command를 어떻게 만드는지 보여주고 싶음
+
+예를 들어서, should 같은 것이 있음
+
+support/commands.js에서 나만의 command를 만들 수 있음
+
+여기 보다시피, command를 만드는 방법이 있음
+
+엄청 간단함
+
+그래서 우리는 command를 만듦
+
+이 command의 이름은 assertLoggedIn이 됨
+
+왜냐하면, 로그인이 되었는지를 확인하는 이 작업을 매번 반복해왔음
+
+그래서 우리는 이것을 하기는 해야하는데 좀 더 짧게 함
+
+아마도 나중에 이것을 또 써야할텐데, 이것을 반복하고 싶지 않음
+
+그래서 우리는 Cypress.Commands를 하고, 여기다 command를 더해줌
+
+그 이름은 assertLoggedIn이 됨
+
+이름은 원하는 어떤 것이든 될 수 있음
+
+assertPotato가 될 수도 있음
+
+무엇이 되든 상관없음
+
+그러고 나서 우리는 implementation을 정함
+
+이제 종종 command가 argument를 가질 수 있음
+
+그런데 이 경우에는 어떤 argument들도 가지지 않음
+
+그리고 우리가 할 일은 cy.window.을 해줌
+
+그리고 nuber-token을 잊지마
+
+아니면 그냥 이것을 다 복사해도 됨
+
+그래서 이렇게 assertLoggedIn이라는 command를 만들었음
+
+그러니까 매번 반복하는 확인 작업 같은 것들을 command로 만들 수 있음
+
+'로그인 확인'이나 '로그아웃 확인'이나 원하는 어떤 것이든 command로 만들 수 있음
+
+그래서 이 command를 사용하기 위해서는, 여기서 user.assertLoggedIn을 해주면 됨
+
+복사해서 붙여넣어줌
+
+assertLoggedIn은 cypress에 존재하지 않는다고 뜨지만, 우리는 commands.js에 있는 것을 사용하고 있음
+
+아마도 commands.ts를 사용한다고 하면, 작동할지 잘 모르겠음
+
+그래서 모든 것이 작동해야하는데, 그냥 모든 것을 다 ts로 바꿈
+
+이것이 잘 작동할지 한번 봄
+
+그리고 이것이 typescript쪽에서 작동하지 않더라도, 여기서는 잘 작동될 것이라고 확신함
+
+js에서 ts로 바꿨음
+
+이것을 닫고 cypress를 다시 열어봄
+
+이제 작동해야함
+
+내 typescript가 불평하고 있음
+
+만약에 typescript가 불평하는 것을 원치 않는다면 // (골뱅이) ts-ignore를 해주면 알아서 조용히 함
+
+create-account.ts를 이용함
+
+왜냐하면 이것이 assertLoggedIn을 가지고 있음
+
+Chrome을 열고 기다려봄
+
+보다시피 '로그인 확인'을 했음
+
+여기에 'assert'가 있음
+
+잘 작동함
+
+Window, its, assert는 완전 잘 작동함
+
+이제 완성됐음
+
+이 command뿐만 아니라 원하는 어떤 command든 그 어떤 방식으로든 만들 수 있음
+
+command가 argument를 가질 수도 있음
+
+그럴 때는 command를 만들 때 여기다가 argument를 넣으면 됨
+
+여기 보다시피, command를 만들 수 있음
+
+이 command는 login이고 email하고 password를 받음
+
+뭐 할지 궁금하지
+
+이것이 바로 우리가 만들 command임
+
+왜냐하면 우리는 '프로필 수정하기'를 테스트함
+
+예를 들어서 우리가 프로필을 수정하고 싶음
+
+그럼 우리는 로그인을 먼저 해야함
+
+그런데 매 순간 이것을 (login.ts) 실행시키고 싶지는 않음
+
+로그인해야할 때마다, 이 테스트하는 부분을 실행시키고 싶지는 않음
+
+그럼 login이라고 불리는 command를 만듦
+
+결국에는 엄청나게 많은 command들을 갖게 됨
+
+login 확인, logout 확인, click 확인, dismiss, popup 등등 같은 command들을 갖게 됨
+
+그럼 이제 여기로 와서 그냥 login이라고 적어줌
+
+그리고 보통은 email이랑 password를 이 command로 보내고 싶음
+
+그럼 우리는 이렇게 해서 당연히 get() 해줌
+
+"/login"이나, 아니면 그냥 "/"함
+
+왜냐하면 우리는 로그아웃 했음
+
+우리는 로그아웃을 했었음
+
+그리고 그냥 여기 이것을 복사함
+
+이것을 cypress로 변경함
+
+이런 것들은 이대로 둠
+
+이렇게 하고, 모든 것이 괜찮다고 가정함
+
+우리는 email을 type()함
+
+우리는 password도 type()함
+
+그러고 나서 우리는 cy.assertLoggedIn()이라고 해줌
+
+Typescript가 불평함
+
+그럼 이제 login command를 만들었음
+
+home 화면으로 갈거고, 이렇게 하고, 우리는 password를 type()함
+
+button을 찾을거고 그것을 click 할 수 있는지 확인함
+
+그것을 클릭할거고 우리는 '로그인 확인(assertLoggedIn)'함
+
+원한다면 우리는 로그아웃 했다는 것을 확실하게 하려고 assertLoggedOut을 할 수도 있음
+
+그래서 이 경우에는 localStorage.nuber-token이 'null이 되어야함'
+
+그래서 이 command를 시작하기 전에 우리는 assert 해줌
+
+typescript가 불평함
+
+이 라인에 typescript를 무시하도록 함
+
+그럼 이제 login(command)에서 할 일은, login이 작동하는지 테스트하는데, 이것은 동일한 작업이니까 그래서 그냥 이렇게 함
+
+assert가 아니라 그냥 user.login하면 됨
+
+이것이 로그아웃이 되어있는지 확인 해줄거고, 이것이 다 해줌
+
+그런데 login이 username하고 password를 요구함
+
+이것이 login이었고, 다시 말하지만 typescript는 불평함
+
+여기에 이렇게 해줌
+
+그리고 우리는 똑같은 command를 create-account 테스트에도 사용함
+
+그래서 assertLoggedIn 대신에 여기로 와서 그 다음 user.login() 이것으로 로그인함
+
+그리고 또 login command에다가 이 라인을 추가해줌
+
+그래서 이제 몇 개의 command를 가지게 되었음
+
+우리는 login command에 assertLoggedOut이랑 assertLoggedIn이 있음
+
+이제 문제가 없어야함
+
+login으로 가서 undefined를 만났음
+
+이것은 null이 아니라 undefined이어야함
+
+이 에러를 고치기 전에, 이것이 error를 읽는 방법임
+
+window, its, localStorage의 nuber-token이 null이기를 기대했음
+
+그런데 이것이 내가 받은 것임
+
+좀 별로라는 것을 앎
+
+나도 jest스러운 메세지를 더 좋아함
+
+이것은 mocha 스타일이라서 다름
+
+그런데 expected 다음에 나온 이것이 내가 얻은 것임
+
+null이 되는 것이 내가 바라는 것임
+
+그래서 나는 undefined로 바꿈
+
+다시 해봄
+
+그래서 email이랑 password 확인 테스트를 넘어감
+
+계정 만들기랑 로그인 되어야하고, 그래서 우리는 계정을 만들고 로그인함
+
+보다시피 작동함
+
+우리의 무지하게 큰 command가 작동함
+
+이제 login을 테스트 해봄
+
+우리 login을 바꿨었음
+
+'form을 채워 넣을 수 있고 log in 할 수 있습니다.' 이제 이것은 말 그대로 하나의 command임
+
+그럼 한번 봄
+
+cypress로 가서 login.ts로 감
+
+이것을 클릭하면 Google Chrome을 엶
+
+그럼 이제 login 페이지가 보여야함
+
+'can see invalid password validation errors.'가 보이고 'can fill out the form and log in'도 보임
+
+보다시피 여기 지금 하고 있는 것, 이것이 바로 우리 command임
+
+이 모든 테스트가 우리 command임
+
+보다시피 여기 첫번째로 command에서 assertLoggedOut을 불렀음
+
+예상대로 localStorage.nuber-token에서 undefined를 받았음
+
+그리고 우리는 여기를 방문(visit("/")) 했음
+
+그리고 title은 우리가 예상한 title과 동일했음
+
+그러니까 잘 작동함
+
+보다시피 visit()를 부르기 전에 assertLoggedOut을 불렀었음
+
+그래서 순서를 바꿈
+
+그러니까 먼저 home 페이지를 방문함
+
+그러고 나서 우리는 로그아웃 상태인지 확인해봄
+
+이것이면 충분함
+
+이제 우리는 아름다운 command를 가지게 됐음
+
+새로운 test를 만들어봄
+
+이 command들을 사용해서 프로필 수정하기를 위한 새로운 테스트를 만들어봄
+
+그런데 그것은 다음 시간에 함
+
+우리 command를 만들었음
+
+command는 엄청 유용함
+
+가끔은 command를 너무 많이 갖게 되는데, 그것은 그것대로 멋짐

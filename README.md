@@ -11957,3 +11957,205 @@ cypress로 가서 login.ts로 감
 command는 엄청 유용함
 
 가끔은 command를 너무 많이 갖게 되는데, 그것은 그것대로 멋짐
+
+## 19.6 EditProfile E2E part One
+
+이제 우리는 프로필을 수정하러감
+
+여기를 클릭하고, email을 바꾸고 프로필을 저장함
+
+그런데 우리가 배운 command랑 intercept를 사용함
+
+그래서 여기에 user라는 새로운 폴더를 만들고, edit-profile이라는 파일을 만듦
+
+우선적으로 할 일은 it("can go to /edit-profile using the header")라고 함
+
+그래서 header를 한번 봄
+
+Inspect 모드로 들어가서, 확인해야할 것은 link임
+
+/edit-profile로 가는 link임
+
+이것을 가지고 올 수 있는 방법이 없음
+
+그래서 시도해봄
+
+첫 번째로 const user = cy; 해줌
+
+그리고 user 해주고, 첫번째로 우리는 argument랑 같이 login을 함
+
+만약 나라면 command 정의부분 안에 이 username이랑 password를 넣었을 것임
+
+그런데 그냥 이런 방식을 보여주고 싶었음
+
+일단 ts-ignore하고 그냥 command에 어떻게 argument를 주는지 보여주고 싶었음
+
+이렇게 login함
+
+그리고 우리는 user.get()을 할건데, get을 한번 살펴봄
+
+기본적으로 CSS selector들을 이용해서 가지고 올 수도 있음
+
+예를 들어서 list, first child나 class 이름을 통해서 가지고 올 수도 있음
+
+이렇게 꽤나 편리함
+
+그래서 brave 브라우저를 보면, 벌써 나의 edit profile 페이지에 와있는데, 여기로 오는 방법은 여기 있는 'edit-profile' 링크를 클릭하는 것임
+
+그래서 href를 가진 a 태그를 찾음
+
+href가 '/edit-profile'인 a 태그를 찾음
+
+그리고 그것을 click()함
+
+그럼 log in하고 나서 우리가 dashboard에 있을 때, 그것을 클릭할거고, 이것은 내가 header를 이용해서 edit profile 페이지로 갈 수 있다는 것을 의미함
+
+그래서 cypress로 가면 이제 여기 'edit-profile'이 생긴 것을 볼 수 있음
+
+이것을 chrome에서 실행시킴
+
+어떻게 작동하는지 봄
+
+Visit하고 잘 되고 있음
+
+이제 작동함
+
+보다시피 우리가 클릭할 수 있고 잘 작동함
+
+그럼 이제 이 title을 확인해봄
+
+그리고 우리가 계속 사용하던 것과 같은 것을 쓸 수 있음
+
+assertTitle이라는 command를 하나 만들면 좋을 것 같음
+
+그리고 우리의 title들은 모두 이런 구조를 가지고 있음
+
+그래서 아마도 assertTitle이라는 command를 이렇게 만들 수 있음
+
+그리고 그냥 'Login'이라는 단어를 보냄
+
+그리고 command 안에서 그 argument를 써서 확인해줌
+
+아마도 이것은 Edit Profile이 됨
+
+그리고 테스트 한가지만 더함
+
+it('can change email.')을 작성함
+
+user.login()을 해줌
+
+그 다음 user.함
+
+Login을 예상했음
+
+이것은 Edit Profile임
+
+저장을 안했음
+
+그럼 email을 찾음
+
+findByPlaceholder를 씀
+
+그리고 우리는 이렇게 type()함
+
+login을 두번 호출하는 것이 조금 보기 싫음
+
+그래서 우리가 할 수 있는 것은 beforeAll하거나 beforeEach하는 것임
+
+beforeAll은 없음
+
+beforeEach에다가 login을 넣어줌
+
+그럼 우리는 두번 안 해도 됨
+
+그럼 이제 beforeEach로 login을 함
+
+이 부분에서는 메일주소를 type()하고, 우리는 button을 findByRole로 찾음
+
+그리고 button을 click()함
+
+나는 내 이메일을 바꾸고 싶지는 않음
+
+그래서 이것을 intercept 해보는 것은 어떨까
+
+그런데 일단 이 테스트부터 통과하는지 보고 나서 함
+
+보다시피 Edit Profile에서 login을 먼저 하고, email을 변경할 때도 login을 먼저 함
+
+로그인부터 먼저 하고 그런 다음 edit profile로 가야하는데, visit('/edit-profile')에 대해서 완전하게 깜박하고 있었음
+
+우리는 button을 또 다시 click()할 필요는 없음
+
+왜냐하면 우리는 이것이 작동하는지 알고 있음
+
+한번 봄
+
+이메일을 바꿀 수 있고, edit profile로 감
+
+문제가 생겼음
+
+이메일이 수정되지는 않음
+
+이것은 유효하지 않은 형식임
+
+먼저 이메일을 clear() 해야했음
+
+그러고 나서 type()함
+
+beforeEach가 정말 좋음
+
+아주 유용함
+
+다른 모든 것을 하기 전에 로그인부터 함
+
+보다시피 우리 코드가 한결 간결해졌음
+
+매번 로그인하라고 쓰지 않아도 됨
+
+이렇게 우리는 이메일을 바꿀 수 있음
+
+title에 대한 문제가 있었음
+
+title을 봄
+
+title은 'Edit Profile'이 되어야함
+
+우리가 어떤 title을 갖지
+
+다시 title을 보면 Login을 예상했음
+
+title은 Edit Profile이 되어야하는데 Login이 되었다고 함
+
+이것은 맞지 않음
+
+내 생각에는 여기 있는 command 때문에 그런 것 같음
+
+"Login | Nuber Eats를 받았는데, 기대한 것은 Edit Profile | Nuber Eats"임
+
+아마도 login-profile이 user를 가지고 있지 않은 것 같음
+
+우리 edit-profile이 Helmet을 가지고 있지 않나봄
+
+Helmet을 가지고 있음
+
+아마도 우리는 조금 기다려야할 것 같음
+
+기다리면 아마도 title이 생길 것 같음
+
+그것이 문제였던 것 같음
+
+우리 title이 불평하는데 내 생각에 그것은 2초를 기다려주면 해결됨
+
+그리고 이렇게 하고 난 다음에는 모든 것이 잘 통과될 것이라고 생각함
+
+우리는 이메일을 바꿨음
+
+그러면 이제 내 login은 실패함
+
+왜냐하면 그 user가 더이상 존재하지 않음
+
+내 login이 실패했음
+
+이것을 intercept하는 것은 다음 시간에 해봄
+
+마지막 시간임

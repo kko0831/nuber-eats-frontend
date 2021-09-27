@@ -12159,3 +12159,189 @@ Helmet을 가지고 있음
 이것을 intercept하는 것은 다음 시간에 해봄
 
 마지막 시간임
+
+## 19.7 EditProfile E2E part Two
+
+여기서 테스트를 했는데, 새 이메일을 back-end로 보내는 테스트를 하도록 함
+
+여기서 우리는 intercept 비슷한 것을 해야함
+
+그래서 기본적으로 응답을 intercept 해야하는 것이고, 또한 request도 intercept 해야함
+
+왜냐하면 사실 back-end로 이 새로운 이메일을 보내고 싶지 않음
+
+그래서 난 이것을 intercept하려고함
+
+작동은 되는데, 다만 그것을 intercept함
+
+매번 테스트할 때마다, 테스트 계정의 이메일을 바꾸는 것은 원하지 않음
+
+그래서 그것을 하기 위해서, documentation을 보면 보다시피 request를 intercept하는 방법이 있음
+
+그래서 여기로 와서, user.intercept를 할 수 있음
+
+우리의 경우에는 POST가 됨
+
+그리고 /graphql 경로로 POST하고, 그런데 이 경우에는 http://localhost:4000을 해줌
+
+그리고 만약 원한다면 body를 바꿀 수 있는데, 이것이 우리가 해야할 것임
+
+이 경우에 우리는 /graphql로 POST하고, 잠시 body를 console.log 해봄
+
+이 테스트를 실행해봄
+
+그리고 어떻게 되는지 한번 봄
+
+우리 body는 어디갔지
+
+body가 어떻게 생겼지
+
+body를 한번 봄
+
+operationName이 editProfile이고, query가 있고, variables에 바로 그 새로운 이메일이 있음
+
+그래서 내 계정의 email이 new로 시작하는 것으로 바뀌었음
+
+이제 body를 봤고, 우리가 무엇을 해야하는지 앎
+
+그런데 code에서는 별로 보기 안 좋을 수 있음
+
+그런데 이렇게 해야됨
+
+이것을 사용함
+
+typescript가 불평하지는 않음
+
+일단 이것 먼저 해야함
+
+operationName이 editProfile인지 먼저 확인해봐야함
+
+그래서 우리는 if를 써서 req.body?.operationName이 editProfile이 맞는지 확인함
+
+그러니까 기본적으로 우리는 새 이메일을 덮어씀
+
+저 email로 저장하고 싶지 않아서 그럼
+
+그리고 이것이 문제가 됨
+
+왜냐하면 여기 이것들이 없을 수도 있음
+
+variable도, input도, 아마도 email이 존재하지 않는 등 그래서 이 시점에만 typescript가 비활성화 되도록 함
+
+이제 테스트가 어떻게 진행되는지 한번 봄
+
+다시 이것을 바꿔야함
+
+pgAdmin에서 user 테이블의 newnico@gmail.com을 itnico@gmail.com으로 바꿈
+
+왜냐하면 이렇게 두면 작동하지 않을거니까 바꿨음
+
+다 됐음
+
+테스트가 작동되지 않았음
+
+다시 해봄
+
+그래서 이제 보다시피 우리는 request를 intercept 했음
+
+response를 intercept하지 않았음
+
+우리는 문제없이 login 해야함
+
+email을 변경할 수 있을까
+
+일단 login 할 수 있어야함
+
+그 다음에 우리는 edit profile로 감
+
+그리고 새 이메일을 입력해서 보냄
+
+작동하는 것처럼 보임
+
+그래서 모든 것이 작동하는 것을 볼 수 있음
+
+새 이메일을 쓰고, 프로필을 저장했는데, 여기를 새로고침하면 보다시피 이메일은 여전히 그대로임
+
+바뀌지 않았음
+
+내 DB를 새로고침 해봐도, 그대로 있음
+
+우리는 request를 수정할 수 있었음
+
+그래서 이제 가짜 request와 response를 꾸미는 방법을 알았음
+
+마지막으로 얘기하고 싶은 것은 fixtures에 대한 것임
+
+여러분이 network request로 작업을 할때, 이 application 테스트하는 것을 마무리할 때쯤에는 아주 많은 network로 작업하게 될 것이라고 확신함
+
+많은 response들을 mock하기를 원함
+
+그래서 이것을 정리하기 위해서 fixture를 만들어 볼 수 있음
+
+이것은 그냥 json 파일임
+
+그래서 우리는 여기로 와서 example.json을 지우고, fixtures 폴더에 새로운 폴더를 만들어서 기본적으로 integration 테스트와 동일한 구조를 만듦
+
+그러니까 auth 폴더에 create-account.json 파일을 만들어줌
+
+그리고 이제 우리는 이것을 이 json 파일 안에다가 넣음
+
+그리고 "data"라고 하고, 여기도 큰 따옴표로 묶음
+
+그럼 이것이 fixture임
+
+그리고 좋은 소식은 만약 response를 intercept하고 싶을 때, 이렇게 fixture를 보낼 수 있음
+
+그리고 cypress는 그것이 무엇이든 간에 fixtures 안에서 찾아냄
+
+그래서 이 경우에 우리는 그냥 fixture를 보낼 수 있음
+
+그리고 그 fixture는 auth/create-account.json에 있음
+
+이것이 바로 fixture를 정리하는 새로운 방법인데 멋진 거 같음
+
+왜냐하면 request를 보내기 위해서나 response를 받기 위해서 많은 fixtures를 가지게 됨
+
+그래서 여기에 정리해놓는 것이 더 좋음
+
+그리고 당연히 얘네를 import할 필요는 없음
+
+그냥 올바른 경로를 적어주면 됨
+
+그럼 된 것임
+
+이제 이 친구를 닫음
+
+그리고 내 fixture가 작동하는지 보기 위해서 create account 테스트만 실행해봄
+
+먼저 validation error 등등을 테스트하게 됨
+
+그리고 이제 Create account 테스트를 함
+
+그리고 보다시피, 우리는 성공적으로 fixture를 보냈음
+
+그리고 로그인까지 했음
+
+잘 작동함
+
+이제 fixture를 보낼 수 있고, 보다시피 우리 code는 한층 더 발전했음
+
+여기 보다시피 request가 있음
+
+여기 계정이 만들어졌고, 이 request를 바로 여기서 intercept 했음
+
+이것은 우리가 intercept 했고 '계정 생성, 로그인함'이라는 alert까지 나왔음
+
+그래서 이제 나만의 command 만드는 방법을 알고, 나만의 fixtures를 만드는 방법도 알게 되었음
+
+그리고 또 우리는 response뿐만 아니라 request도 intercept하는 방법을 배웠음
+
+이것은 유용함
+
+테스트를 위해서 어떤 middleware를 가지고 있다고 가정하면, 테스트라고 쓰인 header를 보낼 수도 있음
+
+resolver를 바꾸거나 어떤 계정을 검색하도록 할 수도 있음
+
+창의적으로 해볼 수 있음
+
+나의 request나 response를 수정할 수 있다는 것은 엄청 멋진 것임

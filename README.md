@@ -12565,3 +12565,251 @@ use me라는 hook이 있음
 이 relationship을 eager로 만들 수 있지만, database 입장에서 별로임
 
 그냥 이렇게 restaurant.service랑 restaurants.resolvers를 만듦
+
+## 20.1 Create Restaurant part One
+
+이번 시간에는 MyRestaurants를 받았는데 음식점 정보가 없는 경우, 음식점을 업로드할 수 있는 create restaurant 스크린으로 이동하도록 만들어봄
+
+그리고 이미지도 업로드해봄
+
+왜냐하면 음식점들은 원래 cover image가 다들 있음
+
+그러니 파일을 업로드하는 방법을 배워봄
+
+이것은 backend 관련 내용이기는 함
+
+그런데 막상 이것을 backend에 구현해보면 좀 이상함
+
+이미지 업로드에는 이것이 더 좋은 거 같음
+
+물론 backend도 건들기는 함
+
+그런데 기본적으로 frontend에 있을 때 구현하는 것이 더 좋은 거 같음
+
+평소대로 해봄
+
+미리 말해두는데 앞으로 같은 내용들을 무한반복하게 됨
+
+왜냐하면 새로운 것을 그다지 배우지 않음
+
+이미 query 생성 방법도 알고, apollo에서 무엇인가를 가져올 줄도 알고, typescript도 사용할 줄 앎
+
+그래서 이미 배운 것들은 그만 설명할 거고, 디자인이나 component 작업 과정 같은 것들은 카메라를 꺼놓고 미리 해놓음
+
+왜냐하면 그 과정은 보여줘 봤자 지루하기만 하고 배워갈게 없음
+
+새로운 내용들은 전부 다 설명함
+
+하지만 query 생성 같은 것들은 전부 생략함
+
+그래도 마지막으로 이 query만 같이 만들어봄
+
+왜냐하면 이것은 이 직전의 강의에서 막 만듦
+
+const MY_RESTAURANTS_QUERY = gql한 다음, query myRestaurants의 인자는 받지 않음
+
+이미 아름다운 fragment를 하나 만들어놨으니 사용해봄
+
+이름을 잊었으면 이렇게 열어서 확인해봄(ctrl+클릭)
+
+터미널에 npm run apollo:codegen을 입력함
+
+이 query를 사용함
+
+useQuery에 먼저 타입을 적고 (MY_RESTAURANTS_QUERY)를 쓰고, console.log(data)를 해봄
+
+엄청 좋음
+
+여기로 와보면(우클릭, 검사, Console탭) data가 여기에 보임
+
+이 부분은 카메라를 끄고 아름답게 만듦
+
+여기서는 이렇게 조건을 넣어서 확인함
+
+이 경우에는 "음식점이 없음. 하나 생성하세요!"라고 출력되도록 함
+
+어떻게 보이나 볼까
+
+"음식점이 없음. 하나 생성하세요!" 물론 이것보다는 더 예쁘게 꾸밈
+
+카메라 꺼놓고 작업함
+
+그런데 먼저 Helmet을 사용하는 것을 잊지마
+
+물론 필수는 아니지만 좋음
+
+그리고 react-helmet-async에서 Helmet class를 import 해와야함
+
+매우 중요함
+
+title은 My Restaurants | Nuber Eats임
+
+브라우저 탭을 확인함
+
+카메라를 좀 멈추고, 이것을 좀 예쁘게 만들고 다시 돌아옴
+
+이렇게 만들었음
+
+My Restaurants라는 title이 있고, You have no restaurants라는 것도 있고 /add-restaurant로 가는 링크가 있음
+
+그렇지만 이것을 누르면 not found로 감
+
+not found로 가야하는데 왜 안되지
+
+exact라고 안 해놨기 때문임
+
+그러니 exact라고 여기에 적어서 render되도록 함
+
+여기 My Restaurants로 와서, 이것을 누르면 not found로 가게 됨
+
+owner에 add-restaurant.tsx를 생성함
+
+그리고 여기 router로 와서 restaurantRoutes 안에 route를 하나 더 추가함
+
+path는 "/add-restaurant"고, component는 AddRestaurant임
+
+한번 봄
+
+Add Restaurant라고 나옴
+
+이 class를 계속 복붙하는게 슬슬 지겨운데 이 class를 bake함
+
+여기 tailwind로 와서 이 class를 bake함
+
+container라고 부르도록 함
+
+그리고 link라는 것도 만듦
+
+이것도 apply함
+
+link도 저 class를 계속 복붙했음
+
+이러면 bake 할 수 있게 됨
+
+class 좀 bake한다고 서버 전체를 다시 시작하지는 않음
+
+터미널에 npm run tailwind:build를 입력함
+
+이것은 계속 돌아가도록 내버려둠
+
+지금부터는 query를 작업함
+
+보면 알겠지만 query를 다 만들기 전에는 component는 전혀 사용하지 않음
+
+나는 query를 먼저 전부 준비해서 전체적인 그림을 파악하는 방식을 선호함
+
+그런데 사실 이것은 query가 아니라 gql임
+
+그리고 여기에 넣을 input의 이름은 documentation에서 찾아봄
+
+이것은 그대로 복사함
+
+그리고 무엇을 받지
+
+error와 ok를 받음
+
+전부 다 bake 되었음
+
+이제 이 녀석들의 typescript 의미를 받을 수 있도록, codegen을 실행함
+
+typescript 덕분에 생산적임
+
+이것은 mutation을 줄테고 useMutation함
+
+엄청 생산적임
+
+무엇을 받게 하지
+
+createRestaurantMutation을 받게 함
+
+그리고 loading과 error를 받게 함
+
+error는 없을 거 같음
+
+data를 받음
+
+왜냐하면 error는 항상 form에서 보여줌
+
+안에 어떤 게 들어가는지 CreatorRestaurantInput을 한번 봄
+
+name, address, categoryName가 있음
+
+coverImg는 나중에 얘기함
+
+일반적인 form을 만듦
+
+먼저 form을 instantiate시켜야함
+
+hook form을 사용함
+
+interface IFormProps에 name, address, 그리고 categoryName이 들어가야함
+
+여기에서는 useForm이 제공하는 모든 도구들을 가져옴
+
+form을 만듦
+
+하나를 까먹었음
+
+submit할 때 어떻게 되는지 기억나
+
+handleSubmit을 추가함
+
+onSubmit이라는 함수를 만듦
+
+그리고 getValues를 콘솔에 찍어봄
+
+다시 말하지만 이것은 전부 다 본 적 있는 것들이니까 일부러 빨리 작업함
+
+input 3개를 생성해야함
+
+input 세 개를 만듦
+
+아니면 이렇게 required message를 사용할 수도 있음
+
+세가지 각각이 required하다고 적음
+
+마지막은 Category Name임
+
+name이 있고, placeholder가 있음
+
+placeholder에 각각 Name, Address, Category Name을 채워주고, name도 적절히 적어줌
+
+그리고 input들의 name은 IFormProps의 이름들과 같아야한다는 것을 기억해야함
+
+type="text"라고 추가함
+
+baked class 중 input으로 마무리함
+
+버튼을 하나 만듦
+
+className을 btn으로 줌 
+
+그런데 사실 이것은 필요가 없음
+
+이미 button component를 만들었음
+
+그것을 사용함
+
+이것은 mutation동안의 loading을 의미함
+
+한번 흐름을 타게 되면 얼마나 생산적인지 보임
+
+mutation을 만들고, form을 만듦
+
+제대로 돌아가는 것 같음
+
+한번 봄
+
+나중에 좀 고침
+
+react-helmet-async로부터의 Helmet도 잊지 마
+
+그래도 끝났음
+
+기능은 전부 구현됐음
+
+버튼을 보면 전부 다 있음
+
+기능은 전부 다 끝났음
+
+다음 시간에는 이미지 업로드로 들어가봄

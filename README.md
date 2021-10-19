@@ -12813,3 +12813,229 @@ react-helmet-async로부터의 Helmet도 잊지 마
 기능은 전부 다 끝났음
 
 다음 시간에는 이미지 업로드로 들어가봄
+
+## 20.4 Create Restaurant part Two
+
+backend에서 업로드된 이미지의 url을 돌려주게 되었음
+
+사용자에게 이미지를 받아봄
+
+div를 만들어서, input을 넣음
+
+type은 "file"임
+
+name="file"이라고 해야함
+
+그리고 이것은 react hook 형식으로 register함
+
+여기는 required=true라고 적음
+
+이렇게 react hook을 사용하면 아주 간단하게 파일 업로드 기능을 만들 수 있음
+
+이벤트 설정 같은 것도 전혀 필요 없음
+
+새로고침 해봄
+
+파일을 하나 선택함
+
+Create Restaurant를 누르면 됐음
+
+이것이 우리가 받게 될 데이터임
+
+콘솔에 출력된 내용을 읽음
+
+이 파일을 우리의 back-end로 업로드할 수 있게 됐음
+
+여기에 file을 추가함
+
+여기 보이는 대로 type이 FileList임
+
+그래서 지금 IFormProps에 파일을 추가하고 있음
+
+이러면 된 것임
+
+지금부터는 이미지를 업로드하면 됨
+
+그런데 이미 이미지가 있음
+
+그래서 이미지를 어떻게 업로드하지
+
+아주 간단하게 POST를 함
+
+여기 이 API로 보냄
+
+다 됐음
+
+그래서 좀 지저분하게 fetch를 함
+
+하지만 다음으로 utility function을 만듦
+
+여기에 async라고 씀
+
+const request = fetch()함
+
+file을 가져옴
+
+그런데 우리는 실제 파일(actualFile)을 원함
+
+그래서 file(0)이라고 적어야함
+
+왜냐하면 file은 사실 list임
+
+그 안에 여러 개의 file이 존재함
+
+그리고 이미지 유형의 모든 확장자 파일을 받도록 함
+
+http://localhost:4000/uploads/에 실제 파일이 오게 됨
+
+body가 필요하니까 여기에 body를 생성함
+
+이름은 "file"이어야함
+
+그리고 value는 actualFile이어야함
+
+이 부분을 await로 함
+
+여기를 전부 다 잘라냄(ctrl+x)
+
+괄호 내부의 fetch를 다시 await하고, json으로 받음
+
+그러니까 이중으로 await함
+
+코드 몇 줄 덜 쓰려는 것임
+
+여기서 console.log(request)함
+
+그러면 여기는 url이 됨
+
+여기의 모든 것을 try 안에 넣고 catch(e)라고 함
+
+그러면 됐음
+
+이제 되는지 시도해봄
+
+웹사이트로 와서 에러가 있나 봄
+
+이 에러는 policy 때문임
+
+localhost:4000이 외부에서 오는 그 어떤 request도 받아주지 않음
+
+보다시피 localhost:3000이 request를 보냈는데 받아주지 않았음
+
+이것은 아주 쉽게 해결할 수 있음
+
+우선 main.ts에 가서 app.enableCors()하면 됨
+
+아주 쉬움
+
+그래서 여기를 봄
+
+전부 문제 없음
+
+잘 돌아감
+
+request에서 url을 받을 수 있음
+
+url을 받음
+
+여기에 우리는 URL이 있음
+
+그 말은 즉, createRestaurantMutation을 사용할 수 있게 됨
+
+input은 getValues에서 받아야함
+
+그러니까 다시 여기에 돌아와서 name, categoryName, address 그리고 coverImg:url 아니면 url을 coverImg로 다시 명명할 수도 있음
+
+이러면 됐음
+
+createRestaurantMutation이 완성됐음
+
+이제 loading 중인 Button에게 알려줘야함
+
+그런데 여기에 보면, 우리가 submit을 누르면 먼저 파일을 업로드하고, url도 받아야함
+
+그러니 그 작업도 끝날 때까지 기다려야함
+
+이것을 위해 state를 하나 만듦
+
+uploading, setUploading이라고 하고 useState(false)함
+
+그러니 업로드가 시작되면 setUploading(true)가 되고, 업로드가 끝나면 setUploading(false)가 되고, 이것이 실행됨
+
+이렇게 할까
+
+아예 onCompleted function(을 만들어서 그 안)에 넣음
+
+그러니 처음에 업로드 중일 때 loading=(uploading)이 되도록 수정함
+
+왜냐하면 loading은 mutation으로부터만 오는 거니까 onCompleted를 만듦
+
+이것은 data: createRestaurant를 줌
+
+if(ok)라면, 여기에 setUploading(false)를 넣음
+
+새로운 것은 없음
+
+다 우리가 전에 해본 것들임
+
+createRestaurantMutation으로 가서 onCompleted라고 function을 씀
+
+그런데 여기로 옮겨야함
+
+이러면 다 된 것임
+
+음식점을 업로드하기 시작하면, setUploading(false)가 됨
+
+즉, 버튼은 이미지 업로드를 시작한 순간부터 mutation이 끝날 때까지 로딩 중이라고 표시됨
+
+늘 이렇게 할 필요는 없음
+
+다시 말하지만 mutation의 로딩 부분이 여기에 있고, 그렇지만 다른 작업들도 일어나고 있으니까 이것은 쓰지 않음
+
+여기에 data도 있고, 그러니 error를 만들어봄
+
+만약 error가 발생한 경우를 위해 어떻게 하면 되는지 알고 있지
+
+물론 로그인, 계정 생성 페이지에서 한 것처럼 이쪽에도 error를 설정할 수 있음
+
+마지막으로 한번만 시험해봄
+
+새로고침하고 사진도 준비되어있음
+
+음식점을 생성함
+
+물론 이 input을 더 예쁘게 만들 수도 있겠지
+
+공백을 넣을 수도 있고, 하지만 이대로도 충분히 좋음
+
+Create Restaurant를 눌러봄
+
+개발자 도구의 Network를 열어놓음
+
+로딩 중이라고 나옴
+
+곧 사진이 업로드될 거고, mutation이 만들어질거고 된 거 같음
+
+엄청 빨리 됐음
+
+그러니 여기 My Restaurants로 가면 내 음식점을 볼 수 있음
+
+보다시피 "레스토랑이 없음" 이란 문구가 뜨지 않음
+
+그냥 아무것도 보이지 않음
+
+왜냐하면 이 경우에 무엇을 보여줄지 아직 설정하지 않았음
+
+하지만 내 음식점이 등록됐다는 것은 알 수 있음
+
+개발자 도구를 보면 자막에 가려지려나
+
+이렇게 하면 보이려나
+
+개발자 도구의 내용을 읽음
+
+다 준비됐음
+
+일단 이 음식점은 삭제함 
+
+왜냐하면 redirect해서 사용자에게 더 좋은 것을 보여주고 싶음

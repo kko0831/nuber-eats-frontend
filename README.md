@@ -13039,3 +13039,345 @@ Create Restaurant를 눌러봄
 일단 이 음식점은 삭제함 
 
 왜냐하면 redirect해서 사용자에게 더 좋은 것을 보여주고 싶음
+
+## 20.5 Cache Optimization part One
+
+우선 재빠르게 음식점이 보이게 해봄
+
+이미 restaurant component는 만들어놨음
+
+여기서 restaurants의 length가 0이 아닌지, 즉 음식점이 존재하는지 확인함
+
+그러니 여기에 div태그를 만들고, 여기서 restaurants를 render함
+
+이미 여기 restaurants.tsx에 restaurant grid를 만들었음
+
+여기 보면 있음
+
+그래서 이것을 그대로 복붙함
+
+그리고 이미 말했듯이 restaurant grid component를 따로 만드는 것이 더 좋을 거 같음
+
+엄청 유용할테니까, 여기에 붙여넣기함
+
+import 수정도 함
+
+Restaurant 컴포넌트가 있음
+
+여기는 restaurants 대신에 data?.myRestaurants.restaurants함
+
+그리고 results는 뺌
+
+여기에 오면 보임
+
+이것이 내 음식점임
+
+이것을 클릭하면 restaurants/8로 이동하게 됨
+
+이것은 말이 됨
+
+왜냐하면 만약 우리가 고객이었고 이 component를 클릭했다면 id를 통해 이 음식점을 보고 싶음
+
+그런데 아직 owner router쪽에 이 route를 만들지 않았음
+
+이 route는 owner router쪽에 존재하지 않음
+
+그렇지만 괜찮음
+
+이 restaurants/8 부분에 우리는 다른 component를 만듦
+
+my-restaurants라고 나오도록 함
+
+왜냐하면 여기를 눌렀을때 음식점 페이지가 아니라 restaurant dashboard(관리자 페이지)로 갔으면 함
+
+메뉴를 추가할 수 있는 버튼이라거나, 나중에 만들 수익 그래프를 보여줌
+
+음식점이 (일정 비용을 내고) 홍보 혜택을 받는 Buy promotion이라는 버튼을 보여줌
+
+아무튼 다양한 것을 좀 보여주도록 함
+
+그래도 지금 이것도 충분함
+
+이 음식점을 삭제함
+
+그냥 모든 음식점을 삭제함
+
+그냥 하나만 지움
+
+우리는 더 개선된 Create Restaurant의 로직 흐름을 만들어야함
+
+여기 이 과정을 봄
+
+여기가 끝난 직후인가
+
+끝난 이후에 아무 것도 없음
+
+우리는 선택해야함
+
+어떻게 할지를 정해야함
+
+지금 보여줄 것은 같은 API를 두번 건드리는 것을 회피하는 방법임
+
+왜냐하면 이것 때문임
+
+여기 My Restaurants를 보면, 내가 음식점이 없다는 것은 이미 cache에 존재함
+
+만약 음식점을 생성하면 업로드를 하고, 그 외에는 아무것도 하지 않음
+
+음식점은 이제 서버에 존재함
+
+그렇지만 페이지를 되돌아가면 cache는 여전히 나한테 음식점이 없는 줄 앎
+
+이것을 해결하는 방법 중 하나는, refetch queries라는 property를 사용하는 것임
+
+refetch queries는 말 그대로 query를 다시 fetch 해주는 기능임
+
+그래서 이 경우에는 query를 refetch하고, refetch하고 싶은 query를 export 해줘야함
+
+그러니 MY_RESTAURANTS_QUERY를 export함
+
+MY_RESTAURANTS_QUERY를 import함
+
+다시 음식점을 생성해보고 어떻게 되나 봄
+
+물론 지금 새로고침을 하면 보임
+
+여기를 다시 삭제하면 cache는 음식점이 없다고 나옴
+
+다시 새로운 음식점을 만듦
+
+하지만 이번에는 query가 refetch됨
+
+그리고 refetch 작업은 mutation 작업이 성공적으로 끝나면 자동으로 일어남
+
+이러면 모든 음식점들을 가져오게 됨
+
+이전 페이지로 돌아갔더니 바로 보임
+
+그러니까 제대로 먹힘
+
+보면 곧바로 일어난 것처럼 보이지
+
+음식점을 생성하고, 즉시 되돌아갔더니 바로 보임
+
+물론 이것은 사전에 My Restaurants 페이지에 방문했을 때만 일어나는 일임
+
+만약 처음부터 Create Restaurant 페이지로 가고, 그 다음에 My Restaurants로 왔으면 My Restaurants에는 cache가 없음
+
+하지만 이것은 적절히 수정할 수 있는 거니까 괜찮음
+
+그런데 이러면 API를 건들게 됨
+
+그리고 만약 음식점을 많이 소유한 경우에는 어떨까
+
+만약에 그 경우에는 어떨까
+
+이 문제 때문에 backend를 조금만 손봐야함
+
+왜냐하면 나는 backend로부터 mutation 결과만 받고 싶음
+
+그냥 새롭게 생성된 음식점들의 ID만 받고 싶음
+
+왜냐하면 refetch query를 건드는 일 없이 전체 음식점을 통째로 fake하는 방법을 보여줌
+
+API를 건들지 않음
+
+cache와 직접적으로 상호작용하는 방법을 초반에 말했음
+
+refetch query를 호출할 필요는 없음
+
+이 과정 때문에 강의가 좀 길어지겠지만, 오히려 좋음
+
+왜냐하면 application이 훨씬 더 최적화됨
+
+refetch query를 호출할 필요없이 Restaurant 생성 그 자체를 fake함
+
+이미 restaurant를 fake하는데 필요한 것들은 전부 다 있음
+
+categoryName, address, 음식점의 이름(name), 보여줄 이미지(file)는 다 있음
+
+여기에 모든 것이 다 있음
+
+restaurant을 fake하는데 필요한 것들은 전부 다 있음
+
+하나 더 필요한 것이 있는데, 음식점을 클릭했을때 /restaurants/10으로 이동하도록 음식점의 id도 필요함
+
+이 link를 속이기 위해서임
+
+backend로 가서 restaurant을 조금만 수정함(nuber-eats-backend)
+
+create-restaurant.dto.ts에서 create restaurant 과정을 조금만 수정함
+
+restaurantId: number라고 추가함
+
+방금 말했듯이 이것을 하는 이유는 음식점의 ID가 필요해서임
+
+dto를 업데이트 했으니까 restaurants.service.ts도 업데이트함
+
+createRestaurant을 찾음
+
+restaurantId: newRestaurant.id함
+
+이것만 하면 됨
+
+nest.js가 얼마나 좋은지 알겠지
+
+이렇게 아름다운 구조를 간단하게 만들 수 있음
+
+mutation을 거치면 restaurantId를 반환받게 됨
+
+이것으로 frontend에서 모든 것을 속일 수 있게 됐음
+
+여기 createRestaurant에서 error, ok 다음에 restaurantId를 추가함
+
+이것이 바로 새로 만든 음식점을 속이려면, frontend를 최적화시키고 싶다면 해야할 작업임
+
+이것을 한 이유는 fake하는 방법을 알려주고 싶어서임
+
+터미널에서 npm run apollo:codegen을 다시 실행함
+
+왜냐하면 restaurantId가 추가되었음
+
+restaurantId를 포함해서 모든 것을 다 generate 했음
+
+이제 createRestaurant에는 restaurant ID를 추가함
+
+그리고 기존의 코드를 망가뜨리는 일 없이 새로운 기능을 추가할 수 있다는 점에서 typescript가 얼마나 멋진지 다시 알 수 있음
+
+이제 restaurantId가 있음
+
+Apollo client로 가봄
+
+공식 문서로 감
+
+caching으로 가서 무엇을 사용할지를 확인해봄
+
+readQuery, readFragment, writeFragment 모두 사용할 수 있음
+
+이 녀석들을 많이 사용함
+
+이것들을 왜 사용할지는 금방 알려줌
+
+그런데 일단 이 음식점 좀 삭제함
+
+웹페이지를 새로고침하면, 처음으로 할 일은 사용자가 My Restaurants에 있는지 확인하는 것임
+
+그리고 여기서 cache를 보고 있어야함
+
+보다시피 myRestaurants라는 query가 이미 준비됐음
+
+이제 하고 싶은 것은, cache로부터 이 query를 읽도록 해야함
+
+단순히 음식점을 fake한다고 끝이 아님
+
+실제로 음식점을 이 restaurants에 집어넣어야함
+
+그러면 모든 것이 동작함
+
+음식점을 만들기만 하는게 아니라, 실제로 여기에 음식점 정보를 넣음
+
+그러니 우선 cache로부터 현재의 myRestaurants 정보를 가져와야함
+
+왜냐하면 사용자에게 이미 음식점이 있을 수 있음
+
+새로 생성한 음식점 하나만을 넣을게 아니라, 이미 생성한 음식점들이 cache에 있다면 그대로 둬야함
+
+이것이 어떻게 돌아가는지 보여주기 위해, 이 모든 것은 my-restaurants.tsx에서 작업함
+
+useEffect를 사용하고, cache를 어떻게 변경하는지 보여주고 싶으니까 MyRestaurants에서 작업함
+
+버튼은 나중에 만듦
+
+일단은 hook을 사용해서 client를 씀
+
+다시 말하지만, 실시간으로 어떻게 돌아가는지 보여주고 싶으니까 My Restaurants 스크린에서 테스트 해봄
+
+그리고 전부 완성되면 AddRestaurants의 onCompleted로 옮겨줌
+
+바로 이 부분에서 fake를 함
+
+그런데 useEffect에서 먼저 테스트를 해봄
+
+여기서는 우선 client를 가져와야함
+
+const client = useApolloClient()함
+
+이제 query를 읽어옴
+
+queryResult를 가져옴
+
+그리고 여기서는 MY_RESTAURANTS_QUERY를 읽음
+
+여기 이 줄에서는 cache의 현재 state를 읽고 있음
+
+이것은 api로 보내지지 않음
+
+이것은 cache로 감
+
+queryResult를 콘솔에 찍어봄
+
+console을 보면, cache에 뭐가 있는지 볼 수 있음
+
+이것은 API에 있지 않음
+
+이것은 cache에 있음
+
+여기까지가 1단계임
+
+2단계는 query를 write하고 싶음
+
+즉 이 query에 무엇인가를 추가하고 싶음
+
+이것은 writeQuery를 사용하면 됨
+
+이 사이트의 예시에서는 todo를 활용하고 있음
+
+우선 todos가 포함된 query가 있음
+
+먼저 이 query를 읽고, todo를 생성하고, 그 다음에 query를 작성함
+
+똑같은 query를 일단 그대로 적어야함
+
+그리고 data가 맞아야함
+
+그래서 우리도 client.writeQuery()를 해줌
+
+그리고 이 query에 새로운 data를 보내야함
+
+포인트는 query를 대체할 때, 이전 형식에 맞게 대체해야 한다는 점임
+
+Apollo탭으로 가봄
+
+여기에 적힌 것은 queryResult로부터 받는 내용임
+
+한번만 확인해봄
+
+이것을 console.log 해봄
+
+그러니까 이전 정보를 대체해야함
+
+query의 구조 자체를 변형시키면 안 됨
+
+사실상 완전히 동일한 데이터를 보내야함
+
+data에 queryResult라고 적음
+
+이것은 cache에 있던 data를 그대로 보낸다는 뜻임
+
+하지만 이 경우 restaurants를 대체해야 하니까, 콤마를 찍고, restaurants라고 적음
+
+이처럼 query를 이전 형식처럼 다시 넣어야 한다는 점이 굉장히 중요함
+
+만약 이렇게 queryResult를 삭제한다면, query가 완전히 바뀌게 됨
+
+restaurants만 들어있는 query를 보내게 됨
+
+원래 있던 query를 무조건 다시 넣어야함
+
+아주 중요함
+
+이렇게 하면 무조건 실패함
+
+왜냐하면 queryResult에 myRestaurants가 있는데, myRestaurants에 restaurants: Array가 있음
+
+그러니 이것을 좀 수정해야 하고, 음식점을 fake 해야함

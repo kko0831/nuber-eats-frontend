@@ -13381,3 +13381,205 @@ restaurants만 들어있는 query를 보내게 됨
 왜냐하면 queryResult에 myRestaurants가 있는데, myRestaurants에 restaurants: Array가 있음
 
 그러니 이것을 좀 수정해야 하고, 음식점을 fake 해야함
+
+## 20.6 Cache Optimization part Two
+
+우리가 할 작업은 queryResult를 가져다가 그 내부의 myRestaurants를 받는 것임(...queryResult.myRestaurants)
+
+그래서 이 myRestaurants를 여기에 적음
+
+그리고 restaurants도 안으로 옮겨서 array를 하나 만듦
+
+이러면 myRestaurants를 반환하고, 그 안에는 기존의 myRestaurants와 새로운 restaurants array가 있게 됨
+
+cache의 기존 정보에 부합됨
+
+이 내용은 즉시 실행되지 않도록 전부 setTimeout 내부에 넣음
+
+그리고 이것은 페이지가 로딩되고 8초 후에 실행되도록 함
+
+저장하고 새로고침 해봄
+
+8초 뒤, 에러 없이 제대로 돌아가는지 한번 기다려봄
+
+제대로 동작함
+
+음식점 몇 개를 만들어냈음
+
+사진도 안 보이고 마우스를 가져다 대면 링크가 localhost:3000/restaurants/undefined라고 뜸
+
+Apollo 탭으로 가보면, cache에 들어가서 봄
+
+내가 생성한 음식점들임
+
+음식점 6개 맞지
+
+제대로 돌아가지
+
+우리는 cache를 읽어내서 cache를 업데이트하고 있음
+
+이론적으로 우리가 해야 할 일은 이것임
+
+우선 restaurants를 가지고, restaurants를 완전히 대체하는게 아니라, 새로운 restaurant을 하나 더 만듦
+
+이 restaurant의 name은 fake guy라고 함
+
+좀 긴 코드임
+
+/undefined는 지움
+
+좀 긴 코드임
+
+여기 내용이 변하는지 확인함
+
+형태가 좀 달라서 받아들여지지 않는 것 같지만, 돌아가기는 함
+
+긴 코드고 지저분하지만, 이전의 데이터를 반환해야 한다는 것을 꼭 염두에 둬야함
+
+데이터를 대체하는 것이 아니라, 기존 데이터에 추가를 해야함
+
+그래도 돌아감
+
+그러니 이것은 onCompleted로 옮김
+
+여기에서 이 부분을 잘라내고, useEffect 부분은 지움
+
+다시 말하지만 테스트 목적이었음
+
+그리고 여기서 writeQuery로 우리가 import한 MY_RESTAURANTS_QUERY를 write함
+
+그리고 여기서는 진짜 restaurant을 만들 수 있음
+
+restaurant은 name이 필요한데 이미 getValues로 name을 앎
+
+그러니 여기에 있는 getValues를 사용함
+
+그러니 name은 이제 name이고, category는 좀 달라야함
+
+restaurant은 형태가 좀 이상함
+
+그러니 무엇을 할거냐면, 이 부분을 잠시 잘라냄
+
+왜냐하면 가짜 restaurant을 사용해서 restaurant의 구체적인 형태를 확인하고 싶음
+
+왜냐하면 완전히 동일한 형태로 fake 해야함
+
+다시 말하지만 이것은 속이기 위해서 필요함
+
+이제 됐고 여기로 되돌아가서, 새로고침 해보면 음식점이 생겼음
+
+그런데 이번에는 MyRestaurants에 console.log를 추가함
+
+우리가 받는 데이터의 형태를 확인하기 위함
+
+그래서 restaurant은 이렇게 생겼음
+
+이것이 우리가 fake 해야하는 형태임
+
+그러니 이것을 그대로 복붙함
+
+여기에 새로운 restaurant을 만듦
+
+또 뭐가 있지
+
+모두 콤마로 연결함
+
+이것이 실제 restaurant임
+
+이것이 cache에서 보여야하는 모습임
+
+우리 form에 있는 것들로 대체함
+
+cover image는 나중에 바꿔야하고, id는 backend에서 가져온 restaurantId를 넣어야함
+
+이 목적으로 이것을 했던 것임
+
+name도 form으로부터 오는 name임
+
+이것은 지울 수 있고, 이제 cover image만 하면 됨
+
+이것을 위해 여기 위쪽에 state를 하나만 더 만듦
+
+imageUrl, setImageUrl이라고 함
+
+이것을 하는 이유는 이미지를 업로드했을때 해당 url을 variables와 공유하고 싶기 때문임
+
+나중에 한번 정리함
+
+이제 imageURL을 저기에 넣음
+
+즉 coverImg에 imageURL을 넣음
+
+보면 사실상 우리는 database에 있는 object의 모양으로 object 하나를 만들고 있음
+
+이건 cache에서 일어나지 않음
+
+이것은 Javascript 관련 내용임
+
+하지만 __typename은 그대로 있어야하고 구조도 동일해야함
+
+string을 저장하는 새로운 state를 만들었음
+
+새로 생성한 restaurant의 fake 버전에서 업로드된 이미지를 사용하기 위해서임
+
+이 코드는 지우고, 음식점도 삭제함
+
+나는 음식점이 없는 상태임
+
+이렇게 My Restaurant 페이지에서 시작하고, restaurant을 추가함
+
+여기의 것들은 문제없이 돌아감
+
+이전 페이지로 돌아가야함
+
+여기 Uber Eats를 클릭하면 방금 생성한 내 restaurant을 볼 수 있으면서, backend에는 아무런 requests도 없음
+
+적어도 graphql에는 아무런 request가 없음
+
+만약 모든 것이 제대로 돌아갔다면, 이 가짜 restaurant이 우리의 cache에 존재하고 있음
+
+보이는대로 API를 건드리지 않고도 이미 저기에 존재하고 있음
+
+fake를 만듦
+
+그래서 보면 API를 건들지 않고도 자동으로 restaurant이 추가됐고 심지어 restaurant ID도 있음
+
+물론 이미지는 건드렸음
+
+이제 fake하는 방법을 알게 됐음
+
+이것은 예를 들어 사용자가 댓글을 남기는 작업을 할 때도 똑같이 활용할 수 있음
+
+얼마나 빠른지 실감할 수 있음
+
+왜냐하면 우리 사이트도 댓글의 id만을 가져가고, 프로필 사진 등을 통해 가짜 댓글을 만들어냄
+
+드디어 해치웠음
+
+그동안 이것을 알려주고 싶었는데 드디어 됐음
+
+사용자를 이전 페이지로 redirect 해줌
+
+query 작성 이후에, history.push()를 써서 home으로 되돌아가도록 함
+
+마지막으로 한번만 해봄
+
+이번에는 실제 restaurant이어야함
+
+왜냐하면 restaurant dashboard를 다뤄야함
+
+새로고침하면 아무것도 없어야함
+
+restaurant이 하나도 없음
+
+이것은 실제 restaurant이 됨
+
+나중에 Google Maps로 진짜 주소를 사용함
+
+이번에는 진짜 이미지를 사용함
+
+이것이 로딩되는동안 말하자면, 업로드하는 이미지 파일의 크기에 제한을 거는 것이 좋은 생각일 거 같음
+
+잘 돌아감
+
+물론 이미지가 좀 커서 로딩 시간이 좀 걸리지만, 그것만 빼면 매우 멋짐

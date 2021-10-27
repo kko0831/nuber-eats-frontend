@@ -13583,3 +13583,171 @@ restaurant이 하나도 없음
 잘 돌아감
 
 물론 이미지가 좀 커서 로딩 시간이 좀 걸리지만, 그것만 빼면 매우 멋짐
+
+## 20.7 Restaurant Dashboard part One
+
+방금 백엔드에 기존에 없던 resolver를 하나 더 추가했음
+
+myRestaurant이라는 resolver임
+
+restaurants는 전부 나의 음식점들임
+
+그런데 특정 음식점을 클릭했을때 My Restaurant 페이지로 이동하고 싶음
+
+이렇게 하고 싶은 이유는, 음식점 주인의 입장에서는 데이터베이스로부터 더 많은 정보를 가져왔으면 함
+
+만약 오래전에 만들어뒀던 이것(findRestaurantById)을 사용한다면, 이 음식점은 딱히 다양한 정보들을 load해오지 않음
+
+menu만 가져옴
+
+그리고 이것이 우리의 고객이 보게 되는 것이고, 고객은 menu만 보게 됨
+
+하지만 음식점 주인이라면 예를 들어, 음식점에 들어온 주문들도 보고 싶어 할 수 있음
+
+자기 음식점과 관련된 많은 정보들을 알고 싶음
+
+주문도 보고, 선전되고 있는지 등 다양한 정보를 보고 싶음
+
+그래서 myRestaurant이라는 resolver를 새로 만듦
+
+myRestaurant은 일단 음식점을 보여주는 MyRestaurantOutput이 있음
+
+Input과 Output이 무엇인지는 당연히 앎
+
+그리고 MyRestaurantInput은 음식점의 id 정보만 필요로 함
+
+이것이 이 resolver의 모습임
+
+query는 MyRestaurantOutput을 return하고, Role은 "Owner"임
+
+AuthUser로부터 owner를 받고, input을 받고, owner와 id 정보를 통해 음식점 하나를 찾음
+
+이것으로 그 사람이 주인이고, 이것이 음식점의 id인지 알 수 있음
+
+그러므로 음식점의 주인이 자기 음식점을 보고 있는지를 알 수 있음
+
+dto, resolver, service 그리고 nestJS가 최고라서 모든 것을 다 제공해주고 있음
+
+우리가 할 일은 class들을 호출하기만 하면 됨
+
+이제 frontend에 my-restaurant 스크린을 만듦
+
+owner 폴더에 들어가서, my-restaurant.tsx라고 만듦
+
+그동안 form을 엄청 많이 사용했음
+
+edit restaurant 버튼 같은 것을 만들지는 않을건데 원하면 만들어봄
+
+내가 할 것은 메뉴를 업로드하는 form을 만들고, 홍보하기 위해 돈을 내는 버튼을 만듦
+
+다시 말하지만 메뉴를 업로드하는 form을 만듦
+
+왜냐하면 메뉴는 좀 다르니까 어떻게 구현할 수 있는지 보여주고 싶음
+
+하지만 이미지를 업로드하는 것과 사실상 동일한 내용임
+
+그리고 결제를 위한 버튼을 만듦
+
+말했듯이 edit restaurant 버튼 같은 것은 구현하지 않음
+
+왜냐하면 이미 이 강의에서 form은 너무 많이 다뤘음
+
+만들고 싶으면 도전할겸 직접 만들어봄
+
+사람들은 id를 통해 이 페이지에 오게 됨
+
+즉 parameter와 함께 올 거라는 뜻임
+
+parameter는 이렇게 하면 됨
+
+그리고 parameter를 기대하고 있다고 하고, interface IParams를 씀
+
+parameter들을 출력해봄
+
+logged-in-router로 가서 restaurantRoutes에 추가함
+
+path는 매우 유사함
+
+다만 이 경우에는 /restaurants/:id가 되고 component는 MyRestaurant이 됨(단수형)
+
+이제 새로고침 해보면, 실제 음식점을 클릭하면 restaurants/13으로 감
+
+parameters를 보면 parameter를 굉장히 잘 받고 있다는 것을 알 수 있음
+
+이것을 저장하고, 다시 여기 옴
+
+query를 생성하는데 필요한 모든 것이 준비됐음
+
+이것을 어떻게 했었는지 까먹었지만, 여기로 와서 그대로 복사하면 됨
+
+그리고 output은 ok, error, restaurant임
+
+그리고 이미 restaurant이 있으니까, RESTAURANT_FRAGMENT라고 입력함
+
+아직 모두가 사용하는 fragment와 똑같음
+
+하지만 나중에 다른 것들을 여기에 더 추가해 나감
+
+아니면 여기 restaurant 안에 우리의 음식점에 아직 없는 요소들을 추가할 수도 있음
+
+그러니 RestaurantParts라고 추가함
+
+이 query는 일반적인 restaurant과 똑같음
+
+하지만 적어도 현재 사용자가 이 음식점의 소유자인지를 체크할 수는 있음
+
+왜냐하면 그렇다면 이 사람에게 몇가지 버튼을 보여줌
+
+터미널에서 npm run apollo:codegen을 다시 실행함
+
+그리고 그 사이에 query를 만듦
+
+useQuery()를 써서 MY_RESTAURANT_QUERY를 넣음
+
+자동완성 기능이 가끔 제대로 안 먹힘
+
+직접 고침
+
+typescript가 제대로 안 먹히는줄 알았음
+
+가끔 좀 느려짐
+
+내 생각에 앞으로의 강의들에서는 route를 만드는 과정을 좀 생략할 수 있음
+
+routers가 어떻게 동작하는지도 알고, query를 어떻게 작성하는지도 알고, fragment를 어떻게 사용하는지도 앎
+
+그러니 같은 작업을 반복하는 모습은 좀 덜 보여주도록 함
+
+왜냐하면 굳이 그 과정을 볼 필요가 없음
+
+이제 됐음
+
+왜 bad request지
+
+가서 한번 봄
+
+에러 메시지를 확인함
+
+그런데 이렇게 하면 parameters로부터의 id는 string 타입이 됨
+
+우리는 number 타입이 필요함
+
+그러니 +id라고 함
+
+이러면 id가 숫자로 전환됨
+
+console에 출력해보면 myRestaurant이 뜸
+
+그리고 말했듯이 만약 보안을 별로 중시하지 않는다면 이것은 필수는 아님
+
+하지만 난 보안을 중시함
+
+그리고 나중에는 예를 들어, 음식점은 주문이 들어오니까 주문 같은 정보들을 여기에 더 추가할 수 있음
+
+나중에는 주문을 load하게 해서 그래프를 만듦
+
+다음 강의에 들어가기 전에 나는 미리 restaurant의 title을 만들고, 'promotion 구매하기'라고 적혀있는 버튼을 하나 만들고, 음식점이 아직 메뉴를 업로드하지 않은 경우를 위해 '메뉴 업로드'라는 버튼도 여기에 만듦
+
+음식점에 메뉴가 존재한다면 그대로 메뉴를 보여줌
+
+그런데 우선 메뉴를 업로드하는 것에 집중함

@@ -13751,3 +13751,193 @@ console에 출력해보면 myRestaurant이 뜸
 음식점에 메뉴가 존재한다면 그대로 메뉴를 보여줌
 
 그런데 우선 메뉴를 업로드하는 것에 집중함
+
+## 20.8 Create Dish part One
+
+이것이 현재 모습임
+
+html 작업을 조금만 했음
+
+별것 아님
+
+우리가 이미 만든 배너를 추가했음
+
+만드는 방법은 이미 다 앎
+
+그래서 이 페이지를 새로고침 하면, 아주 잠깐동안 화면에 loading이라고 뜨고, Real One으로 이동하게 됨
+
+그리고 Add Dish와 Buy Promotion이 있는데 이것은 눌러도 어디로도 가지 않음
+
+일단 여기서 멈췄음
+
+왜냐하면 새로운 fragment를 만드는 방법을 보여주고 싶었음
+
+왜냐하면 restaurant에는 menu와 dish가 있음
+
+그리고 이 fragment는 엄청 자주 사용하게 됨
+
+그러니 지금 당장 dish fragment라는 fragment를 만듦
+
+이렇게 dish fragment를 사용하는 이유는 사용자들만이 아니라 음식점 주인들도 요리를 봐야함
+
+그리고 이것은 on Dish가 됨
+
+필요한 것들을 써넣음
+
+restaurant은 필요 없고, options는 넣음
+
+options에는 name, extra, choices를 넣음
+
+그리고 choices에는 name과 extra가 있음
+
+이것이 dish fragment고 앞으로 이 fragment에 다른 것들도 엄청 추가하게 됨
+
+그래서 DishParts를 복사해서 여기 restaurant 내부에 넣음
+
+DishParts를 받게 하고, 그러면 보이듯이 fragment 두개를 합치게 됨
+
+보면 새로운 fragment를 별개로 만들었지
+
+이 fragment를 기존의 restaurant fragment에 추가하지 않았음
+
+왜냐하면 restaurant fragment는 search page에서도 사용됨
+
+그리고 search page에서는 딱히 요리에 관심이 없음
+
+특정 restaurant에 대해 알고 싶을때 요리를 보고 싶어함
+
+그래서 됐음
+
+DishParts가 생겼음
+
+그런데 잊지 말자
+
+요리들에 대한 정보가 들어있는 곳은 menu니까 이렇게 수정함
+
+DISH_FRAGMENT, DishParts on Dish, RestaurantParts on Restaurant 다 만들었음
+
+터미널에서 npm run apollo:codegen을 실행시켜서 돌아가나봄
+
+제대로 동작하는 것 같아 보임
+
+myRestaurant을 보면 myRestaurant은 myRestaurant을 주고, restaurant을 주고, menu를 주고, 그러면 이것들이 다 있음
+
+options를 누르면 여기로 가게 됨
+
+그리고 모든 것이 다 typescript임
+
+엄청 좋음
+
+이제는 backend로 가서, backend는 relations: (대괄호)"menu"를 load하도록 해야함
+
+relations: (대괄호)"menu"를 load 해야함
+
+왜냐하면 현재 restaurant은 relations를 불러오지 않고 있음
+
+그래서 여기 restaurant을 console.log 해보면, 다시 backend에 보이게 됨
+
+다시 말하지만 이것이 backend임
+
+새로고침 해봄
+
+일단 제대로 돌아가는 것 같음
+
+전부 다 있음
+
+menu도 있음
+
+물론 menu가 비어있지만 좋은 일임
+
+이 에러가 대체 무엇인지 모르겠으니까, frontend를 껐다가 다시 시작함
+
+여기까지가 우리들의 여정의 파트1임
+
+이제 data와 menu가 있다는 것을 알 수 있음
+
+그러니 여기로 와서 div를 만듦
+
+만약 length가 0이면 my-restaurants의 "You have no restaurants"와 비슷한 것을 보여줌
+
+여기서는 "Please upload a dish."라고 보여줌
+
+그리고 나중에 여기에 요리들을 넣음
+
+어떻게 보이지
+
+이것을 여기로 옮김
+
+이렇게 restaurant dashboard가 완성됐음
+
+앞으로 다른 것들도 추가해 나감
+
+예를 들어 여기에는 요리들도 보여주고, 앞으로 Victory로 제작할 그래프도 보여주게 됨
+
+나중에 알려줌
+
+충분히 좋음
+
+지금부터는 add dish 페이지를 만듦
+
+owner 폴더 안에 add-dish.tsx를 생성함
+
+내가 무엇을 하는지 다들 아니까 딱히 설명할 필요가 없음
+
+여기서 중요한 것은 router에 가보면, logged-in-router를 보면 route는 /restaurants/:id/add-dish가 됨
+
+왜냐하면 요리를 추가할때, 여기 MUTATIONS의 createDish를 보면 input으로 restaurant id를 필요로 함
+
+그래서 여기에 restaurant ID가 옴
+
+그러니 여기에서 parameter를 필요로 함
+
+const params = useParams()함
+
+참고로 매번 interfaces를 만들 필요는 없음
+
+그냥 여기에 이렇게 해도 됨
+
+이것도 가능함
+
+그런데 나는 이 방식이 더 좋음
+
+하고 싶은대로 하면 됨
+
+요리를 생성할 준비가 거의 됐음
+
+이제 form을 만듦
+
+그런데 먼저 거대한 mutation을 하나 만듦
+
+const CREATE_DISH_MUTATION = gql함
+
+그대로 복붙함
+
+createDish를 한번 더 씀
+
+이제 output을 보면, ok와 error만 넣으면 됨
+
+createDish는 이것을 받고, input이 있고, 내부에 ok와 error가 있음
+
+mutation이라고 적어야함
+
+터미널에서 npm run apollo:codegen을 실행시킴
+
+그러면 됨
+
+이제 mutation을 사용해봄
+
+여기로 와서 mutation을 build함
+
+mutation을 load하고 있을 수 있으니까 loading이라고 적음
+
+useMutation(CREATE_DISH_MUTATION)함
+
+일단 여기까지만 하고, 다음 강의에서 봄
+
+그전에 미리 form을 완성시켜 놓음
+
+왜냐하면 css 작업만 하면 됨
+
+카메라가 꺼졌을때 내가 하는 일들은 전부 예전에 보여줘서 이미 할 줄 아는 것들임
+
+새로운 내용만 카메라에 담음

@@ -13941,3 +13941,275 @@ useMutation(CREATE_DISH_MUTATION)함
 카메라가 꺼졌을때 내가 하는 일들은 전부 예전에 보여줘서 이미 할 줄 아는 것들임
 
 새로운 내용만 카메라에 담음
+
+## 20.9 Create Dish part Two
+
+create dish mutation을 위한 form을 거의 다 만들었음
+
+이 form에서 먼저 요리를 업로드하는 것에만 초점을 맞춤
+
+그 다음에는 옵션을 위한 form을 만듦
+
+왜냐하면 각 요리에는 여러가지 옵션들이 있음
+
+그리고 옵션을 만드는 것은 좀 흥미로움
+
+왜냐하면 다양한 state를 handle함
+
+우선은 아무런 옵션이 적용되지 않은 요리를 생성해봄
+
+왜냐하면 실제로 아무런 옵션도 적용되지 않는 요리도 주문할 수 있음
+
+요리는 name이 필요한데 여기에 있음
+
+price도 필수인데 여기 있음
+
+이것을 price로 바꿈
+
+타입은 number임
+
+이것들은 create restaurant에서 복붙해온 것임
+
+요리는 description도 필요하니까 여기에 적음
+
+restaurantId는 나중에 함
+
+form에는 name, price, description이 있음
+
+이미 useForm을 import했지만 아직 interface는 만들지 않았음
+
+Button은 이미 있으니까 수정함
+
+uploading을 loading으로 수정함
+
+그리고 formState는 hook으로부터 옴
+
+다시 말하지만 새로운 것은 안 하고 있음
+
+이미 다 한 것들임
+
+그냥 제대로 돌아갈지 검토하는 것임
+
+Create Dish로 수정함
+
+이러면 에러가 발생함
+
+왜냐하면 form이 안 닫혔음
+
+어떻게 보이나 한번 봄
+
+아직 이 링크를 만들지 않았음
+
+my-restaurant에 add dish로 가는 링크가 있어야함
+
+이미 useParams에 restaurant의 id가 있음
+
+그러니 곧바로 여기에 와서 이 링크는 Add Dish에 있음
+
+그러니 add-restaurants.tsx에 가서 css를 복붙함
+
+my restaurant이 아니라 add dish임
+
+title만 추가하면 끝임
+
+이름은 바비큐 치킨임
+
+설명란에는 "맛있어요", 가격은 12라고 씀
+
+이러면 요리가 생성됨
+
+그런데 왜 안 되는거지
+
+왜냐하면 mode를 안 넣었음
+
+로그인에서 했던 것처럼 validation을 하려고 하면 어떤 내용이 required인지 즉시 알려줌
+
+그리고 onChange를 해야함
+
+참고로 form의 mode가 onChange가 아니면 formState도 안 먹힘
+
+그러니까 formState는 onChange mode가 필요함
+
+왜냐하면 그렇게 해야 특정 input의 값이 변경될 때마다 실시간으로 form에서 validate 해줌
+
+default 설정대로 submit을 누른 순간에만 해주는게 아님
+
+다시 해봄
+
+제대로 됨
+
+이제 mutation을 호출함
+
+getValues로부터 모두 가져옴
+
+이미 다 해본 것임
+
+다만 mutation을 조금만 수정함
+
+mutation이 호출되면 query를 refetch하도록 함
+
+query를 refetch하는 것이 어떤건지 이제 다 이해함
+
+그리고 MY_RESTAURANT_QUERY를 refetch하도록 함
+
+export도 해줌
+
+getValues로부터 name, price, description을 가져오고, createDishMutation을 호출함
+
+여기에 type을 적지 않아서 typescript의 도움말이 안 뜸
+
+createDish, createDishVariables를 추가함
+
+typescript가 없었으면 실수를 더 많이 했겠지
+
+그리고 restaurantId는 parameters에서 옴
+
+그런데 restaurantId는 숫자여야함
+
+그런데 지금 문자열임
+
+앞에 +를 넣음
+
+이것은 dish mutation을 생성함
+
+무엇을 더 해야하지
+
+전부 다 연결됐고, 문제 없음
+
+마지막으로 해야 할 일은 history를 사용하는 것임
+
+여기에서 useHistory()를 사용함
+
+왜냐하면 mutation이 끝나면 어디인가로 가야함
+
+그러니 여기에 history라고 적음
+
+그리고 우리는 이전에 있던 페이지로 되돌아가고 싶음
+
+그냥 goBack이라고 하면 됨
+
+그냥 이렇게 하면 됨
+
+마지막으로 검토해봄
+
+그리고 price는 숫자가 되도록 했음
+
+이렇게 하면 안 돌아감
+
+왜냐하면 form에는 문자열 밖에 없음
+
+number를 string으로 수정함
+
+price의 type을 문자열에서 숫자로 바꾸도록 해야함
+
+form에 있는 모든 것은 문자열이 됨
+
+음수가 나오지 않았으면 하니까 최소값을 0으로 함
+
+왜냐하면 price가 -10 같이 되면 backend에서 graphQL을 고장낼 수 있음
+
+그리고 restaurantId가 parameters에 존재하는지만 테스트 해봄
+
+이것은 router에 있음
+
+그런데 없음
+ 
+실수를 했음
+
+restaurantId가 아니라 id라고 해야함
+
+어떻게 할거냐면 아예 여기를 수정하는 것이 오히려 더 나을 것 같음
+
+이렇게 하거나, 아니면 여기에 id라고 적고, useParams에서 전부 id라고 수정할 수도 있음
+
+이제는 테스트 준비가 끝났음
+
+여기로 와서 restaurants/13으로 들어갔음
+
+에러가 있을 수 있으니 network를 열어놓음
+
+Add Dish를 누름
+
+잘 보이게 조금만 키움
+
+Create Dish를 클릭함
+
+뭐가 문제일까
+
+"필수로 입력 해야하는 MyRestaurantInput 값이 보내지지 않았습니다"
+
+여기에 문제가 있음
+
+문제가 뭐냐면, 우리는 지금 query를 refetch하고 있음
+
+그런데 MY_RESTAURANT_QUERY는 변수가 필요함
+
+이전에는 음식점들을 싹 다 가져와서 돌아갔던 것임
+
+우리는 myRestaurant을 refetch하려고 한 것인데 얘는 변수가 없음
+
+이게 무슨 의미냐면 MY_RESTAURANT_QUERY를 refetch하려고 했는데, MY_RESTAURANT_QUERY에는 변수가 필요하다는 뜻임
+
+다행히 여기로 그 변수들을 보내면 됨
+
+myRestaurant에서 했던 것과 동일한 변수들을 넣으면 됨
+
+우리가 refetch하려는 음식점의 id와 variables, input을 넣으면 됨
+
+그러니까 우리가 작업한 것이 제대로 돌아가는 거 같음
+
+여기까지 도달한 다음에 에러가 발생했음
+
+그러니 실제로 query를 refetch하려고 시도했음
+
+그리고 이것이 변수들을 사용해서 query를 refetch하는 방법임
+
+이 에러가 발생해서 오히려 좋음
+
+여기로 오면 요리가 업로드 되었음
+
+왜냐하면 여기에 Please upload a dish라는 문구가 없음
+
+보아하니 제대로 돌아간 거 같음
+
+my-restaurant에 뭐 좀 추가함
+
+이미 data가 여기에 있음
+
+myRestaurant이 어떻게 생겼는지 한번 봄
+
+restaurant이 있고, 그 안에 menu가 있고, 그 안에 dish가 있음
+
+이것이 우리가 업로드한 요리임
+
+아직 이 요리에는 옵션이 없는데 걱정하지마
+
+나중에 추가함
+
+그래도 일단 돌아감
+
+요리를 삭제함
+
+왜냐하면 처음부터 모든 것이 제대로 동작하는지 보고 싶음
+
+아무것도 없는 상태에서 요리를 생성함
+
+엄청 빠름
+
+그리고 보이지
+
+엄청 빠르게 query를 refetch함
+
+변수로 query를 refetch하는 방법도 알고, 그것이 싫으면 수작업으로 cache를 수정하는 방법도 알게 됐음
+
+다음 시간에는 좀 복잡해짐
+
+왜냐하면 다음에는 option creator를 만듦
+
+요리에 옵션을 추가하기로 결정한 것이 너무나도 힘들게 함
+
+코드가 너무 길어지고 있음
+
+하지만 괜찮음
+
+option creator를 만들어봄

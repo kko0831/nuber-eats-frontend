@@ -14213,3 +14213,261 @@ restaurant이 있고, 그 안에 menu가 있고, 그 안에 dish가 있음
 하지만 괜찮음
 
 option creator를 만들어봄
+
+## 20.10 DishOptions part One
+
+html 작업을 좀 했음
+
+description과 Button 사이에 div를 추가함
+
+그리고 여기에 버튼이 있음
+
+새롭게 추가한 기능은 없음
+
+디자인만 바꿈
+
+아직 counter를 안 만들었으니까 만듦
+
+optionsNumber, setOptionsNumber라고 함
+
+그리고 option 추가 버튼을 누른다면 setOptionsNumber를 1씩 증가시킴
+
+이러면 됐음
+
+이 부분은 option을 몇개나 추가했는지 확인하기 위해 넣음
+
+이 Add Dish Option 밑에다가 div를 넣고 className도 넣음
+
+그리고 여기에는 먼저 optionsNumber가 0이 아닐 때에만 보이도록 함
+
+그리고 여기에는 add dish option을 누를때마다 form을 하나 추가시킴
+
+그러니 form을 생성함
+
+div라고 쓰고, 그런데 form 그 자체를 적을 것은 아님
+
+왜냐하면 여기에 있는 이 form 한개만 원함
+
+dish를 추가해주는 이 form만 가져오면 됨
+
+여기에는 일단 dish option이라고 적어 놓음
+
+클릭하면 dish option이라고 생겨남
+
+이것은 optionsNumber를 토대로 만들어지도록 함
+
+Array.from(new Array())라고 씀
+
+길이가 optionsNumber인 비어있는 array를 생성함
+
+이것은 길이가 optionsNumber인 비어있는 배열을 줌
+
+만약 optionsNumber가 1이면, 이 코드는 슬롯이 1개인 비어있는 array를 줌
+
+그리고 map()을 함
+
+여기는 값을 줘야 하는데 빈 array니까 값이 없음
+
+그 다음은 index가 들어가야 하니까 index를 씀
+
+그리고 이것은 실제 dish option을 return함
+
+Add Dish Option을 클릭할 때마다 dish option을 하나씩 추가함
+
+새로고침하고, 다음 단계는 여기에 input을 하나 추가함
+
+여기에 같은 것을 함
+
+다만 type은 number고 min은 0으로 함
+
+placeholder는 "Option Extra"로 함
+
+클릭하면 이제 옵션명이랑 추가 가격이 나옴
+
+스타일을 조금만 만져봄
+
+Option Name과 Option Extra가 있음
+
+여기에서는 mr-3을 추가함
+
+이러면 됐음
+
+문제는 어떻게 이 녀석들의 value를 알 수 있을까
+
+이것은 좀 어려움
+
+어떻게 이것들의 값을 알 수 있지
+
+한가지 방법은 이것들을 등록하는 것임
+
+여기에 이렇게 register함
+
+이제 내 form은 이 녀석들을 계속 주시함
+
+다만 여기에서 이름을 지정해야함
+
+이 이름은 좀 유니크하게 만들어봄
+
+여기에 있는 index는 숫자임
+
+그러니 dynamic name을 만들 수 있음
+
+그리고 이 녀석은 Name이고, 이것은 Extra가 됨
+
+그러니까 우리는 옵션의 개수에 따라 동적으로 이름을 부여함
+
+createDishMutation을 보면 submit하기 싫어서 주석 처리해놨음
+
+테스트하는 중임
+
+여기에 getValues가 있다면 어떻게 그 외의 value들을 사용할 수 있을까
+
+왜냐하면 여기에서 동적으로 생성되는 이름들이 있음
+
+그래서 여기에서 어떻게 하냐면 rest를 적어줌
+
+그럼 이 rest가 나머지 value들을 줌
+
+rest가 아니라 potato처럼 아무거나 가능함
+
+그런데 난 rest라고 함
+
+rest를 console.log 해보고, 제대로 되는지 봄
+
+새로고침하고 개발자 도구를 엶
+
+Console 탭을 열고 Create Dish를 클릭하면, 0OptionExtra랑 0OptionName이 보임
+
+하나만 더 생성해봄
+
+이제 item들이 동적으로 생성된 것이 보임
+
+좀 더럽게 보임
+
+그러니 이렇게 이름을 바꿈
+
+왜냐하면 그냥 더 좋아 보임
+
+제대로 돌아감
+
+어떻게 보일지 한번 봄
+
+Create Dish를 클릭함
+
+이렇게 나옴
+
+중복된 것은 신경 쓰지 마
+
+새로고침 때문임
+
+동적인 form을 생성할 수 있게 되었음
+
+어떻게 생각해
+
+나는 좋은 거 같음
+
+지금부터는 삭제하기 위한 function을 만들어봄
+
+여기 input들로 와서 option을 삭제할 수 있나 한번 해봄
+
+form 내부에서는 button을 사용할 수 없음
+
+이렇게 roll="button"이라고 한번 해봄
+
+Delete Option이라고 함
+
+내가 보고 싶은 것은 안 됨
+
+버튼을 누를 때마다 submit을 누른 것처럼 돼버림
+
+그러니 span을 씀
+
+이 Delete Option을 클릭할 때마다 옵션이 삭제되는 함수를 여기에 하나 만듦
+
+이름은 onDeleteClick임
+
+이것은 idToDelete를 받을건데 이것은 숫자여야함
+
+이것을 여기에 추가함
+
+그리고 idToDelete는 그 시점의 index 값이어야함
+
+이렇게 하면 안 돌아감
+
+이러면 onDelete 함수를 즉시 실행시키게 됨
+
+그러니 이렇게 해야함
+
+이제는 onDeleteClick으로 와서 option 개수를 감소시켜야함
+
+그런데 그 옵션들은 여전히 rest에 존재함
+
+이것은 무엇을 하냐면, option input을 사라지게 함
+
+그것은 괜찮음
+
+문제는 어떤 input이 사라지는지를 모른다는 점임
+
+이것을 좀 수정해야함
+
+API로 이동함
+
+그리고 만약 원한다면 값을 설정해도 됨(setValue)
+
+setValue는 기본적으로 form 안에서 원하는 값을 설정할 수 있게 해줌
+
+여기에서 value를 설정할 수 있음
+
+마음대로 value를 set 할 수 있다는 것임
+
+그러니 setValue를 쓰기로 하고, 그것을 form에서 가져옴
+
+그러니 여기에서 우리가 삭제하고 싶은 id를 설정함
+
+이 녀석의 이름을 수정해야함
+
+optionName을 붙임
+
+value로는 아무것도 주지 말자
+
+그리고 똑같이 setValue를 하는데, 이것은 optionExtra로 함
+
+아마 typescript는 이것을 안 좋아함
+
+왜냐하면 지금 setValue는 여기로 보내는 값들(name, price, description)만을 인정함
+
+일단은 typescript를 무시함
+
+나중에 수정하면 되니까 잠깐 보류함
+
+우리는 삭제하려는 id에 아무런 value도 설정하지 않음
+
+optionName이랑 optionExtra들이 있음
+
+이제 삭제해봄
+
+그리고 다시 요리를 생성하면 0들(첫번째 옵션)만 나옴
+
+만약에 새로운 옵션을 추가하면 어떻게 될까
+
+다시 요리를 생성함
+
+보면 다 들어있음
+
+그런데 만약 두번째가 아니라 첫번째 옵션을 삭제하면 어떻게 될까
+
+이론상으로는 여기의 0~들은 사라지고, 1~들은 남아있어야함
+
+하지만 그렇게 안됨
+
+문제가 생겼음
+
+이 문제는 다음 수업에서 고쳐봄
+
+다시 말하자면 우리는 지금 form을 생성하려고 하고 있음
+
+그런데 react hook form에서 이런 field들을 만들어낼 수 있다는 점도 알아두면 좋음
+
+동적으로 field를 생성할 수 있음
+
+엄청 좋음

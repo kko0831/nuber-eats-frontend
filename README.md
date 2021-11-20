@@ -14471,3 +14471,263 @@ optionName이랑 optionExtra들이 있음
 동적으로 field를 생성할 수 있음
 
 엄청 좋음
+
+## 20.11 DishOptions part Two
+
+숫자에 따라 array를 생성하는 대신에 addOptionClick을 할때마다, 그러니까 매번 Add Option을 클릭할 때마다 option들은 array가 되도록 함
+
+optionsNumber는 날짜들의 array가 됨
+
+이것은 setOptionsNumber라고 함
+
+현재 배열인 current를 받고, 그리고 여기에서 새로운 array를 return하도록 함
+
+하지만 이번에는 거의 unique한, 아주 간단한 id를 사용함
+
+이렇게 할 수 없음
+
+왜냐하면 보면 current는 type이 never라고 되어있음
+
+이렇게 useState의 type을 number()라고 설정하면 됨
+
+그러면 문제없음
+
+Add Option을 클릭할때마다 날짜들만 들어간 array를 생성하게 됨
+
+optionsNumber.length로 수정함
+
+왜냐하면 array임
+
+index는 불필요함
+
+id라고 함
+
+그러니 index를 전부 id로 바꿈
+
+날짜에 따라 생성됨
+
+물론 엄청나게 random하거나 완전히 unique한 것은 아님
+
+만약 원하면 uuid를 생성한다거나 할 수도 있음
+
+setOptionsNumber에서 삭제하고 싶을때, 이렇게 삭제하지 않고, filter를 return하는 방식으로 삭제함
+
+그래서 current.filter()를 씀
+
+여기를 보면 알겠지만 filter 메서드는 array에서 조건을 충족하는 element를 return해줌
+
+id는 삭제하려는 id와 달라야 한다는 것이 조건임
+
+이렇게 current 배열, 즉 optionsNumber에서 우리가 삭제하고 싶은 id를 지우고 있음
+
+그리고 이 typescript 문제도 해결할 수 있음
+
+지금 불만인 것은 setValue가 name, price, description만을 받도록 되어있어서임
+
+왜냐하면 IForm에 적힌 내용이 그것들임
+
+그러니 여기에 다른 값들을 얼마든지 추가로 받을 수 있게 해주면 됨
+
+이렇게 하면 typescript가 조용해짐
+
+마지막으로 한번 테스트해봄
+
+value들을 봄
+
+모든 것이 다 여기에 있음
+
+(현재시각을 써서) 거의 랜덤하게 생성된 id도 있고, name도 있음
+
+만약 중간에 있는 option을 지우면 어떻게 될까
+
+optionName ffffff를 지우려는 것임
+
+다시 Create Dish를 누르면 저기에서 없어졌음
+
+옵션을 몇개 더 추가해봄
+
+어떻게 뜨나 봄
+
+이제 optionName: mmmmmm을 지움
+
+그래서 이 mmmmmm과 666666은 지워짐
+
+그 외의 옵션들은 그대로 유지됨
+
+지우고 Create Dish를 함
+
+뭐라고 뜨는지 봄
+
+m~은 없지만 그 외의 것들은 그대로인 것 보이지
+
+이렇게 react의 마법과 array를 좀 사용하면 이런 것을 만들어낼 수 있음
+
+그리고 이름을 동적으로 생성할 수 있다는 점이 좋은 것 같음
+
+이러면 register만 좀 하면 form이 무엇이든지 지니고 있을 수 있게 됨
+
+그러면 validation 같은 것들도 얼마든지 할 수 있게 됨
+
+이제 optionName을 required로 만듦
+
+그런데 이 경우에는 별로 의미가 없음
+
+왜냐하면 option 자체도 딱히 required가 아님
+
+그러니 이렇게 register라고만 함
+
+이제는 이 모든 field들을 처리해야함
+
+이것들을 전부 다 여기에서 처리하게 됨
+
+일단 rest가 있음
+
+지금부터는 object를 만들어내야함
+
+기억날지는 모르지만 Dish Option들은 name과 extra를 지님
+
+그러니 이런 방식으로 object를 만들 수 있음
+
+굉장히 중요함
+
+optionsNumber는 그저 여러 id들의 배열에 불과함
+
+그러니 여기에서 optionsNumber.map()이라고 적고, 이것은 id가 될테니까 theId라고 하고, 지금 할 일은 id를 찾아오는 것임
+
+그러니 이렇게 써볼 수 있음
+
+rest라는 name을 지니는 object를 return하라고 함
+
+그리고 name은 optionName이 됨
+
+그리고 extra도 똑같이 써줌
+
+다만 optionExtra라고 해줌
+
+이번에는 이것을 optionsObject라고 하고 출력해봄
+
+맵기 옵션을 추가하고, extra는 비워둠
+
+피클을 넣어봄
+
+12개를 추가함
+
+요리를 생성해 보면 array가 나옴
+
+자바스크립트는 너무 좋음
+
+우리가 원했던 그대로임
+
+이것을 options에 추가할 준비가 끝났음
+
+그러니 이것을 options에 넣어보고, typescript가 불만일지 확인해봄
+
+다행하게도 모든 type definition들이 있음
+
+그리고 optionObjects라고 하면 에러가 뜸
+
+여기 보면 optionObjects는 문자열인 name과 extra의 array임
+
+그런데 이 녀석은 extra가 숫자여야 한다고 말하고 있음
+
+이것은 괜찮음
+
+앞에 +를 붙이면 됨
+
+그랬더니 typescript도 괜찮다고 함
+
+typescript가 통과시켰음
+
+이렇게 내버려두고, 내 delete 버튼을 수정함
+
+한번 봄
+
+그러니 Add Dish Option에서 만들었던 것을 복사해서 delete 부분에 붙여넣음
+
+bg-red-500으로 하면 아름다움
+
+이뻐 보였으면 하니까 input들만큼 크게 만듦
+
+그런데 여전히 input들만큼 크지는 않음
+
+훨씬 더 좋아보임
+
+다 됐음
+
+form에서 동적으로 item을 생성했고, typescript에서 escape하는 방법도 써봤고, 이제 다 됐음
+
+제대로 한번 가봄
+
+이제 옵션을 지닌 요리를 하나 생성함
+
+Pickle 옵션은 extra 12라고 하고, 다른 옵션은 spicy에 option extra는 없게 함
+
+어떤 일이 일어날까
+
+내 생각에는 아마 여기 option error가 공백이라서 에러가 발생할 것 같음
+
+0이거나 아무 것도 아니어야함
+
+어떻게 될지 모르겠음
+
+이런 식으로 하면 어떻게 되나 한번 봄
+
+0이 됨
+
+왜냐하면 extra에 아무 것도 안 들어갈 때도 있음
+
+만약 +하고 빈 문자열을 넣으면 0이 됨
+
+이것은 spicy 옵션이 사실상 0이라는 extra를 내재하고 있다는 뜻이 됨
+
+그래도 좀 더 안전하도록 여기서 defaultValue=(0)이라고 할 수 있음
+
+이것도 하나의 방법임
+
+register에서는 defaultValue가 안 됨
+
+react hook form을 사용할 때는 hook에서 default 값을 선언해 줘야함
+
+Create Dish를 눌러봄
+
+만약 전부 제대로 동작한다면, 우리 음식점 페이지로 되돌아가게 됨
+
+한방에 됐음
+
+새로고침 해보면 제대로 됨
+
+바로 이것이 typescript가 대단하다는 이유임
+
+만약 typescript를 쓰고 있지 않았다면 에러가 떴음
+
+분명 에러가 좀 떴음
+
+옵션이 붙은 요리를 생성하고 있음
+
+그리고 이 디자인도 마음에 듬
+
+보이듯이 여기에 한 가지가 남아있음 
+
+바로 choices임
+
+choice는 name과 extra를 가짐
+
+이것은 여러분이 도전해봄
+
+알겠지만 fake id랑 코드만으로 이것을 만들었음
+
+마찬가지로 choice의 fake id를 만들면 됨
+
+그래서 기본적으로 id는 아래의 이 optionName과 같음
+
+이런 식임
+
+아무튼 해보고 싶으면 스스로 할 수 있음
+
+보기도 괜찮고 제대로 돌아감
+
+우리는 옵션이 붙은 요리를 생성할 수 있고, 그 옵션들은 backend까지 전달됨
+
+그리고 보다시피 구조도 맞고 모든 것이 맞음
+
+다음 시간에는 아직 없는 dish component를 만들어봄

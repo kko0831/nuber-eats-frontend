@@ -27,11 +27,12 @@ interface IForm {
   name: string;
   price: string;
   description: string;
+  [key: string]: string;
 }
 
 export const AddDish = () => {
   const { restaurantId } = useParams<IParams>();
-  const history = useHistory()
+  const history = useHistory();
   const [createDishMutation, { loading }] = useMutation<
     createDish,
     createDishVariables
@@ -58,29 +59,52 @@ export const AddDish = () => {
   });
   const onSubmit = () => {
     const { name, price, description, ...rest } = getValues();
-    console.log(rest);
-    /* createDishMutation({
+    const optionObjects = options.map((theId) => {
+      const optionChoice = 
+        choices
+          .filter((choice) => choice.optionId === theId)
+          .map((choice) => ({
+            name: rest[`${theId}-${choice.id}-choiceName`],
+            extra: +rest[`${theId}-${choice.id}-choiceExtra`],
+          }));
+      return {
+        name: rest[`${theId}-optionName`],
+        extra: +rest[`${theId}-optionExtra`],
+        choices: optionChoice,
+      }  
+    });
+    createDishMutation({
       variables: {
         input: {
           name,
           price: +price,
           description,
           restaurantId: +restaurantId,
+          options: optionObjects,
         },
       },
-    }); */
-    // history.goBack();
+    });
+    history.goBack();
   };
-  const [optionsNumber, setOptionsNumber] = useState(0);
+  const [options, setOptions] = useState<number[]>([]);
+  const [choices, setChoices] = useState<{optionId: number, id: number}[]>([]);
   const onAddOptionClick = () => {
-    setOptionsNumber((current) => current + 1);
+    setOptions((current) => [Date.now(), ...current]);
   };
-  const onDeleteClick = (idToDelete: number) => {
-    setOptionsNumber((current) => current - 1);
-    // @ts-ignore
+  const onDeleteOptionClick = (idToDelete: number) => {
+    setOptions((current) => current.filter(id => id !== idToDelete));
     setValue(`${idToDelete}-optionName`, "");
-    // @ts-ignore
     setValue(`${idToDelete}-optionExtra`, "");
+  };
+  const onAddChoiceClick = (optionId: number) => {
+    setChoices((current) => [{ optionId, id: Date.now() }, ...current ]);
+  };
+  const onDeleteChoiceClick = (optionId: number, choiceId: number) => {
+    setChoices((current) => current.filter(choice => {
+      return choice.id !== choiceId
+    }));
+    setValue(`${optionId}-${choiceId}-choiceName`, "");
+    setValue(`${optionId}-${choiceId}-choiceExtra`, "");
   };
   return (
     <div className="container flex flex-col items-center mt-52">
@@ -122,28 +146,75 @@ export const AddDish = () => {
           >
             Add Dish Option
           </span>
-          {optionsNumber !== 0 && 
-            Array.from(new Array(optionsNumber)).map((_, index) => (
-              <div key={index} className="mt-5">
+          {options.length !== 0 && 
+            options.map((id) => (
+              <div key={id} className="mt-5">
                 <input 
                   ref={register}
-                  name={`${index}-optionName`}
+                  name={`${id}-optionName`}
                   className="py-2 px-4 focus:outline-none mr-3 focus:border-gray-600 border-2"
                   type="text"
-                  placeholder="Option Name"
+                  placeholder="Option Name"        
                 />
                 <input 
                   ref={register}
-                  name={`${index}-optionExtra`}
+                  name={`${id}-optionExtra`}
                   className="py-2 px-4 focus:outline-none focus:border-gray-600 border-2"
                   type="number"
                   min={0}
-                  placeholder="Option Extra"
+                  defaultValue={0}
+                  placeholder="Option Extra"  
                 />
-                <span onClick={() => onDeleteClick(index)}>Delete Option</span>
-              </div>
-            ))}
-        </div>
+                <div className="inline-block">  
+                  <button 
+                    type="button"
+                    onClick={() => onAddChoiceClick(id)}
+                    className="cursor-pointer text-white bg-blue-700 py-1 px-2"
+                  >
+                    Add Dish Choice  
+                  </button>
+                  <button
+                    type="button"
+                    className="cursor-pointer text-white bg-red-500 ml-3 py-1 px-2 mt-5 bg-" 
+                    onClick={() => onDeleteOptionClick(id)}   
+                  >
+                    Delete Option
+                  </button>                                
+                </div>
+                {choices.length !== 0 &&
+                  choices.filter(choice => choice.optionId === id).map(choiceId => (
+                    <div
+                      key={choiceId.id}
+                      className="mt-2 ml-10 flex flex-row items-center"
+                    >                    
+                      <input
+                        ref={register}
+                        className="py-2 px-4 focus:outline-none mr-3 focus:border-gray-600 border-2"
+                        name={`${id}-${choiceId.id}-choiceName`}
+                        type="text"
+                        placeholder="Choice Name"
+                      />
+                      <input
+                        ref={register}
+                        className="py-2 px-4 focus:outline-none mr-3 focus:border-gray-600 border-2"
+                        name={`${id}-${choiceId.id}-choiceExtra`}
+                        type="number"
+                        min={0}
+                        defaultValue={0}
+                        placeholder="Choice Extra"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => onDeleteChoiceClick(id, choiceId.id)}
+                        className="cursor-pointer text-white bg-red-700 py-1 px-2"
+                      >
+                        Remove Choice
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ))}
+          </div>
         <Button 
           loading={loading}
           canClick={formState.isValid}

@@ -14731,3 +14731,149 @@ choice는 name과 extra를 가짐
 그리고 보다시피 구조도 맞고 모든 것이 맞음
 
 다음 시간에는 아직 없는 dish component를 만들어봄
+
+## 20.12 Dish Component
+
+이제 요리가 생성됐음
+
+지금부터는 dish component를 만듦
+
+여기 보면 카테고리도 좀 있음
+
+만약 이렇게 요리 카테고리도 다뤄보고 싶다면, 이런 방식으로 하지 않는 것을 권함
+
+그 대신 dish category를 생성하기 위해 form을 만들고, dish category를 수정하기 위한 form도 하나 더 만들고 form들을 엄청 만들어야함
+
+그래서 우리는 카테고리는 만들지 않음
+
+그리고 요리를 업로드할 때 사진도 추가하지 않았음
+
+사진을 추가한다는 것을 까먹었음
+
+요리도 사진이 있음
+
+그러니 원한다면 어떻게 하는지 이미 알지
+
+음식점 사진을 올리는 과정과 완전히 동일함
+
+backend에 이미지를 업로드하면 됨
+
+이제 dish component를 만듦
+
+그러고 나면 promotion 구매 부분을 시작할 수 있음
+
+결제 기능을 보여주고 싶음
+
+여기에 dish component를 만듦
+
+dish.tsx라고 함
+
+interface IDishProps도 있어야함
+
+그리고 요리는 이름을 가지겠지
+
+Console로 가서 검사해봄
+
+my-restaurant으로 가서 data를 출력해봄
+
+이 에러는 무시해도 됨
+
+myRestaurant은 menu, description, name, price를 가짐
+
+price는 숫자임
+
+Dish의 type은 React Functional Component임
+
+그리고 안에 description, name, price가 있음
+
+이 Dish를 my-restaurant에서 사용함
+
+여기에 myRestaurant의 grid와 매우 유사한 column 3개짜리 grid를 하나 더 만듦
+
+이것이 마음에 드니까 계속 사용함
+
+이 grid에서는 다음을 render함
+
+그리고 type 덕분에 여기에 Dish라고 써야한다는 것을 알 수 있음
+
+그리고 Dish는 name이 필요함
+
+description도 필요하고 price도 필요함
+
+typescript가 정말 좋음
+
+Dish는 끝났음
+
+이러면 됨
+
+크기를 실감할 수 있도록 배경색만 좀 바꿔봄
+
+나쁘지 않음
+
+이제 위아래에 padding을 추가해봄
+
+실물은 어떤지 한번 봄
+
+실제로는 더 작음
+
+실물도 안에 padding이 있음
+
+5정도 될 거 같음
+
+그것은 나중에 하고 description, title, price만 하면 됨
+
+그리고 price는 여기 아래에 와야함
+
+그러니 price는 container에 넣어서 다른 녀석들로부터 분리시킴
+
+나쁘지 않음
+
+padding만 함
+
+상하좌우 모두 padding을 8씩 넣음
+
+패딩을 px-8로 수정하고, 위아래로 패딩을 줌
+
+앞에 이것은 더 이상 필요 없으니까 지움
+
+class를 줘서 텍스트를 좀 더 키움
+
+이 녀석도 스타일을 줌
+
+margin bottom은 여기로 옮김
+
+그리고 price는 앞에 달러 기호를 추가함
+
+이제 border를 좀 추가함
+
+1로 수정함
+
+아니면 그냥 border라고 하면 될 거 같음
+
+이러면 1이 됨
+
+pt-4로 수정하고, 그리고 hover일 때는 회색이 되도록 함
+
+그리고 transition-all을 줌
+
+나쁘지 않음
+
+다 됐음
+
+나중에 주문 같은 것들을 보여주는 그래프를 여기에 만듦
+
+예쁜 그래프를 보여줄 수 있도록 database에 가짜로 주문을 좀 만들어 넣음
+
+일단 이 부분은 전부 끝났음
+
+restaurant 생성, dish 추가하기 등 음식점 관련은 다 끝났음
+
+다른 기능도 넣고 싶으면 알아서 해봄
+
+이미 어떻게 하는지 다 보여줬음
+
+특히 이 옵션 추가 기능이 너무 좋음
+
+엄청난 거 같음
+
+dynamic form도 좋음

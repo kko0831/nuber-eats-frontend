@@ -14877,3 +14877,221 @@ restaurant 생성, dish 추가하기 등 음식점 관련은 다 끝났음
 엄청난 거 같음
 
 dynamic form도 좋음
+
+## 20.13 Victory Charts part One
+
+이제 우리의 dashboard에 차트를 추가해봄
+
+일단 중앙에 이번달 매출이나, 매출 그래프 등 그런 것을 써봄
+
+h4 태그를 써서 Sales라고 함
+
+그리고 기본적으로 최근 날짜의 주문들을 전부 보여주도록 함
+
+다르게 해도 괜찮음
+
+어떻게 보이나 한번 봄
+
+여기에 우리의 그래프를 만듦
+
+그래프 container를 만듦
+
+그러니 여기에 div를 만들고, 이 div 안에 그래프를 추가하게 됨
+
+이것은 중앙에 옴
+
+이제 우리가 무엇을 사용할지에 대해 이야기해봄
+
+우리는 Victory라는 것을 사용함
+
+Victory는 멋진 그래프들을 만들 수 있게 해주는 react component들이 있는 라이브러리임
+
+우리가 만들 그래프는 간단한 line graph지만, victory를 사용하는 방법에 대해 배워봄
+
+victory를 사용하는 기업들은 에어비앤비가 있음
+
+우리는 이런 것을 만듦
+
+다양한 종류의 그래프들이 있음
+
+갤러리를 들어가보면 어떤 그래프들을 만들 수 있는지 더 볼 수 있음
+
+그리고 Victory를 사용해서 이런 그래프를 만드는 것이 상당히 쉬움
+
+우리는 이런 그래프를 만들어서 주문들을 보여줌
+
+처음에는 가짜 데이터로 만들고, 어쩌면 나중에 backend의 데이터를 가져옴
+
+엄청 다양한 일들을 할 수 있음
+
+일단 Victory를 설치해봄
+
+copy를 누르고 붙여서 실행함
+
+터미널에 npm install victory@35.4.2 입력함
+
+그것이 끝났으면 documentation으로 가봄
+
+진짜 사용하기 쉬움
+
+이것저것 import하기만 하면 됨
+
+그러니 이것을 import해서 한번 아무런 차트를 만들어봄
+
+Victory를 사용하는 것이 얼마나 쉬운지 보여주고 싶음
+
+이것이 설치되었음
+
+Victory에서 VictoryBar를 import함
+
+그리고 차트 하나를 만들어봄
+
+너무 쉬워서 놀람
+
+frontend 쪽에 어떤 것이 생기지
+
+새로고침하면 됐음
+
+bar 그래프가 생겼음
+
+이 사이에 여백을 좀 추가해봄
+
+victory를 사용하는 것은 이 정도로 쉬움
+
+victory는 component를 render 해줌
+
+graph를 render 해줌
+
+엄청 좋음
+
+bar 그래프에 data를 추가하고, array를 만듦
+
+이것을 좀 복사함
+
+이제 x, y값들을 좀 손봄
+
+이러면 어떻게 되지
+
+쉼표로 분리함
+
+그리고 이렇게 하는 것만으로 이 데이터를 보여주는 그래프가 생성됨
+
+이렇게만 하면 됨
+
+엄청 쉬움
+
+이것만으로 그래프가 만들어졌음
+
+이제 VictoryChart, 아니 VictoryLabel, 아니 VictoryAxis를 추가함
+
+나중에 보면 VictoryChart를 추가함
+
+이 라이브러리의 모든 것들은 Victory로 시작함
+
+이 모든 것을 잘라내서 VictoryChart 안에 넣음
+
+그리고 전부 다 typescript definition이 있음
+
+엄청 좋은 거 같음
+
+VictoryChart 안에 VictoryBar를 넣음
+
+이 VictoryChart 덕분에 Victory는 우리가 넣은 값들에 label을 붙여줌
+
+x축, y축, 수치들이 추가됨
+
+여기에는 패딩을 좀 줌
+
+이제 여기 보면 첫번째 데이터로 x:10, y:20이 있고, x:20, y:5가 있음
+
+그래프를 생성하는 것은 이렇게나 쉬움
+
+기본적으로 victory 그래프들은 지정받은 공간을 최대한 차지하게 된다는 점을 알아둬야함
+
+예를 들어, 감싸고 있는 div 크기를 수정하면 엄청 큰 그래프가 됨
+
+이런 것은 원하지 않음
+
+이 데이터를 가지고 이렇게 그래프를 만들어냈음
+
+조금만 더 연습해봄
+
+VictoryAxis라고 하고, documentation을 보면 VictoryAxis는 prop을 몇개 지님
+
+참고로 Victor는 최고의 documentation을 갖고 있음
+ 
+animate도 지님
+
+이거 한번 해봄
+
+원하면 axisValue도 있고, crossAxis나 dependentAxis라고 할 수도 있음
+
+그러니까 x축과 y축 중 어디에 대응되는지도 있음
+
+예를 들어 이런 것이 dependentAxis임
+
+여기 VictoryAxis에서 label을 추가할 수 있음
+
+tickValues를 추가할 수 있음
+
+그리고 여기에서는 우리가 원하는 array를 아무거나 넣을 수 있음
+
+이 경우에 여기에는 dependentAxis라고 적음
+
+이 tickValues는 어떻게 뜨지
+
+이렇게 됨
+
+이것이 dependentAxis와 tickValues임
+
+원한다면 사용할 수 있음
+
+물론 이 값은 99니까 tick value가 거기까지 도달하지 못했음
+
+그래도 보이지
+
+원하는 거의 모든 것들을 전부 만들 수 있음
+
+예를 들어 여기에 label이라고 함
+
+y축에 label이 생성됐음
+
+다른 축을 하나 더 추가하고, 이 animation은 별 효과가 없으니 지움
+
+그리고 이 axis에서는 이것은 그대로 내버려 두고 label만 Days of Life로 바꿔봄
+
+현재 VictoryChart를 만들었고, 그 안에 VictoryAxis를 2개 만들었음
+
+원한다면 label이나 tick values를 바꿀 수 있고, VictoryBar도 만들었음
+
+label들을 보면 amount of money랑 days of life라고 해놨음
+
+그리고 전혀 시간이 안 들었음
+
+이것이 바로 Victory임
+
+말했지만 진짜 다양한 예시들이 있음
+
+만약 이런 것을 하나 클릭하면 어떻게 구현한 것인지를 알 수 있음
+
+여기 보이듯이 VictoryChart랑 VictoryBar가 있고, 직접 Bar를 만들었고, data가 있음
+
+그리고 태그 닫으면 끝임
+
+이렇게 간단함
+
+다음 강의에서는 이 map을 어떻게 꾸밀 수 있는지를 다뤄봄
+
+실제 data를 만들어볼거고, Victory에 대해 좀 더 배워봄
+
+그 다음에는 실제로 우리 웹사이트에 맞는 chart를 구현해봄
+
+그래도 일단 얼마나 쉬운지를 봄
+
+14줄인가 그 정도밖에 안 됨
+
+이것을 만들어낸 것임
+
+이제 검사해보면 전부 다 svg로 구현된 것을 알 수 있음
+
+그러니까 이것은 아무리 확대해봐도 pixel화되지 않음

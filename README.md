@@ -15299,3 +15299,341 @@ Selection Container의 경우에는 이렇게 어떤 것을 선택할 수 있게
 사용하기 진짜 쉬움
 
 다음 시간에 우리가 사용할 진짜 그래프를 만들어봄
+
+## 20.15 Victory Charts part Three
+
+dashboard에 보여줄 주문들을 생성해놨음(DBeaver에서 order 테이블에 임의의 order를 생성함)
+
+하지만 MY_RESTAURANT_QUERY를 좀 확장시켜야함
+
+바로 여기에 orders를 지니게 되었음
+
+order를 위한 fragment를 만들어야함
+
+그러니 여기에 와서 export const ORDERS_FRAGMENT = gql함
+
+fragment OrderParts on Order라고 적어야함
+
+그리고 Order는 id, createdAt, total을 가짐
+
+원한다면 status도 넣을 수 있음
+
+일단 여기에서 멈춤
+
+왜냐하면 이것은 지금 생성할 chart를 위한 것임
+
+OrderParts가 됐음
+
+여기로 와서 fragment를 추가하는 것도 잊지마
+
+backend로 가서 orders라는 relation도 로드하도록 해야함
+
+왜냐하면 그 relation도 봐야함
+
+새로고침하고 이제 그래프가 만들어져야함
+
+새로고침이 됐음
+
+검사해보면 여기에 console.log를 추가해서 어떤 것을 받게 되는지 한번 봄
+
+myRestaurant을 받고, 그 안에 restaurant, 다음으로 orders로 들어가 보면 모든 order들이 여기에 있음
+
+12월 3일부터 12월 12일까지 있고, 이 total은 각 날짜에 들어온 모든 주문의 수임
+
+그러니 이것으로 line chart를 만들어봄
+
+그러니 여기로 와서 먼저 VictoryChart를 만들고, containerComponent는 VictoryVoronoiContainer로 함
+
+그리고 여기에는 VictoryLine을 만듦
+
+VictoryLine의 prop들을 한번 봄
+
+그런데 지금 이미 data를 보낼 수 있음
+
+그래서 데이터를 어떻게 구성할까
+
+데이터는 이렇게 됨
+
+createdAt을 X로 하고, total은 Y가 됨
+
+이미 그 type이 있음
+
+아직 없음
+
+터미널에서 npm run apollo:codegen을 실행함
+
+이것을 실행하는 이유는 우리가 방금 생성한 fragment를 가져오기 위해서임
+
+여기로 와서 모든 order에 대해서 무엇을 리턴할거냐면, x값과 y값이 있을텐데, x는 order.createdAt이고, y는 order.total이 됨
+
+새로고침을 해봄
+
+이럴 때는 responsive하게 만들면 됨
+
+그러니 우선 이것들을 다 지움
+
+그러면 그래프가 엄청 커짐
+
+VictoryChart의 width 설정은 숫자여야함
+
+이것은 기본적으로 창만큼 커짐
+
+데이터 10개가 다 존재함
+
+몇 개를 생성했지
+
+그러니 제대로 돌아감
+
+다음으로 할 일은 더 좋게 보이도록 height를 설정해야함
+
+나쁘지는 않음
+
+그리고 중요한 것은 이렇게 창을 줄이면 못 생겨짐
+
+왜냐하면 responsive함
+
+하지만 새로고침하면 창의 넓이에 맞춰서 다시 생성됨
+
+예를 들면 핸드폰의 넓이에 맞춰서 생성됨
+
+물론 이것을 좀 고치기는 해야함
+
+그러니 고쳐봄
+
+어떻게 하는지 다 앎
+
+다시 새로고침하면 다시 잘 돌아감
+
+label도 수정함
+
+그러니 VictoryLine으로 와서, 그 아래에 VictoryAxis가 제대로 적용됐는지 확인하기 위해 label="Days"함
+
+그러면 여기에 보임
+
+잘 동작함
+
+그런데 tick을 좀 꾸며봄
+
+그리고 각각의 tick은 날짜가 됨
+
+그러니 지금 console.log하는 중이니까 날짜들을 한번 봄
+
+빠르게 콘솔에서 봄
+
+여기 있음
+
+이것이 날짜임
+
+JavaScript로 이것을 좀 만져봄
+
+이러면 date 정보가 이런 식으로 나오게 됨
+
+여기에서 예를 들어 toLocaleDateString을 하면 이런 형식으로 나옴
+
+충분히 좋음
+
+아니면 이렇게 toDateString을 하면 Sat Dec 12도 하나의 방법임
+
+그리고 이 안에 ko라고 적어 넣을 수도 있음
+
+이러면 한국식임
+
+이것을 사용함
+
+여기로 돌아와서 이러면 이것이 tick이 됨
+
+그래서 어떻게 보이지
+
+아래에 축이 있음
+
+원한다면 victory container를 VictoryZoomContainer로 바꿀 수도 있음
+
+원하면 그렇게 함
+
+이러면 확대할 수 있는 거 보이지
+
+그래프를 확대할 수 있음
+
+내가 선택하면 됨
+
+다양한 기능들을 간략하게 보여주려는 것임
+
+이제 축을 하나 더 만듦
+
+이 녀석은 dependentAxis가 됨
+
+그리고 여기는 금액을 넣으면 됨
+
+그러니 이렇게 함
+
+이러면 다 됐음
+
+돈 기호를 추가함
+
+padding을 추가함
+
+너무 작으니까 tick을 수정함
+
+Axis쪽으로 와서 style을 줌
+
+폰트 크기도 설정해줌
+
+이러면 typescript이 짜증냄
+
+그러니 as any라고 적음
+
+뭐가 문제인지는 모르겠지만 이러면 엄청 큼
+
+다시 좀 작게 만듦
+
+20으로 함
+
+이제 색을 넣고 테스트 해보기 위해 버튼의 색깔에 맞춰봄
+
+color를 fill로 수정함
+
+아래쪽 녀석들도 마찬가지로 다른 VictoryAxis도 똑같이 해줌
+
+만약 style이 무엇인지 궁금하다면 우클릭하고 Go to Definition을 눌러보면 됨
+
+가보면 parent, axis, axisLabel, grid, ticks 등이 보임
+
+tickLabel이라던가 다양한 것을 수정할 수 있음
+
+폰트 크기는 20임
+
+왜 typescript가 불만인지 나도 잘 모르겠음
+
+그래도 as any라고 붙이면 제대로 돌아감
+
+날짜들은 이렇게 함
+
+다음으로 넘어감
+
+만약 원하면 이 선을 좀 더 굵게 만들 수도 있음
+
+그러니 VictoryLine으로 와서 strokeWidth를 3으로 해봄
+
+5로 해봄
+
+그리고 부드럽게 만들 수도 있음
+
+interpolation이라고 쓰면 선택지가 다양함
+
+한번 basisClosed를 해봄
+
+안 됨
+
+catmullRom을 해봄
+
+무엇인지 모르겠음
+
+이처럼 interpolation으로 다양한 것을 해볼 수 있음
+
+다 서로 비슷한 거 같음
+
+stepBefore는 어떻게 보일까
+
+natural로 감
+
+생긴 것이 마음에 듦
+
+여러분은 어떻게 생각해
+
+원하면 색깔도 바꿀 수 있음
+
+파란색은 별로임
+
+VictoryLine에 가서 어떤 prop을 사용할 수 있는지 봄
+
+만약 원한다면 chart에 theme을 적용할 수도 있음
+
+VictoryChart로 와서 theme을 줌
+
+VictoryTheme을 가져와서 material을 봄
+
+옅게 선들도 생기고 material이 괜찮음
+
+그런데 이러니까 label들이 너무 커진 거 같음
+
+어떻게 생각해
+
+마음에 듦
+
+다른 prop들도 봄
+
+events도 할 수 있고, groupComponent 등등 interpolation은 우리가 방금 사용해봤지
+
+원하면 labelComponent도 더할 수 있음
+
+한번 복사해봄
+
+그런데 label도 생성해야함
+
+이것도 VictoryLine에 붙여넣고 한번 봄
+
+어떻게 보이지
+
+모든 매출을 이제 다 볼 수 있음
+
+너무 좋음
+
+style을 줌
+
+너무 작음
+
+18로 수정함
+
+y축은 필요없음
+
+그러니 그냥 이 axis를 지워버림
+
+만약 원한다면 VictoryLabel 대신 VictoryTooltip으로 바꿀 수 있음
+
+이러면 마우스를 가져다 댔을 때 매출 정보가 나타나게 됨
+
+이것은 내가 선택하면 됨
+
+어떻게 하고 싶어
+
+tooltip을 원해
+
+아니면 label을 그냥 쓸래
+
+이 datum 부분은 label을 어떤 방식으로 그릴지와 관련 있음
+
+여기에서 label을 어떻게 보여주고 싶은지와 관련 있음
+
+그리고 이 dy는 수직 방향으로 점으로부터 얼마나 떨어져 있는지를 나타냄
+
+이러면 20y가 되고, 그래프 아래에 오게 되는 것이 보임
+
+0으로 하면 그래프 바로 위에 오게 됨
+
+-20이 괜찮은 거 같음
+
+그리고 계속 VictoryTooltip을 씀
+
+마지막으로 할 일은 이 x축의 날짜를 회전시킴
+
+왜냐하면 그래야 하는 경우도 있음
+
+그렇게 하려면 여기에 와서 angle함
+
+그런데 이렇게 하면 삐져나온 것이 지워지게 됨
+
+이 component를 대체하려면 여기로 와서 tickLabelComponent라고 씀
+
+이렇게 하면 삐져나온 부분도 잘리지 않고 보이게 됨
+
+이러니 훨씬 더 좋게 보임
+
+그냥 이런 기능을 보여주고 싶었음
+
+충분히 만족스러운 결과물임
+
+Victory는 진짜 멋짐
+
+보기도 좋음
+
+처음으로 그래프를 생성했을 때는 끔찍했는데 이제는 멋지게 생겼음

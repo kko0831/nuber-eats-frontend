@@ -15723,3 +15723,341 @@ paddle은 소프트웨어 서비스 제품을 팔 수 있는 정말 멋진 곳�
 paddle 계정을 만드는데 제약이 있어서 paypal로 진행함
 
 https://www.paypal.com/kr/home에서 paypal로 결제받기로 회원가입함
+
+## 21.1 Paddle Product Test
+
+paddle로 로그인하면 새로운 product를 생성해야함
+
+로그인을 하고 catalog으로 가서 product를 생성함
+
+paddle에는 products와 subscription plans가 있는데, subscription plan은 누구를 월 단위로 돈을 지불하게 만들고 싶을 때 씀
+
+product는 돈을 한번만 지불하면 됨
+
+product를 생성할건데, 이것을 Restaurant One Week Promotion이라고 해봄
+
+여기는 'checkout custom message'임
+
+restaurant 홍보 = 가게 매출 상승이라고 씀
+
+그리고 'product description'은: 일주일 restaurant 홍보라고 씀
+
+보다시피 이 부분은 영수증에 나옴
+
+이 부분은 체크아웃(checkout) 페이지에 나옴
+
+fulfillment method는 매우 중요함
+
+한 가지 방법으로 download가 있음
+
+무슨 말이냐면 우리가 돈을 지불하면 paddle이 구매자에게 download를 보냄
+
+예를 들어, PDF를 판다치면 PDF를 다운받을 수 있게 보냄
+
+다른 방법으로는 license가 있음
+
+업로드된 license list에서 license를 보냄
+
+업로드된 license list가 있고 코드 같은 license를 판다면 이 방법을 써도 됨
+
+아니면 paddle license도 있음
+
+paddle license를 생성해줌
+
+'activations per license'도 있음
+
+시험판도 가능함
+
+시험판을 30일동안 쓸 수 있게 만들 수도 있음
+
+보이는 것처럼 소프트웨어 제품을 만든다면 정말 유용하겠지
+
+우리는 'server notification'이라는 친구를 사용함
+
+server notification은 user가 다운로드하지 않아도 paddle이 알아서 우리 서버에 내용을 적용시켜줌
+
+누가 이 product를 구입하면 paddle이 우리 서버에 내용을 적용시킴
+
+이제 icon을 지정해봄
+
+가지고 있는 가장 적합한 icon을 씀
+
+이것이 바로 product가 됨
+
+만약 3주짜리 홍보 제품, 또는 다른 제품이 있으면, paddle에 일단 제품을 만들어야함
+
+이제 무엇을 해야할까
+
+'일주일 restaurant 홍보'를 했고, delivery method는 webhook임
+
+이제 webhook URL을 설정해야함
+
+webhook URL은 우리에게 알림을 보내줌
+
+우리가 이 제품을 구매하면 알림을 받음
+
+그러면 이 알림을 어디선가 받아야겠지
+
+module이 없어도 됨
+
+이미 payments라는 친구가 있음
+
+payments는 GraphQL resolver임
+
+백엔드에서 payments.controller.ts를 만듦
+
+아주 간단한 controller를 만듦
+
+이 친구는 "/payments"로 감
+
+그리고 post를 함
+
+누가 payments에 post를 call하면, 알맞은 작업을 실행함
+
+그리고 여기에서 다 가져옴
+
+request의 body를 가져오고 싶음
+
+request의 body를 씀
+
+그리고 request의 body를 console.log함
+
+이제 우리 module에 이 controller를 넣음
+
+여기 module에 controller를 넣음
+
+그리고 PaymentsController를 추가함
+
+이제 locahost:XXXX/payments라는 route가 생겼음
+
+그리고 우리는 '/payments'로 post함
+
+REST API가 생겼음
+
+문제는 paddle은 localhost를 승인해주지 않음
+
+그러면 Visual Studio code로 가서 console에 npx ngrok을 해봄
+
+ngrok이 무엇인지 보여주고 싶음
+
+ngrok은 실제 URL을 만들어줌
+
+그리고 localhost로 redirect 해줌
+
+그러니까 ngrok, http, 그리고 열려 있는 port를 쓰면 됨
+
+우리 localhost:4000의 열려 있는 port는 4000임
+
+터미널에 npx ngrok http 4000을 씀
+
+이렇게 하면 공용 URL을 열어줌
+
+이 부분을 복사하고, 어떻게 나오는지 봄
+
+이것이 공용 URL이고 우리 서버임
+
+graphql을 쓰면 작동되는거 보임
+
+playground가 나옴
+
+이제 paddle은 이 URL을 찾음
+
+webhook URL을 넣고 /payments
+
+이미 해본 적이 있음
+
+webhook을 test 해봄
+
+아무것도 respond하지 않음
+
+하지만 iTerm을 봄
+
+이런 내용을 받음
+
+이제 무엇인가 respond 해봄
+
+그냥 return함
+
+이제 이 링크는 7시간 58분동안 유효함
+
+원한다면 https를 쓸 수 있음
+
+이 링크는 localhost:4000을 가리키고 있음
+
+이 링크(/payments)를 복사 붙이기 했는데 console.log가 작동하는 것을 보니 문제 없는 것 같음
+
+한번 더 해봄
+
+webhook을 test 해봄
+
+parameter를 request하니 {ok : true}를 받았음
+
+바로 우리 백엔드에서 보내준 것임
+
+잘 작동하고 있고, 이것이 우리가 받고 있는 내용임
+
+보다시피 알림을 받고 있음
+
+우리는 이 내용을 쓰지 않음
+
+별로 신경쓰는 부분이 아니라서 그럼
+
+수입 등등 다 저장하고 싶으면 그렇게 해도 됨
+
+하지만 paddle에서는 webhook을 꼭 써야하니까 이렇게 둠
+
+이제 'custom field name'을 넣을건데 customer email을 넣음
+
+owner를 넣어야함
+
+한번 더 webhook test를 해봄
+
+owner를 받았는지 한번 봄
+
+email이 없으니까 owner를 못 받음
+
+그러면 'save changes'를 클릭함
+
+이제 누가 제품을 구매하면 paddle이 우리 API에 알림을 보냄
+
+우리는 NestJS로 아주 빠르게 controller를 만들었음
+
+'upload your application' 이 부분은 안해도 됨
+
+그냥 payments 링크를 붙여넣고 저장함
+
+이제 가격을 붙임
+
+가격으로 들어가면 많은 옵션이 있음
+
+미국 달러로 환율을 정함
+
+10불로 가격을 매김
+
+그냥 5불로 함
+
+testing이 비싸짐
+
+원한다면 무료로도 만들 수 있음
+
+이제 저장함
+
+여기서는 user가 checkout 후 어디로 갈지 설정할 수 있음
+
+바꿀 수 있지만 우리는 아무것도 하지 않음
+
+cancel 누르고 나중에 이 부분을 수정하도록 함
+
+우리 제품임
+
+이제 프론트엔드로 checkout process를 연결하고, user가 버튼을 클릭하면 overlay를 볼 수 있음
+
+다른 페이지로 가지 않고 구매 상자 overlay가 나옴
+
+상자가 어떻게 생겼는지 보여주고 싶지만, 아직 구매 과정을 만드는 마지막 단계가 남아있음
+
+마지막 단계는 우리가 이것을 react에 연결하는 것임
+
+paddle은 user가 page에서 구매할 수 있게 해줌
+
+user가 nuber eats page에서 구매하거나 paddle이 checkout link를 제공함
+
+여기로 와서 checkout link를 누르면 paddle checkout link로 보내줌
+
+이렇게 생겼음
+
+총 금액을 확인하고, 계속 버튼을 누름
+
+위치가 어디인지 알려주고 계속을 누름
+
+잠깐 기다리면 카드로 구매 가능하고, PayPal로 구매 가능함
+
+카드로 구매를 누르면, 내 카드 정보를 입력함
+
+비디오 상으로 보면 모자이크 처리가 되어있겠지만, 실제 카드 정보를 입력하고 있음
+
+진짜 testing하는 중임
+
+카드 정보를 확인함
+
+거래가 성공적으로 이뤄졌음
+
+상세 주문 정보는 이메일로 보냈음
+
+여기서 나는 customer임
+
+이 이메일로 구매했음
+
+console을 봄
+
+총 얼마를 벌었는지, 모든 정보를 받았음
+
+이제 원한다면 백엔드에서 주문 기록을 확인할 수 있는 기능을 만드는게 좋을 것 같음
+
+예를 들면 payment 알림을 만드는게 좋을 것 같음
+
+user에게 제품을 몇번 구매했는지 알려주면 좋음
+
+user가 몇번 구매했는지 알림
+
+우리 웹사이트로 가면 payment 섹션에 payments 기록을 다 볼 수 있음
+
+작동하는걸 확인했으니 내 이메일로 가서 paddle이 어떤 이메일을 보냈는지 확인해봄
+
+이메일을 2개 받았음
+
+하나는 license key임
+
+내가 서버에서 무엇인가 return해서 보내준 것 같음
+
+다른 이메일은 주문 확인서, 즉 영수증임
+
+license가 없으니까 사람들이 이것을 안 받았으면 좋겠음
+
+그래도 서버에서 무엇인가 return하면 license key로 보여준다는 것을 이렇게 배우게 됐음
+
+어쨌든 이 이메일은 받지 않게 하고 싶음
+
+다운로드 할게 없는데 다운로드 버튼을 보내고 싶지 않음
+
+우리는 그냥 백엔드로 구매 내용을 활성화 시킬거잖아
+
+이것을 위해서는 우리 product page로 돌아가야함
+
+product page에는 보다시피 webhook URL 등등 있음
+
+'고객에게 다운로드 링크와 주문 확인서를 이메일로 보냅니다'를 no로 바꿈
+
+'고객은 주문 확인서만 이메일로 받습니다.'라는 뜻임
+
+이 옵션을 선택하면 고객은 주문 확인서만 이메일로 받음
+
+'download에는 접근권이 없으며..' 우리가 원하는게 이것임
+
+이제 customer는 영수증만 받게 됨
+
+checkout link가 다소 번거롭긴 함
+
+user가 다른 페이지로 이동해서 구매해야함
+
+하지만 걱정마 
+
+paddle은 overlay가 있음
+
+이것이 무슨 말이냐면 user를 어디 보낼 필요 없이, 이것처럼 프론트엔드에 JavaScript를 이용해서 overlay를 엶
+
+예를 들면 이런 것을 우리 웹사이트에 띄움
+
+이러면 어디로 갈 필요가 없음
+
+이것은 그냥 testing용임
+
+잘 작동하니까 돈 벌 수 있음
+
+https://developer.paypal.com/home로 이동하여 Log in to Dashboard를 클릭하여 로그인함
+
+DASHBOARD의 My Apps & Credentials에서 Create App함
+
+App Name은 Restaurant One Week Promotion, App Type은 Merchant로 함
+
+Create App 했을때의 Client ID와 Secret을 기억해놓음

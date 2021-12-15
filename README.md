@@ -16061,3 +16061,117 @@ DASHBOARD의 My Apps & Credentials에서 Create App함
 App Name은 Restaurant One Week Promotion, App Type은 Merchant로 함
 
 Create App 했을때의 Client ID와 Secret을 기억해놓음
+
+## 21.2 Paddle Integration part One
+
+이제 successCallback을 만들어야함
+
+localhost:4000인 백엔드에 있다는거 잊지마
+
+이미 createPayment mutation이 있고, createPayment는 transactionId와 restaurantId라는 input이 있음
+
+이 mutation을 my-restaurant component에 만들어봄
+
+이것을 복사해옴
+
+createPayment input은 variable임
+
+그리고 여기 안에는 또 createPayment를 쓸건데, input : $input이라 하고 여기서 ok, error를 받음
+
+npm codegen을 run해봄
+
+그동안 paddle 위에 mutation을 만듦
+
+이제 types를 추가함
+
+이제 paddle이 알려준대로 여기에 successCallback을 씀
+
+function을 만들어서 createPaymentMutation을 call함
+
+variables 안에는 input이 있고, 그 안에는 알아봐야할 transactionId와 restaurantId를 넣어야함
+
+restaurantId는 이미 여기 parameter에 있음
+
+restaurantId는 id라고 함
+
+하지만 이것은 숫자여야함
+
+그리고 transactionId는 어디서 가져오냐
+
+successCallback을 보면 successCallback은 data object로 call 됨
+
+그래서 여기에 data를 가져옴
+
+그리고 data에는 우리를 위한 정보가 들어있음
+
+이 경우에는 data.checkout.id임
+
+data는 any라 하고. 여기에 data.checkout.id라 함
+
+transactionId는 data.checkout.id라는 string임
+
+그럼 끝임
+
+구매하면 작동됨
+
+onCompleted를 빠르게 만듦
+
+Mutation은 여기 있고, 그럼 이렇게 함
+
+그리고 createPayment인 data를 가져옴
+
+data.createPayment.ok가 true라면, "당신의 가게가 홍보되고 있습니다."를 alert로 띄워봄
+
+끝난 것 같음
+
+다시 테스트해봄
+
+돈을 계속 씀
+
+새로고침을 하고 Buy Promotion을 클릭함
+
+잠깐 멈추고 내 카드 정보를 입력하고 옴
+
+pay now를 클릭했으니까 나옴
+
+error도 없이 완전 깔끔하게 됐음.
+
+이제 내 restaurant은 홍보되고 있음
+
+한번 봄
+
+내 restaurant으로 감
+
+홍보되고 있음
+
+드디어 promotion을 샀음
+
+payment를 한번 봄
+
+payment, transactionId, userId가 있음
+
+이제 'restaurant이 홍보가 되고 있습니다.'가 쓰인 버튼을 만듦
+
+남은 홍보 기간을 보여줘도 됨
+
+이제 다 끝났음
+
+여기를 보면, 결과를 백엔드로 받았음
+
+이것으로 payment object를 만들 수 있으니까 좋음
+
+error없이 잘 작동함
+
+생각보다 쉽지
+
+vendor, product가 필요한데, product가 정말 중요함
+
+우선 product부터 만들어야함
+
+product 없이는 안 됨
+
+그리고 createPaymentMutation도 성공적으로 만들었음
+
+react-paypal-button-v2 package를 설치함
+
+react-paypal-button-v2에서 PayPalButton을 사용하여 결제 버튼을 만듦

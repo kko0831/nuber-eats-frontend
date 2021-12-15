@@ -23,6 +23,7 @@ import {
   myRestaurant, 
   myRestaurantVariables, 
 } from "../../__generated__/myRestaurant";
+import { PayPalButton } from "react-paypal-button-v2";
 
 export const MY_RESTAURANT_QUERY = gql`
   query myRestaurant($input: MyRestaurantInput!) {
@@ -61,7 +62,6 @@ export const MyRestaurant = () => {
       },
     }
   );
-  console.log(data);
   const chartData = [
     { x: 1, y: 3000 },
     { x: 2, y: 1500 },
@@ -75,6 +75,9 @@ export const MyRestaurant = () => {
     { x: 10, y: 6830 },
     { x: 11, y: 6830 },  
   ];
+  const successFunction = () => {};
+  const clientID = "AQU7x4Rg7fXuTKMhCYDm1sxWoGbbo1ixlgcuQ798xIBTM6T5k9hWtuFBn0Lz-OqQXDWBkSHdfIVCzXGv";
+  const amount = 5;
   return (
     <div>
       <Helmet>
@@ -98,16 +101,27 @@ export const MyRestaurant = () => {
         >
           Add Dish &rarr;
         </Link>
-        <Link to={``} className="text-white bg-lime-700 py-3 px-10">
+        <span
+          className="cursor-pointer text-white bg-lime-700 py-3 px-10"
+        >
           Buy Promotion &rarr;
-        </Link>
+        </span>
+        <PayPalButton 
+          amount={amount}
+          currency="USD"
+          onSuccess={successFunction}
+          options={{
+            clientId: clientID,
+          }}
+        />
         <div className="mt-10">
           {data?.myRestaurant.restaurant?.menu.length === 0 ? (
             <h4 className="text-xl mb-5">Please upload a dish!</h4>
           ) : (
             <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
-              {data?.myRestaurant.restaurant?.menu.map((dish) => (
+              {data?.myRestaurant.restaurant?.menu.map((dish, index) => (
                 <Dish
+                  key={index}
                   name={dish.name}
                   description={dish.description}
                   price={dish.price}

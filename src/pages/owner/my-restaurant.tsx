@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Dish } from "../../components/dish";
 import { 
   VictoryAxis, 
@@ -23,7 +23,6 @@ import {
   myRestaurant, 
   myRestaurantVariables, 
 } from "../../__generated__/myRestaurant";
-import { PayPalButton } from "react-paypal-button-v2";
 
 export const MY_RESTAURANT_QUERY = gql`
   query myRestaurant($input: MyRestaurantInput!) {
@@ -52,6 +51,7 @@ interface IParams {
 
 export const MyRestaurant = () => {
   const { id } = useParams<IParams>();
+  const history = useHistory();
   const { data } = useQuery<myRestaurant, myRestaurantVariables>(
     MY_RESTAURANT_QUERY,
     {
@@ -75,9 +75,6 @@ export const MyRestaurant = () => {
     { x: 10, y: 6830 },
     { x: 11, y: 6830 },  
   ];
-  const successFunction = () => {};
-  const clientID = "AQU7x4Rg7fXuTKMhCYDm1sxWoGbbo1ixlgcuQ798xIBTM6T5k9hWtuFBn0Lz-OqQXDWBkSHdfIVCzXGv";
-  const amount = 5;
   return (
     <div>
       <Helmet>
@@ -102,18 +99,11 @@ export const MyRestaurant = () => {
           Add Dish &rarr;
         </Link>
         <span
+          onClick={() => history.push(`/payment/${id}`)}
           className="cursor-pointer text-white bg-lime-700 py-3 px-10"
         >
           Buy Promotion &rarr;
         </span>
-        <PayPalButton 
-          amount={amount}
-          currency="USD"
-          onSuccess={successFunction}
-          options={{
-            clientId: clientID,
-          }}
-        />
         <div className="mt-10">
           {data?.myRestaurant.restaurant?.menu.length === 0 ? (
             <h4 className="text-xl mb-5">Please upload a dish!</h4>

@@ -16295,3 +16295,257 @@ Buy Promotion을 클릭하면 payment 페이지로 이동하게 함
 react-toastify package를 설치함
 
 successFunction과 createOrder를 props로 하는 PayPal 컴포넌트를 만듦  
+
+## 22.0 Extending the Dish Component
+
+이제 다시 customer로 돌아왔음
+
+내 database에 있는 role을 바꿨음(DBeaver에서 user의 role을 Client로 변경함)
+
+다시 client가 됐음
+
+여기에 restaurant이 있고 이 restaurant은 몇 가지의 dish를 가지고 있음
+
+그래서 dish 몇 가지를 render함
+
+owner가 이미 dish를 업로드 해놨음
+
+dish를 가져오고 order를 만듦
+
+customer만 볼 수 있는 restaurant 스크린으로 감
+
+아마 여기 있을텐데 이 restaurant은 menu가 있고 우리는 이미 여기서 가져올 수 있음
+
+menu라고 쓰고 우리가 만들어 놓은 DISH_FRAGMENT를 fragment로 씀
+
+복사해서 여기 붙이고 DISH_FRAGMENT를 import함
+
+그리고 DishParts라고 해주면 됨
+
+이것이 fragment의 장점임
+
+이렇게 공유를 할 수 있음
+
+프론트엔드에서 코드를 재사용 할 수 있는데, 나는 이렇게 하는 것이 좋은 것 같음
+
+nomadcoders.co 프론트엔드도 fragments가 엄청 많은데 코드도 작고 재사용할 수 있어서 좋은 것 같음
+
+우리 브라우저로 가서 새로고침하고, menu를 봄
+
+console을 보면 restaurant이 있고, restaurant에는 menu가 있고, dish도 있음
+
+이것은 owner가 만든 dish임
+
+이제 menu를 render함
+
+우리는 이미 dish를 render할 component가 있음
+
+owner 폴더의 my-restaurant으로 가서 우리가 만든 grid인 menu를 복사하고 여기 붙임
+
+이것이 title임
+
+여기 div를 넣음
+
+아니면 그냥 이렇게 붙여 넣음
+
+그것이 더 나은 것 같음
+
+그리고 data?.restaurant으로 바꾸면 작동됨
+
+하지만 menu는 아직 존재하지 않음
+
+아직 codegen을 만들지 않았음
+
+npm run apollo:codegen을 씀
+
+이제 menu를 만들었음
+
+보다시피 Typescript도 뭐라 하지 않음
+
+다시 restaurant으로 돌아감
+
+이제 모두 container 안에 넣음
+
+이 container는 내가 만든 class이고, src/styles/tailwind.css에 있음
+
+container 그리고 link를 만들었음
+
+이제 dish component를 조금 extend하고 싶음
+
+왜냐하면 나는 이것을 토대로 order를 만들고 싶음
+
+이 페이지에서 order를 만들고 싶음
+
+"/restaurants/13"에서 order를 만들고 싶음
+
+그래서 무엇을 할거냐면, dish component에 prop을 추가함
+
+그리고 여기에 isCustomer라 쓰고 not required이며 Boolean으로 만듦
+
+default로 isCustomer를 false로 함
+
+우리가 restaurant의 owner라면 이것만 보임
+
+달라지는 것은 없음
+
+하지만 우리가 customer면 여기에 options를 render함
+
+그러면 option을 선택해서 Dish로부터 order를 만들 수 있음
+
+이제 isRestaurant에서 isCustomer를 전달함
+
+true가 됨
+
+그리고 우리는 dish options가 필요함
+
+여기에 dish options가 있음
+
+우리는 dish의 options를 가져옴
+
+그리고 component에 보여주면 됨
+
+그런데 우리가 customer일 때만 보여줘야함
+
+dish component에 options가 추가됐으니 매우 흥미로워짐
+
+customer면 일단 options만 써봄
+
+그리고 customer일 때 어떻게 나오는지 봄
+
+여기에 options가 있음
+
+나쁘지 않음
+
+그리고 options라는 type을 만듦
+
+options는 이 interface가 됨
+
+이름이 길어서 불편하다는 것을 앎
+
+하지만 그냥 복붙만 하면 됨
+
+options를 array로 만들고 not required로 함
+
+이제 내 restaurant 스크린에 dish의 options를 전달할 수 있음
+
+dish.options라고 씀
+
+그러면 Type 때문에 문제가 생김
+
+왜냐하면 Type이 array 또는 undefined여야하는데 dish.options는 array 또는 null임
+
+여기 와서 그 부분을 바꿈
+
+이제 문제 없음
+
+이제 내 dish는 options가 있음
+
+이것이 우리가 따를 로직임
+
+dish는 여기서 options를 보여줌
+
+options를 클릭하고 'make an order'나 뭐든지 add to basket(장바구니 추가)도 클릭함
+
+dish로 가서 options를 보여줌
+
+우선 options를 console.log해서 우리가 무엇을 다뤄야하는지 봄
+
+아직 props에 없는 options를 props 안에 넣음
+
+이제 console을 봄
+
+그리고 options는 array임
+
+이것이 우리가 가지고 있는 것들임
+
+name, extra, choices가 있음
+
+나는 choices를 추가하지 않았음
+
+choices를 맡김
+
+한번 도전해봄
+
+나는 name, extra만 함
+
+여기로 와서 뭐라 할거냐면 일단 물음표를 추가하고, option.name을 가진 span을 보여줌
+
+key를 위해 여기에서 index를 가져옴
+
+이제 한번 볼까
+
+외관은 좀 별로지만 고침
+
+이제 여기 위에, dish options라는 작은 텍스트를 만듦
+
+className에 margin top을 넣음
+
+my-3, 그리고 font는 medium임
+
+dish option은 이것보다는 더 좋게 만듦
+
+h6을 쓰고, 이 정도면 크게 신경쓰지 않아도 됨
+
+만약 extra money가 있으면 여기에는 spicy, pickle이 있음
+
+이제 flex items-center로 만듦
+
+extra는 작게 만듦
+
+text-small 그리고 opacity-75함
+
+가격을 좀 감추고 싶음
+
+이것만 하면 이 부분은 끝났음
+
+option에는 더 많은 기능을 만듦
+
+예를 들어 order를 만들 때 option을 클릭하면, option, name 등을 볼 수 있게 함
+
+option을 클릭하면 볼 수 있게 onclick Handler를 여기에 추가함
+
+이 경우에는 dish options가 없음
+
+그러니까 여기는 dish options를 보여줄 필요가 없음
+
+여기에만 dish options가 있음
+
+그러니 여기 dish options는 보여줄 필요가 없음
+
+options의 길이가 0이 아닐 때 그리고 options가 존재할 때 보여주도록 만듦
+
+한번 봄
+
+여기는 options가 없고, 여기는 options가 있음
+
+말했다시피 나중에 options를 체크하는 버튼을 만들 계획이라 options를 보여줌
+
+체크하기 위해 그렇게 만들고 싶음
+
+더 좋아 보이게 잠깐 margin top을 수정함 .
+
+다 했음
+
+공간을 조금 더 줌
+
+다음 영상에서는 'start order' 같은 버튼을 만들고, 'start order'는 dish를 클릭하면 고를 수 있게 만듦
+
+말했듯이 options를 만든 이유는 내 장바구니나 그런 곳에 넣을 수 있게 Dish와 options를 클릭할 수 있게 만들기 위해서임
+
+다음 영상에서 앞서 말한 내용을 진행함
+
+step 1은 끝났음
+
+이것은 owner가 보는 component랑 같은 것임
+
+대신 owner는 dish options를 볼 수 없음
+
+원한다면 이렇게 만들 수 있는데 order할 수 있는 사람은 customer뿐임
+
+그래서 dish options를 보여줌
+
+원하는대로 함
+
+로직을 공유하고 싶었음
+
+같은 dish component를 쓰지만 extend하는 방식으로 작업했음

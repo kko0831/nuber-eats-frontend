@@ -16549,3 +16549,225 @@ step 1은 끝났음
 로직을 공유하고 싶었음
 
 같은 dish component를 쓰지만 extend하는 방식으로 작업했음
+
+## 22.1 Making Order part One
+
+유저가 이 restaurant에 접속하면, 이쯤에서 볼 수 있는 버튼을 만들건데 make order라는 버튼임
+
+그것을 클릭하면 이 dish들을 선택할 수 있게 하고, 선택해서 내 order(주문)에 추가할 수 있게 함
+
+이런식으로 만들어봄
+
+이제 restaurant에 버튼을 빠르게 만들어봄
+
+이 부분에서 만듦
+
+먼저 또 다른 div를 만듦
+
+여기에 div를 만듦
+
+여기다가 button을 만듦
+
+버튼의 텍스트는 Start Order임
+
+start order 버튼이 만들어졌음
+
+mt-20을 추가함
+
+나쁘지 않음
+
+button component를 많이 커스터마이즈하긴 했는데, 그러면 클래스를 하나 새로 만듦
+
+button이란 이름의 클래스를 만듦
+
+이것을 언젠가 써먹을 수 있을 것 같음
+
+빠르게 만들어봄
+
+터미널에 npm run tailwind:build 입력함
+
+Start Order를 다 만들었음
+
+이제 onClick을 써서 Start Order를 클릭하면 무엇을 할지 적어줘야함
+
+onClick={triggerStartOrder}을 restaurant에 추가함
+
+triggerStartOrder는 state를 바꿈
+
+orderStarted, setOrderStarted라고 함
+
+useState의 기본값은 false로 함
+
+그리고 triggerStartOrder는 setOrderStarted(true)를 해줌
+
+그러면 Order Start를 클릭하면 무슨 일이 일어날까
+
+Dish에서 정보를 받아와야함
+
+orderStarted가 낫겠음
+
+이제 Dish를 확장함
+
+Dish에 orderStarted가 있어야함
+
+기본값은 boolean이 되겠고, 항상 있어야하니까 required여야함
+
+그런데 이렇게 함
+
+orderStarted의 기본값을 false로 함
+
+이렇게 하는 이유는 owner가 보는 Dish component를 망가뜨리고 싶지 않아서임
+
+나쁘지 않음
+
+padding을 넣음
+
+flex flex-col 그리고 items-end w-full도 추가함
+
+padding-bottom을 32로 함
+
+이제 Start order를 클릭하면 dish를 고를 수 있게 만듦
+
+클릭하면 선택이 됨
+
+그럼 어떻게 order를 관리할 수 있을까
+
+이것은 restaurant 스크린에서 local state로 처리함
+
+그럼 이제 여기로 와서 orderItems랑 setOrderItems를 만듦
+
+그리고 기본값은 array가 될건데, 여기에 type을 정해줌
+
+우리가 무엇을 추가해야하는지 생각 좀 함
+
+그런데 우리가 진작에 order item의 타입을 만들어뒀음
+
+우리가 createOrder할 때에 dishId랑 options, input, items 등 이미 만들어뒀음
+
+그러면 이 녀석을 가져오면 될 것 같음
+
+하지만 우리는 아직 이 createOrder를 생성한 것은 아님
+
+그러면 한번 해봄
+
+여태까지 했던 과정이랑 비슷함
+
+먼저 mutation을 만들고, NestJS와 우리가 setup한 것이 짱짱하기 때문에 mutation은 우리가 필요로 하는 모든 type을 제공함
+
+그러면 CREATE_ORDER_MUTATION을 만듦
+
+그리고 여기 있는거 싹 다 복사함
+
+이것이 input이고 그리고 이 부분은 createOrder가 됨
+
+여기서 input은 $input이 됨
+
+그리고 ok랑 error를 가져옴
+
+나중에 이것을 수정할건데, 왜인지는 차차 알게 됨
+
+CREATE_ORDER_MUTATION이 다 됐음
+
+다시 npm run apollo:codegen을 실행해봄
+
+여기를 보면 CreateOrderItemInput이라는 type이 있는데 이런 타입이 있나 볼까?
+
+CreateOrderItemInput이 있음
+
+그리고 이것은 array로 만들어야함
+
+이제 우리의 state가 우리 backend가 원하는 state와 매치된다는 것을 확인했음
+
+CreateOrderItemInput을 보면 dishID랑 options가 있음
+
+이제 Item 배열이 채워질 준비가 됐음
+
+addItemToOrder라는 function을 만듦
+
+이름이 좀 길지만 상관없음
+
+여기에 필요한 것은 id임
+
+dishId는 number임
+
+보다시피 프로그래밍에서 가장 어려운 것 중 하나가 이름 짓는 것임
+
+구글에서 관련된 글들을 볼 수 있는데, 프로그래밍에서 가장 어려운 것 2가지는 caching과 이름짓기라고 함
+
+무엇을 할거냐면 setOrderItems()를 실행함
+
+무슨 array일지는 모르지만 current array를 받음
+
+그리고 dishId에 dishId를 넣고 options에는 아무것도 아닌 null을 넣음
+
+보다시피 typescript가 도와주고 있음
+
+왜냐하면 typescript는 current가 무엇인지 알고 있음
+
+typescript는 current가 CreateOrderItemInput의 array라는 것을 알고 있음
+
+그래서 내가 array 안에 object를 넣으려고 할 때 도움을 받을 수 있음
+
+이것은 order에 item을 추가해줌
+
+orderItems를 console.log 해봄
+
+그리고 이 function을 dish에 전달함
+
+보다시피 dish component가 엄청 중요해졌음
+
+이제 dish는 새로운 prop을 가지게 되는데, 이것은 void이고 argument를 받음
+
+argument는 바로 dishId고 이것은 number가 됨
+
+보다시피 restaurant에 있는 것과 동일한 option signature를 선언해야함
+
+argument의 이름이 다르더라도 type은 동일해야함
+
+이제 addItemToOrder를 추가하고 여기에 onClick을 쓰고 안에는 이렇게 입력함
+
+그리고 dishId를 넣어야 하는데, 아직 dishId를 받지 못하는 상태임
+
+dishId가 없음
+
+그러니까 dishId를 가져옴
+
+dish props로부터 가져옴
+
+restaurant owner가 이것을 꼭 입력할 필요 없으니까 이것을 required로 만들지는 않음
+
+하지만 우리를 위해서 여기에서는 required로 해야함
+
+전부 restaurant 스크린에서 온다는 것 기억하지
+
+restaurant 스크린이 이런 모든 것들을 전달하는 곳임
+
+이제 dishId는 string이어야 하는데 내가 넣은 것은 number임
+
+number로 바꿈
+
+거의 다 왔음
+
+이제 누군가 div를 클릭하면, addItemToOrder를 실행함
+
+id를 넣지 않았음
+
+TypeScript가 정말 큰 도움이 됨
+
+하지만 이것은 우리가 orderStarted일때만 발생함
+
+orderStarted가 아니라면 이것을 실행하고 싶지 않음
+
+그럼 여기로 와서 만약 orderStarted면 이것을 하고, 아니라면 아무것도 하지 않음
+
+이것이 중요함
+
+Dish에 오류가 있음
+
+addItemToOrder is missing이라 react에서 문제가 생긴건가
+
+여기 addItemToOrder가 버젓이 있는데 또 addItemToOrder is Missing임
+
+내 실수일지도 모름
+
+어쩌면 react 문제일 수도 있음

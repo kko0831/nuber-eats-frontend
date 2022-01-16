@@ -16771,3 +16771,207 @@ addItemToOrder is missing이라 react에서 문제가 생긴건가
 내 실수일지도 모름
 
 어쩌면 react 문제일 수도 있음
+
+## 22.2 Making Order part Two
+
+에러는 내 실수 때문에 생긴거였음
+
+"Dish에 addItemToOrder가 없습니다."라고 뜸
+
+이것은 owner 페이지에서 발생하고 있는데, 내가 addItemToOrder를 required로 만들었기 때문임
+
+이것은 진짜 중요함
+
+우리가 Dish를 2개의 screen에서 쓰고 있다는 것을 기억해야함
+
+이것이 undefined일 수 있으니까 && addItemToOrder를 추가함
+
+그럼 동작함
+
+계속 진행함
+
+이제 내 생각에 우리는 Start Order를 클릭할 수 있고, 모든 element들도 잘 볼 수 있음
+
+여기를 클릭하면 아무 일도 일어나지 않아야함
+
+아무 일도 안 일어나야함
+
+내가 console.log를 추가했는지 봄
+
+orderItem을 찍어뒀음
+
+Start order를 클릭해봄
+
+orderItems에는 아무것도 없음
+
+여기를 클릭하면 dishId:3이 잘 뜸
+
+이것을 클릭하면 dishId:2가 뜸
+
+하지만 기존 dish를 까먹고 있음
+
+왜 이랬냐면 ...current를 안 넣어서 그럼
+
+이제 됨
+
+이제 두 dish들을 다 기억함
+
+Start Order를 누르면 아무것도 없고, 여기랑 여기를 클릭하고, 계속 클릭하면 클릭하는대로 계속 dish를 추가함
+
+이것도 좋지 않음
+
+그러니까 이 부분에서 체크를 해줘야할 것 같음
+
+만약 orderStarted이면 order에서 dishId를 찾음
+
+동일한 dishId가 있다면 그냥 return만 함
+
+find()는 true 혹은 undefined를 return하는 function임
+
+true가 아니라 find한 object를 return함
+
+여기서는 order의 dishId 중에 우리가 추가하려는 dishId와 동일한게 있는지 찾음
+
+만일 찾았다면 아무것도 추가하지 않음
+
+돌아가서 새로고침하고 어떻게 되는지 봄
+
+이것 좀 고침
+
+여기를 {orderStarted}로 고침
+
+이렇게 하거나 그냥 버튼을 여러개 만들 수도 있음
+
+그것은 나중에 함
+
+여기보면 지금 우리는 Ordering 상태임
+
+그리고 여기를 클릭하면, 주문할 수 있는 아이템은 둘뿐이니까 계속 클릭해보면 더 이상 변화가 없음
+
+이제는 item이 order에 잘 들어왔다는 것을 보여줘야함
+
+dish에게 isSelected 같은 것을 알려줘야함
+
+여기에 isSelected를 추가함
+
+기본값은 false로, 이것은 나중에 더 수정함
+
+isSelected={false}로 함
+
+그리고 여기 dish에서 isSelected를 추가함
+
+isSelected는 not required에 boolean이고, 여기에도 isSelected를 추가해줌
+
+이제 className을 넣음
+
+만약 isSelected라면 border를 gray 800로 만듦
+
+isSelected가 false라면 hover:border-gray-800으로 함
+
+둘 다 isSelected가 false일거고, isSelected면 어떻게 되는지 보여줌
+
+true로 바꿈
+
+둘 다 isSelected면 이렇게 됨
+
+만약에 둘 다 isSelected라면 cursor-pointer를 딴 것으로 바꿀 수도 있음
+
+isSelected가 false라면 클릭할 수 있지만, isSelected가 true라면 cursor-not-allowed로 만들어버림
+
+시도해볼만 하지만 이렇게 하지 말자
+
+아무튼 isSelected면 이렇게 됨
+
+얘들이 isSelected이면, 우리는 그것을 어떻게 알아낼까
+
+사실 되게 간단함
+
+또 find를 사용하면 됨
+
+isSelected란 거는, 이런 것들을 할 수 있다는 소리임
+
+orderItems.find()로 dishId를 찾는다면 isSelected가 true라는 뜻임
+
+isSelected란 이름의, dishId를 인자로 받는 함수를 만듦
+
+이렇게 하는게 훨씬 깔끔함
+
+Boolean()은 undefined를 false로 만들고, 나머지는 다 true로 만들어줌
+
+여기에도 똑같이 해주면 됨
+
+isSelected={isSelected(dish.id)}해서 바로 call함
+
+새로고침하면 둘 다 isSelected가 아니어야함
+
+잘 됐고 Start Order한 다음에 여기를 클릭함
+
+그럼 얘는 선택된 상태로 유지됨
+
+여기를 클릭해보면 완벽함
+
+이제 removeFromOrder라는 function을 만듦
+
+dishId를 없애려는 것임
+
+지금 우리가 하는 것은 JavaScript array랑 JavaScript react strings를 연습하는 것임
+
+여기에서 우리는 setOrderItems()에 current.filter(dish)를 함
+
+dish.id는 우리가 제거하고자 하는 dishId와 같지 않은 것을 찾음
+
+그것이 removeFromOrder가 하는 일임
+
+removeFromOrder를 여기에 추가함
+
+여기에도 하고 removeFromOrder는 위에꺼랑 비슷한 형태임
+
+그리고 여기 아래에도 추가함
+
+이제 onClick은 좀 더 복잡해졌음
+
+이제 이런 식으로 동작함
+
+orderStarted이고, isSelected가 아니면 이것을 실행함
+
+그런데 보다시피 코드가 좀 더러움
+
+옵션이 너무 많음
+
+그래서 안에 모든 것을 다 쑤셔넣지 말고 코드 정리를 좀 해봄
+
+여기에 만듦
+
+if, else를 쓰면 더 보기 좋아짐
+
+if(orderStarted) 그리고 if(!isSelected)가 충족되면 addItemToOrder()를 함
+
+그런데 addItemToOrder가 존재하는지도 확인해야함
+
+이제 여기를 지워도 됨
+
+일단 코드가 돌아가게 만든 다음에 깨끗하게 정리함
+
+새로고침하고 테스트 해봄
+
+일단 Start Order를 클릭하고, 하나씩 select 해봄
+
+둘 다 선택된 상태에서 첫번째를 삭제해봄
+
+이제 첫번째거는 삭제 되었음
+
+BBQ chicken은 선택된 상태로 남아있어야함
+
+둘 다 선택을 취소해보면 아무 것도 안 남음
+
+이제 어떤 아이템이 선택되었는지 알 수 있고, 천천히 createOrderInput을 만들어가고 있음
+
+지금은 dishId가 있고, 다음 영상에서는 options를 선택하는 것을 만듦
+
+지금까지 해왔던 것과 같은 array 조작이 됨
+
+이것이 내가 react를 좋아하는 이유인데, 나를 더 나은 JavaScript 개발자로 만들어주기 때문임
+
+보다시피 지금 하고 있는 것은 React 코드가 아님
+
+filter나 find는 Javascript에서 쓰는 것들뿐임

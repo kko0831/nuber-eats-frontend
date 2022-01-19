@@ -16975,3 +16975,257 @@ BBQ chicken은 선택된 상태로 남아있어야함
 보다시피 지금 하고 있는 것은 React 코드가 아님
 
 filter나 find는 Javascript에서 쓰는 것들뿐임
+
+## 22.3 Making Order part Three
+
+이제 order에 option을 추가해봄
+
+Order 말고 Item이라 해야겠음
+
+그리고 dishId를 받음
+
+타입은 number임
+
+그리고 dishId가 isSelected가 아니면 아무것도 하지않고 return함
+
+혹시 모르니까 확실하게 해줌
+
+addOptionToItem이 무슨 일을 할거냐면, option을 클릭하면 어떤 item인지 찾고 item에 option을 추가함
+
+그렇게 작동함
+
+그래서 우리는 item을 가져와서 options와 같이 다시 넣는 작업을 함
+
+왜냐하면 state를 mutate하고 싶지 않고, 그럴 수도 없기 때문임
+
+언제나 새로운 state를 return하는 것이 더 좋음
+
+state를 내부에서 mutate하지 않고 항상 새 state를 return하는 것이 더 좋음
+
+나중에 mutation과 mutation을 쉽게 만드는 법에 대해 알려줌
+
+일단 지금은 라이브러리의 도움 없이 어떻게 하는지 보여줌
+
+말했다시피 우선은 order에서 item을 제거하는 것을 만들어야함
+
+이미 이 function이 있으니까 removeFromOrder를 argument인 dishId를 넣어 실행함
+
+그러면 dish가 제거됨
+
+그러고 나서 addItemToOrder를 할건데, 이번에는 options를 가지고 addItemToOrder를 함
+
+그러니까 argument로 options까지 받도록 만듦
+
+option이라 하고 이 option의 type을 확인해보면, options의 타입은 restaurant_restaurant_restaurant_menu_options[]임
+
+안을 살펴보면 name과 extra만 알면 됨
+
+일단은 type을 any로 함
+
+그리고 option이 아니라 options임
+
+그리고 addItemToOrder를 확장함
+
+확장할 수도 있겠지만 그냥 이렇게 함
+
+그리고 dishId와 함께 options를 넣어줌
+
+보다시피 removeFromOrder를 하고, setOrderItems를 한번 더 함
+
+object를 다시 order에 넣는데, 다만 이때는 order에 options가 들어감
+
+이렇게 하는 이유는 state를 mutate하지 않기 위해서임
+
+항상 새 state를 만들고 return 해야함
+
+이렇게 하는 이유는 react.js에서는 새 state를 확인하고 re-render하는 것이 쉽기 때문임
+
+state를 mutate하게 되면 react는 아무 변화도 일어나지 않았다고 생각할 수 있음
+
+아무튼 이제 addOptionToItem이 있음
+
+Dish로 보낼 function임
+
+Dish 컴포넌트가 엄청 거대해졌음
+
+addOptionToItem을 넣어봄
+
+이것은 not required로 하는 것이 좋음
+
+여기에 addOptionToItem을 넣고, 이 내용이 option 안에 있어야함
+
+option을 클릭하면 option.name과 option.extra를 추가해야함
+
+여기에 onClick을 추가함
+
+addOptionToItem이 있는지 확인함
+
+우리는 dishId가 있으니까, id라고 써주면 됨
+
+그리고 option을 넣기 위해 object를 만듦
+
+그런데 빨간줄이 뜸
+
+이렇게 다 체크해주는 것은 item에 option이 없을 수도 있기 때문임
+
+우리가 owner라면 그럴 수도 있음
+
+뭐가 틀렸나봄
+
+이것이 우리의 onClick임
+
+어디에 있는지 제대로 보고 싶으니까 span을 클릭하면 border가 생기도록 함
+
+여기를 클릭하면 item option이 추가됨
+
+그런데 문제가 있음
+
+예를 들어 내가 pickle을 클릭하면 order에 option을 추가하게 되는데, 동시에 이것도 클릭됨
+
+이 onClick이랑 이 onClick이 둘 다 실행됨
+
+이것을 수정해야함
+
+여기를 보면 pickle이나 spicy를 클릭했는데 dish가 추가됨
+
+다시 클릭해보면 보다시피 난 얘네를 계속 누르고 있는데도 선택이 안 되고 있음
+
+왜냐하면 이 onClick이 먼저 작동되고 있기 때문임
+
+그러니까 조금 수정해봄
+
+div에 큰 onClick을 만드는 대신 button을 만드는게 좋겠음
+
+여기 옆에 Choose라는 button을 만듦
+
+Choose라고 뜸
+
+이 버튼은 orderStarted일 때만 보임
+
+Pick으로 수정하고 onClick을 여기로 옮김
+
+Pick이라고 잘 나옴
+
+좀 더 좋게 수정해볼까
+
+Add, Remove, Add, Remove 등 잘 바뀜
+
+이러면 이 부분의 onClick도 잘 동작함
+
+먼저 dish를 추가해봄
+
+추가가 됐고 pickle을 골라봄
+
+dishId: 3, options: {name: "Pickle", extra: 12}임
+
+사실 extra는 필요없음
+
+extra가 굳이 필요 없는게, 우리는 user를 신뢰하지 않음
+
+extra가 아예 필요 없음
+
+user를 신뢰하지 않으니 extra도 아예 필요가 없음
+
+options에 option.name만 있음
+
+잘 동작함
+
+다시 pickle을 추가해봄
+
+여기를 보면 우리가 원래 spicy였던 것을 pickle로 바꿨음
+
+이럼 안 됨
+
+이것도 문제가 있음
+
+계속 교체하고 있으니까 2개를 동시에 고를 수 없음
+
+그냥 removeFromOrder하는 대신에 get하고, remove한 다음에 이전 버전을 보내야함
+
+어렵고 짜증날 수 있지만 나는 사실 이 짓을 즐김
+
+JavaScript 실력도 향상되고 프로그래밍적으로도 재밌음
+
+우선은 item을 get 해야함
+
+그런데 이미 이것이 있음
+
+이제 무엇을 해야할지 알겠지
+
+예쁜 function을 만들어봄
+
+getItem()에는 dishId가 필요함
+
+코드를 최대한 짧게 짜도록 해봄
+
+이제 isSelected() 안에서 getItem()을 씀
+
+return을 해줘야함
+
+removeFromOrder하기 전에, 다시 item을 get함
+
+인자는 dishId임
+
+여기서 item을 get하고 isSelected여야하는 것은 위에서 체크했음
+
+item을 get한 다음에 remove하고, 여기를 ...oldItem으로 바꿔줌
+
+여기 문제가 있는데 oldItem을 find하지 못하면 undefined가 될 수 있어서 그럼
+
+그러면 위에서 체크해줌
+
+이것은 그냥 typescript가 혹시 모를 에러를 방지해주는 것임
+
+이제 여기서 dishId인 oldItem을 보냈음
+
+그런데 내가 하려던 것은 oldItem의 options도 같이 보내는 것임
+
+일단 dishId를 보내고 oldItem.options인 options array를 넣음
+
+그러면 이것은 이전 options의 배열이니까 앞에 ...을 적어주고, 여기에 새 option을 넣어야함
+
+options가 아닌 option임
+
+oldItem.options가 undefined일 수 있어서 빨간줄이 뜨고 있음
+
+그래서 그냥 모든 item에 기본값으로(기본으로 딸려오도록) options를 넣음
+
+우리가 확실히 할 수 있도록 함
+
+하지만 typescript가 우리를 믿지 않음
+
+그러면 뒤에 !를 추가함
+
+이것은 typescript한테 나를 믿으라고 말하는 것임
+
+여기서는 나를 믿음
+
+그렇다고 이것을 많이 쓰면 안 됨
+
+왜냐면 나는 나 자신을 못 믿음
+
+그럼 새로고침 해봄
+
+inspect로 들어가서 이제 option을 추가할 수 있어야함
+
+Start Order가 잘 됨
+
+option이 없는 dish 3이 있음
+
+spicy를 클릭하면 dish 3의 options array를 보면 Spicy가 잘 들어가 있음
+
+pickle을 클릭하면 잘 동작함
+
+그런데 또 문제가 있는데 Pickle을 여러번 클릭하면 option이 중복되어서 들어감
+
+이런 문제가 있지만 어쨌든 좋음
+
+결과물에 만족함
+
+order에 dish를 추가하고 많은 dish와 option을 추가했을때 dish를 업데이트하는 것과 dish를 제거할 수도 있음
+
+특정 dish가 order에 있는지 없는지 알 수도 있음
+
+이제 option에도 같은 기능을 적용해야함
+
+option이 이미 선택되었는지 아닌지 알아내는 것을 다음 영상에서 구현하도록 함

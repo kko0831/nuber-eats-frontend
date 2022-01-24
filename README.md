@@ -17229,3 +17229,223 @@ order에 dish를 추가하고 많은 dish와 option을 추가했을때 dish를 �
 이제 option에도 같은 기능을 적용해야함
 
 option이 이미 선택되었는지 아닌지 알아내는 것을 다음 영상에서 구현하도록 함
+
+## 22.4 Making Order part Four
+
+이제 유저가 spicy를 여러번 클릭해서 spicy를 여러번 추가하는 것을 막아야함
+
+이것은 addOptionToItem에서 수정함
+
+그리고 나중에는 UI에도 반영함
+
+그렇게 가봄
+
+일단 oldItem을 가져와서, oldItem에 해당 option을 가지고 있는지 알아내야함
+
+만약에 이미 가지고 있다면 이 코드를 실행시키지 않음
+
+어떻게 하면 될까
+
+const hasOption = Boolean()을 쓰고, oldItem.options에서 find를 함
+
+그리고 새 option 이름과 동일한 option이 있는지 찾아야함
+
+이 부분을 aOption으로 이름을 바꿈
+
+aOption.name == option.name 이렇게 쓸 수 있음
+
+hasOption은 item이 해당 option을 이미 가지고 있는지 알려줌
+
+이제 이쪽으로 와서 option을 가지고 있지 않다면 이 코드를 전부 실행함
+
+state로부터 item을 받아서, item에 새로 추가하려는 option과 item이 동일한 이름의 option을 가지고 있는지 확인했음
+
+aOption이 oldItem.options에서 온 option이고, option은 새로 추가하려는 option임
+
+이렇게 고치면 더 이상 spicy를 수만번 선택할 수 없음
+
+여기로 와서 Start Order후 Spicy를 Add함
+
+그리고 여러번 눌러보면 딱 한 번만 추가됨
+
+다시 클릭해보면 Spicy와 Pickle 각각 하나씩만 있음
+
+지금까지 파트1이었음
+
+파트2는 어떻게 option이 선택됐는지 알 수 있을지임
+
+얘네가 선택됐는지 어떻게 알 수 있을까
+
+우리가 할 것은 일단 이 부분이 어떻게 생겼는지를 봄
+
+이 부분은 Dish Options 부분이고, 이것은 options prop 안에 들어있음
+
+즉 prop에서 옴
+
+그래서 무엇을 할 수 있냐면, dish로 props를 더 보낼 수가 있음
+
+그런데 그렇게 하고 싶지는 않음
+
+계속 이렇게 props를 더 보내고 로직을 추가하고 싶지는 않음
+
+그래서 나는 이 부분을 분리함
+
+그러면 children prop을 사용해봄
+
+이 말은 dish option을 이것을 좀 더 제어할 수 있도록 여기 바깥에서 render하겠다는 뜻임
+
+이것이 다 필요한 것은 아님
+
+어떻게 할거냐면 여기를 이렇게 수정함
+
+이렇게 하는 이유는 component를 좀 더 개선하고 싶기 때문임
+
+여기서 options를 렌더링함
+
+options를 prop으로 전달하지 않고, restaurant component가 dish options에 접근할 수 있으면 좋을 것 같음
+
+그래서 이 부분을 다 잘라서 { children } 으로 교체함
+
+여기에 prop children 적어주는 것을 잊지마
+
+이제 여기에 붙여넣음
+
+dish.options라 하고, 그냥 id 대신에 dish.id로 바꾸고 나머지는 그대로 놔둬도 됨
+
+이제 dish component에서 많이 수정하지 않음
+
+그리고 children을 dishOptions로 이름을 바꿀 수 있음
+
+이렇게 바꿔쓰면 좀 더 의미가 명확해질 것 같음
+
+이렇게 바꾸는 편이 나을 것 같음
+
+계속 props를 전달하고 싶지는 않음
+
+이렇게 하면 이 prop은 더 이상 쓰지 않기 때문에 보낼 필요가 없음
+
+이제 이 dish가 order에 추가됨
+
+그리고 restaurant에 options를 넣음
+
+여기에서 option이 이미 order에 있는지 확인함
+
+이제 새로고침 해봄
+
+모든 것들이 똑같이 동작해야함
+
+그냥 코드 생김새만 손본 것 뿐이니까 기능은 전혀 바꾼게 없음
+
+start order하고 add dish후 spicy, pickle을 선택함
+
+여기 안을 좀 보면 똑같이 잘 동작함
+
+Dish 컴포넌트 안에 있다는 것이 달라지기는 했음
+
+이제 이 컴포넌트는 닫아버림
+
+그리고 dish option에 대한 얘기를 해봄
+
+원한다면 나중에 해야할 것 같기는한데 든 것이 워낙 많아서 dish option component를 만들어야 할지도 모름
+
+다시 돌아가서 이 option이 선택되었는지 어떻게 알 수 있을까
+
+어떻게 할 수 있냐면 여기서 했던 것처럼 해도 됨
+
+여기 isSelected처럼 getItem한 다음에 item의 option을 get하는 것임
+
+그렇게 하면 됨
+
+그리고 name을 비교해보면 됨
+
+여기에 function을 만들어봄
+
+먼저 해야할 것은 item을 get하는 것임
+
+그러면 getItem을 쓰고, getItem에는 dishId가 필요한데 그것은 인자를 갖다 쓰면 됨
+
+item을 가져오는 것이 part 1이고, 그 다음에는 option을 가져와야함
+
+getOptionFromItem이라는 function을 만듦
+
+이름이 길더라도 신경 안 씀
+
+getOptionFromItem은 item을 인자로 받음
+
+이 item은 type이 CreateOrderItemInput임
+
+type을 찾았으니 return을 함
+
+item.options.find()로 option을 find할건데, 여기서 optionName이 필요함
+
+options 중에서 우리가 보낸 optionName과 같은 것을 찾음
+
+그러면 isOptionSelected function에서 option의 name을 알아야함
+
+optionName을 넣음
+
+이제 끝났음
+
+이렇게 작은 function들을 합쳐서 큰 것을 만듦
+
+getOptionFromItem에는 item이 필요한데, item은 바로 여기에 있음
+
+먼저 item을 조건으로 걸어줌
+
+그리고 getOptionFromItem을 return함
+
+인자는 item과 optionName임
+
+이렇게 isOptionSelected로 option이 선택되었는지 알 수 있게 되었음
+
+먼저 dishId로 getItem을 한 후, item을 찾았다면 item에서 optionName을 find함
+
+getOptionFromItem에는 item: CreateOrderItemInput과 optionName:string이 필요함
+
+이제 isOptionSelected를 사용함
+
+여기서 사용함
+
+className으로 가서 isOptionSelected를 넣는데, 보다시피 dishId랑 optionName이 필요함
+
+우리는 이미 dish.id가 있음
+
+우리가 map을 했기 때문에 dish.id가 있음
+
+그래서 dish.id가 있음
+
+그리고 optionName도 넣어야함
+
+optionName은 option.name이 됨
+
+이것은 Boolean을 return함
+
+이렇게 하면 안 될것 같음
+
+Boolean으로 바꿔서 return 해야겠음
+
+만약에 isOptionSelected가 true라면, option 안에 있는 이것이 선택되었다면 이 function은 dish.id 안에서 option.name을 찾음
+
+웹브라우저로 가봄
+
+잘 선택된 것 같음
+
+예쁘게 꾸미는 것은 나중에 함
+
+Start Order후 Add Dish하고 Spicy를 선택함
+
+보다시피 spicy가 선택되었음
+
+이제 pickle을 선택해봄
+
+다시 클릭하면 동작하지 않음
+
+잘 되고 있음
+
+이제 addOptionToItem이랑 removeFromItem을 만들 차례임
+
+그것은 다음 영상에서 하도록 함
+
+잘 되어 가고 있음
+
+function을 다루는 것이 재밌음

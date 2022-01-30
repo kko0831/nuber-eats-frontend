@@ -16296,6 +16296,32 @@ react-toastify package를 설치함
 
 successFunction과 createOrder를 props로 하는 PayPal 컴포넌트를 만듦  
 
+## Buy Promotion하는 절차
+
+developer.paypal.com에서 세팅함
+
+여기서는 자신의 아이디와 패스워드로 로그인을 함
+
+MyRestaurants 화면에서 restaurant 하나를 선택함
+
+PayPal 화면과 직불카드 또는 신용카드 버튼이 나옴 
+
+PayPal 버튼을 클릭함
+
+PayPal로 지불하기 화면이 나옴
+
+Personal 계정으로 로그인함 (예) sb-je09c9203663@personal.example.com
+
+패스워드도 입력하면 결제수단 창이 나옴
+
+바로 결제 버튼을 누름 
+
+sandbox.paypal.com에서 personal 계정과 business 계정으로 로그인을 함
+
+personal 계정에서 현금이 인출되어 business계정으로 입금이 됨
+
+그러나 보류중인 상태가 며칠간 지속되다가 입금이 된다.
+
 ## 22.0 Extending the Dish Component
 
 이제 다시 customer로 돌아왔음
@@ -17449,3 +17475,245 @@ Start Order후 Add Dish하고 Spicy를 선택함
 잘 되어 가고 있음
 
 function을 다루는 것이 재밌음
+
+## 22.5 Making Order part Five
+
+이제 우리가 만들 마지막 function들 중 하나는 removeOptionFromItem임
+
+인자로 dishId: number랑 optionName: string을 받을거고, 위에 했던거랑 비슷한 것을 함
+
+그러고 우리가 할 거는 optionName을 가지고 function을 제거함
+
+그런 식으로 함
+
+그럼 해봄
+
+여기로 와서 item.options.filter()함
+
+어떤 option을 filter할거냐면, optionName과 이름이 같지 않은 option들을 필터링함
+
+즉, 우리가 찾는 이름과 다른 option들의 array를 받게 됨
+
+하지만 이것은 충분하지 않음
+
+이 item은 state로부터 옴
+
+그래서 우리는 또 item을 제거하고, addOptionToItem이랑 removeOptionFromItem에서 했던 것과 비슷한 작업을 해야함
+
+좀 길어짐
+
+우리가 옛날에 만들었던 코드를 잘 볼 수 있게 얘네는 잠시 닫아둠
+
+일단 첫째로 dish가 존재하는지를 확인해야함
+
+dish가 isSelected가 아니라면 그냥 return 시킴
+
+이것이 part 1이고 oldItem을 가져오는 것이 part 2임
+
+여기에 있음
+
+oldItem이라 함
+
+아까랑 비슷함
+
+그리고 option을 제거해야함
+
+먼저 removeFromOrder로 order에서 oldItem을 제거해야함
+
+그 다음에 setOrderItems를 할건데, options는 이것으로 바꿔야함
+
+복붙이 지겹긴한데 지금 할 수 있는 최선인 것 같음
+
+정리하면 removeOptionFromItem을 한다는 것은 일단 item이 선택되었는지를 확인해서 oldItem을 받고, order에서 item을 제거하는 것임
+
+그리고 order에 item을 다시 추가할건데 안에는 dishId와 oldItem의 options가 들어감
+
+그리고 우리가 제거하려는 optionName과 다른 option.name을 가진 option을 filter함
+
+filter는 조건을 만족하는 element들을 모아 array로 return함
+
+그래서 우리는 조건에 맞는 element들만 남겨둠
+
+조건은 option.name이 optionName과 같지 않아야 한다는 것임
+
+아무튼 잘 동작할거고, dish options로 돌아와봄
+
+코드가 복잡함
+
+그래서 component를 만듦
+
+왜냐하면 isOptionSelected가 여기를 더 복잡하게 만듦
+
+하지만 늘 이런 식임
+
+먼저 코딩을 하고, 나중에 깔끔하게 정리함
+
+dish-option.tsx를 만듦
+
+import React from "react'함
+
+이것은 다 어떻게 하는지 알지
+
+여기 있는 IDishOptionProps를 만듦
+
+interface IDishOptionProps에 뭐가 들어가야 할까
+
+그냥 얘네를 다 return하고 나서 뭐가 필요한지 봄
+
+일단 복붙함
+
+뭐가 필요하지
+
+일단 isOptionSelected가 필요함
+
+isSelected 그리고 타입은 boolean임
+
+그 다음에는 이것들을 isSelected로 바꿔줌
+
+index는 필요 없을 것 같음
+
+이제 name이 필요함
+
+그리고 extra가 필요한데 타입이 뭘까
+
+무엇인지 봄
+
+아마 string인 것 같음
+
+number로 감
+
+이제 isSelected, name, extra가 있음
+
+이제 onClick 부분은 restaurant의 이 부분에서 고칠 수 있음
+
+DishOption isSelected={}의 괄호 안에 들어갈 것은 이미 만들어뒀음
+
+isOptionSelected를 쓰면 됨
+
+dishId는 dish.id, 그리고 optionName은 option.name임
+
+이것이 isOptionSelected()임
+
+이 경우에는 Boolean이나 undefined가 return되는데 false를 return 시켜주면 깔끔함
+
+isSelected는 isOptionSelected임
+
+name도 넣고 extra도 넣음
+
+extra는 number여야하는데 이것은 null이 될 수 있으니까, extra가 꼭 필요하지 않다고 해줌
+
+그리고 여기에서 extra가 존재하는지 확인함
+
+extra가 number, undefined, null이 될 수 있다고 나옴
+
+extra가 null일 수도 있다고 수정함
+
+다 됐음
+
+이것은 동작하지 않음
+
+우리는 onClick이 필요함
+
+onClick 코드가 좀 이상함
+
+onClick은 바깥에서 계산하도록 만드는 것이 좋겠음
+
+아니면 여기에 함
+
+우선 우리가 해야할 것은 addOptionToItem을 보내는 것임
+
+먼저 addOptionToItem={addOptionToItem}을 가져옴
+
+그리고 여기에도 넣음
+
+addOptionToItem은 dishId: number, option: any가 필요함
+
+첫번째 단계가 끝났음
+
+여기서 생기는 오류는 dishOption이 dish 안에 있었기 때문에 그랬던 것임
+
+더 이상 생기지 않음
+
+addOptionToItem은 위로 옮김
+
+이제 dish의 id를 보내야하는데 아직 가지고 있지 않음
+
+일단 onClick을 이렇게 줄일 수 있겠음
+
+option이 isSelected면 item에서 option을 제거하고, 그렇지 않으면 addOptionToItem을 씀
+
+여기에 dish의 id를 보내야함
+
+여기에 dishId라 하고, 여기에도 dishId: number를 추가함
+
+그리고 이것은 void가 있어야함
+
+dishId를 props에도 추가함
+
+그리고 dishId를 props로 전달함
+
+그리고 key={ index }가 필요함
+
+이제 removeOptionFromItem을 추가함
+
+이 부분임
+
+여기에도 동일하게 추가해야함
+
+그리고 이 경우에 removeOptionFromItem은 optionName: string으로 바꿔주면 됨
+
+그리고 addOptionToItem도 optionName을 받도록 수정해야함
+
+이것이 더 나은 것 같음
+
+이제 복잡한 object 대신 간단히 name만 넣어주면 됨
+
+그런데 addOptionToItem을 수정하지 않았기 때문에 문제가 생김
+
+이것은 string이 되야함
+
+그리고 option.name 대신 optionName을 씀
+
+object를 보내는 대신 이렇게 보냄
+
+여기도 봄
+
+정말 길었음
+
+이제 선택과 선택취소가 잘 되는지 확인해봄
+
+Start Order를 클릭하고 spicy가 잘 추가되었음
+
+option에 무엇인가를 추가하지 않았음
+
+isSelected면 item에서 remove 해야함
+
+isSelected면 removeOptionFromItem(dishId, name)함
+
+다시 클릭하여 이제 item에서 제거가 가능해졌음
+
+Pickle이랑 Spicy가 있는데, 이것을 클릭하면 이제 Spicy 밖에 없음
+
+이것을 완성하는데 정말 오래 걸렸음
+
+CSS는 영상 밖에서 수정함
+
+그리고나서 이 버튼으로 order를 취소하고 confirm하는 것을 만듦
+
+order를 confirm하는 것은 mutation을 보내는 것임
+
+정말 많은 function과 array를 다뤘음
+
+하지만 재미있었음
+
+그래도 array 스킬을 향상시키는데 큰 도움이 됨
+
+state를 mutate하지 않고 제거하고, 업데이트함
+
+마음에 듦
+
+살짝 functional programming도 들어갔음
+
+그것도 좋았음
+
+order하는 것을 곧 마무리함

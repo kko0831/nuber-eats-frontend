@@ -17717,3 +17717,271 @@ state를 mutate하지 않고 제거하고, 업데이트함
 그것도 좋았음
 
 order하는 것을 곧 마무리함
+
+## 22.6 Making Order part Six
+
+지금 상태는 주문을 시작하고 order를 add, remove 할 수 있음
+
+spicy를 추가하고, pickle을 추가해도 잘 유지되고 있고 또 삭제도 할 수 있음
+
+그리고 Tailwind 작업을 좀 했고, 이제 이 버튼에 집중함
+
+Ordering 대신에 Cancel Order나 Confirm Order를 띄움
+
+confirm order를 할 때는 mutation을 만듦
+
+이제 무엇을 할거냐면 많은 코드를 작성할건데 한개의 큰 if문을 만들지 않음
+
+우선 orderStarted가 아니라면 이 버튼을 보여줌
+
+텍스트는 Start Order로 함
+
+만약 orderStarted가 true라면 2개의 버튼을 렌더링함
+
+하나는 Confirm Order라고 쓸거고, 다른 하나는 Cancel Order라고 씀
+
+먼저 Cancel Order function부터 만듦
+
+setOrderStarted(false)와 setOrderItems([])를 함
+
+이것이 triggerCancelOrder임
+
+여기에 넣으면 되고 배경색으로 bg-black을 줌
+
+잘 만들어졌음
+
+그리고 hover를 추가해서 아무 효과가 없게 만듦
+
+이제 Cancel Order를 만들었으니 테스트 해봄
+
+order에 dish를 추가하고, 있는거는 다 추가함
+
+그리고 cancel order를 클릭하면 모든게 사라졌음
+
+이제 confirm order를 해볼텐데 그 전에 더 보기 좋게 만들어봄
+
+flex-col 대신에 여기에 div를 만듦
+
+여기에 margin을 추가함
+
+다 됐음
+
+이제 order를 confirm하고 cancel 할 수 있음
+
+confirm order를 클릭할 때 실행할 function을 만듦
+
+triggerConfirmOrder라고 부름
+
+우선 오래된 방식으로 confirm을 해봄
+
+confirm이라 하고 "주문하시겠습니까"에서 ok일 경우 "mutation을 실행한다"를 console.log함
+
+그리고 triggerConfirmOrder를 여기에 넣음
+
+confirm을 쓸 수 없음
+
+window.confirm으로 해봄
+
+다시 해봄
+
+그 전에 체크를 해야함
+
+orderItems를 가져와서 orderItems.length === 0 즉 order가 텅 비어 있다면 alert를 할 수도 있고, 아니면 멋진 에러 메세지를 띄울 수도 있음
+
+일단 우리는 alert("아무것도 없는 주문을 할 수 없습니다")함
+
+그리고 return 해야함
+
+빈 order를 confirm하려해봄
+
+Start Order, Confirm order하면 can't place empty Order라고 뜸
+
+무엇인가를 추가하고 Confirm Order하면 You are about to place an order라고 뜸
+
+주문 목록의 이름과 가격을 옆에 띄워줌
+
+백엔드에서 해봤으니 어떻게 하는지는 알겠지
+
+주문하고 있는 것들의 이름, 가격, 그리고 피클까지 주문 총합계는 $75입니다라는 식으로 함
+
+아무튼 잘 동작하고 있음
+
+그리고 CREATE_ORDER_MUTATION이 이미 만들어져 있음
+
+아주 오래 전에 준비했었음
+
+쭉 내려와서 여기를 보면 makeOrderMutation에 loading은 placingOrder라고 이름을 바꿈
+
+CREATE_ORDER_MUTATION을 useMutation함
+
+이제 type을 추가함
+
+useMutation<createOrder, createOrderVariables>함
+
+이것들을 여기서 부를 수 있음
+
+우선 restaurantId가 필요함
+
+이것은 맨 위에 params.id에 있음
+
+params.id 타입은 number임
+
+앞에 +를 붙여줌
+
+다음은 items가 필요함
+
+items를 적어주고 이 items는 이미 orderItems에 있음
+
+items는 array여야함
+
+보다시피 type check를 통과했음
+
+왜냐하면 CreateOrderInput.items랑 orderItems는 같기 때문임
+
+왜냐하면 type을 state에 정의했음
+
+이것이 typescript를 사용할 때의 장점임
+
+state의 형태를 우리 API에 필요한 형태로 만들 수 있음
+
+이제 createOrderMutation을 만듦
+
+onCompleted라는 function을 만듦
+
+data를 받을텐데 type은 createOrder가 될테고 여기에 onCompleted를 추가하면 됨
+
+if(data.createOrder.ok){ alert("order created"); }함
+
+그리고나서 다른 스크린으로 넘어감
+
+아마 order 스크린일 것임
+
+subscriptions 그런 것들을 하는 스크린이 될 것임
+
+새로운 스크린을 만들어야함
+
+이번 파트는 여기에서 끝내고, 다른 screen을 만드는 것으로 넘어감
+
+다른 스크린에서는 order를 받고, subscription도 처리함
+
+그 스크린은 driver, owner 모두가 볼 수 있음
+
+그리고 restaurant은 아닐 것 같음
+
+어쨌든 subscription 관련해서 할 것이 있음
+
+잘 돌아가는지 봄
+
+주문이 되는지 봄
+
+Postico(dBeaver)로 와서 nubereats db의 orders table에 이미 order가 좀 있는데, 내가 어제 만든 대쉬보드 때문임
+
+10개밖에 없음
+
+아무튼 잘 동작한다면 order 11을 보게 됨
+
+여기에는 에러가 없고 새로고침을 함
+
+시작하기 전에 백엔드에서 거대한 createOrder resolver에다가 error를 console.log 해봄
+
+혹시라도 error가 뜰 수도 있음
+
+백엔드에 한해서 error가 있는지 봄
+
+왜냐하면 나는 이것이 한번에 잘 될거라고 생각하지 않음
+
+이 resolver는 너무 복잡하고 많은 것들이 잘못될 여지가 있음
+
+아무튼 에러가 있을 수도 있으니까 console.log를 하는거고, Start Order를 해봄
+
+Spicy, Pickle을 add하고 confirm함
+
+alert가 뜨지 않았음
+
+그러면 error가 있다는 것임
+
+undefined에서 find를 할 수 없음
+
+문제가 무엇인지 봄
+
+undefined에서 속성 find를 찾을 수 없다고 했음
+
+dish.options는 array같은 거니까 괜찮음
+
+몇몇 dishOption들에 choices가 없어서 그런거였음
+
+이렇게 하면 고쳐질 것 같음
+
+이것은 dishOption.choices가 없다면 find를 call하지 않겠다는 뜻임
+
+DishOption.choices는 ?가 있음
+
+한번 더 해봄
+
+order를 테스트함
+
+order가 created 됐음
+
+Postico(DBeaver)로 가봄
+
+Pending, customerId는 나를 가리키고, restaurantId는 13임
+
+이것을 조금만 바꿔봄
+
+우리가 생성한 order의 ID를 알고 싶음
+
+여기 orders.dto에서 조금만 바꿔봄
+
+create-order를 바꿔야함
+
+CreateOrderOutput을 알아야함 
+
+여기 있음
+
+우리가 생성한 order의 ID가 무엇인지 알아야함
+
+그래야 user를 거기로 보내줄 수 있음
+
+@Field(type=>Int)가 일어나지 않을 수도 있으니 nullable: true로 함
+
+그리고 여기에는 orderId?:number함
+
+이렇게 해주는 것은 우리가 생성한 order가 무엇인지 알고 싶어서임
+
+이제 order를 생성하는 부분에 orderId: order.id라고 적어줌
+
+이제 프론트엔드에서 npm run apollo:codegen을 실행함
+
+왜냐하면 createOrderMutation의 결과가 orderId를 넘겨줌
+
+이제 useHistory()에서 history를 사용할건데, history.push()를 해서 아직 존재하지 않는 페이지 주소로 감
+
+history.push(`/orders/${orderId}`)함
+
+코드를 좀 더 예쁘게 해봄
+
+const { createOrder: {ok, orderId} } = data함
+
+그런데 mutation에서 orderId를 달라고 하지 않았음
+
+그러면 npm run apollo:codegen을 또 한 번 실행함
+
+그럼 여기 빨간 줄이 없어짐
+
+그리고 orderId를 가져올 수 있게 됨
+
+새로고침을 하고 한번 더 주문을 해봄
+
+이전에 만들었던 order는 나중에 삭제함
+
+confirm order를 하면 "주문하시겠습니까"가 나옴
+
+/orders/:orderId로 갔음
+
+createOrder는 끝났음
+
+이제 order page를 만들어야함
+
+먼저 database로부터 order를 불러오는 작업을 함
+
+order를 가져온 다음에, order subscription 작업을 함

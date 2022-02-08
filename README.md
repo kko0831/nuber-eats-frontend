@@ -17985,3 +17985,177 @@ createOrder는 끝났음
 먼저 database로부터 order를 불러오는 작업을 함
 
 order를 가져온 다음에, order subscription 작업을 함
+
+## 23.0 Order Component
+
+이제 order를 할 수 있으니, 주문을 위한 화면을 만들어봄
+
+이 화면은 여러 사람이 공유함
+
+사람마다 다른 내용을 보게 되겠지만 같은 화면을 씀
+
+그래서 이 화면은 user에 있어야 한다고 생각함
+
+이것은 owner의 것도 아니고, client의 것도 아니라 모두의 것이기 때문임
+
+그래서 모두가 볼 수 있어야함
+
+혹은 이 pages의 root에 만들 수도 있음
+
+order.tsx라 함
+
+그럼 order component를 빠르게 만들어봄
+
+이 order는 id가 있어야함
+
+interface도 만들어줌
+
+일단은 아무것도 return하지 않음
+
+이렇게 하면 typescript에서 동작하지 않음
+
+params.id를 쓰고 보이는지 확인해봄
+
+우리는 order component를 만들었음
+
+이제 이것을 router에 추가해줌
+
+routers안에 엄청 긴 logged-in-router로 가서, 여기 있는 commonRoutes에 추가해줌
+
+그럼 여기에 “/orders/:id”라고 함
+
+여기는 Order가 됨
+
+그럼 동작하는지 보면 됨
+
+order id 14가 나왔음
+
+이제 나는 getOrder query를 실행하고 싶음
+
+누구인가 여기에 올때 마다, 즉시 query를 실행해서 data를 받고 싶음
+
+주문 상태를 확인한 다음, 업데이트를 위해 계속 subscribe 해줌
+
+그럼 첫번째 파트로 query를 만들어봄
+
+query는 여기 있는 거랑 같음
+
+GetOrderInput 부분을 복사함
+
+ok와 원한다면 error를 받고 order도 받아봄
+
+order는 이 모든 것을 가지고 있으니까, 아마 fragment를 만들어줘야 할 것 같음
+
+order는 driver를 가질거고, 먼저 id를 받아옴
+
+status도 넣어주고 total도 해줌
+
+driver도 해줌
+
+customer도 그렇고 당장 driver가 필요할 것 같지는 않음
+
+내 생각에는 fragment를 만드는 이유가 driver나 customer가 알게 하기 위해서인 것 같음
+
+아마도 customer가 필요할 것 같음
+
+driver에서 driver의 email이 필요함
+
+fragment가 필요 없을 수도 있겠음
+
+customer도 해줌
+
+customer의 email, 그리고 restaurant도 필요함
+
+그리고 restaurant의 이름만 얻음
+
+이제 우리는 id, status, total, driver, driver의 email, customer, customer의 email, restaurant, restaurant의 name을 가짐
+
+여기서 중요한 것은 order의 status를 실시간으로 업데이트 하는 것임
+
+그것이 우리가 원하는 것임
+
+그럼 getOrder를 해줌
+
+그 전에 npm run apollo:codegen을 해줌
+
+type을 다시 생성해줬음
+
+우선 typescript를 추가해줘야함
+
+깜빡 잊은 것이 있는데 client 폴더의 restaurant에서 createOrderMutation을 할 때, 한번에 2개의 주문이 만들어질 수 없게 하려고 함
+
+placingOrder 이렇게 해야함
+
+mutation이 loading하는동안 2개의 order를 보내지 않음
+
+아니면 이것을 여기에 둘 수도 있음
+
+보안 때문에 해주는 것임
+
+보안 뿐만 아니라 엄청 많이 클릭하는 것도 방지해줌
+
+그럼 여기에 input id가 필요하고, id는 params.id임
+
+string이 아니라서 에러가 날테니까 +를 해줌
+
+그럼 요청한대로 잘 되는지 data를 console.log 해봄
+
+console을 보면 Object, getOrder, order, customer가 있음
+
+driver는 없고 restaurant이 있음
+
+Real One restaurant이고 status는 pending이고 total은 39임
+
+잘 동작함
+
+order를 얻었고 이것이 첫번째 단계임
+
+order를 얻었고, 이 정보를 뿌려줌
+
+정말 쉬움
+
+마치 티켓처럼 restaurant이랑, driver의 name이랑, user name이랑 금액을 보여줌
+
+tailwind를 사용해서 티켓을 빠르게 만들어 주고, 이 order를 실시간으로 업데이트 해주기 위해 subscription으로 넘어감
+
+subscription을 하기 위해서 Apollo client에서 약간 수정해줘야 할 부분이 있음
+
+우리의 Apollo client에서는 아직 web socket을 지원하지 않음
+
+web socket 지원을 해줘야함
+
+그리고 order를 이런 식으로 처리해줘야함
+
+우선 user의 subscription을 먼저 만들건데, user는 이런 data를 order에서 볼 수 있음
+
+그리고 여기 backend에서 마치 내가 식당인 것처럼 주문을 받음
+
+그럼 frontend에서 업데이트가 되는지 봄
+
+subscription 테스트를 해볼건데, 식당에서 주문을 받으면 user는 order의 status가 업데이트 되는 것을 볼 수 있어야함
+
+이것이 step 1임
+
+user가 주문의 업데이트를 보고 있다는 것을 확인한 다음에 여기 있는 owner에서 restaurant의 관점으로 이동함
+
+주문이 있다면 실시간으로 정보를 얻을 수 있도록 subscription을 해줌
+
+이것이 step 2임
+
+owner로 가서 subscription을 만들고 실시간으로 주문을 받음
+
+우리가 식당이면 주문을 수락함
+
+그리고 마지막에는 driver 부분을 만듦
+
+driver가 주문을 수락하고, 우리에게 위치를 보여주게 됨
+
+그래서 우선 내가 말했듯이 유저의 관점으로 subscription을 봄
+
+그 다음에 식당의 관점에서 subscription을 하고, 마지막으로 driver의 관점에서 subscription을 하고 Google Maps로 위치를 알려줌
+
+다음 영상에서 봄
+
+다음 영상에서는 order의 데이터가 여기 화면에 뿌려져 있음
+
+그리고 우리는 web socket을 사용해야 하니까 Apollo client를 migrate하거나 수정할 준비를 함

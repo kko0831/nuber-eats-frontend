@@ -17,7 +17,7 @@ typescript code를 쓸 수 있게 설치됨
 TS configure 등을 다 포함함
 
 설치가 끝난 다음에 nuber-eats-frontend로 들어가고, 터미널에 git remote add origin https://github.com/kko0831/nuber-eats-frontend.git 입력
- 
+
 git repository가 잘 만들어짐
 
 예를 들어 tsconfig 파일이 있음
@@ -172,7 +172,7 @@ class 이름들로 가득 찬 파일임
 
 자신만의 색깔을 추가할 수 있음
 
-primary라는 이름의 color를 추가하고, 50부터 900까지 범위의 변형을 만들 수 있음 
+primary라는 이름의 color를 추가하고, 50부터 900까지 범위의 변형을 만들 수 있음
 
 Tailwind가 bg-primary를 쓸 수 있게 해줌
 
@@ -232,7 +232,7 @@ Tailwind를 확장하기 위해서 만듦
 
 Tailwind를 tailwind.config.js로 확장함
 
-Tailwind CSS intelliSense 익스텐션은 tailwind.config.js 파일을 자동으로 찾음 
+Tailwind CSS intelliSense 익스텐션은 tailwind.config.js 파일을 자동으로 찾음
 
 Tailwind를 커스터마이즈하기 위해 Tailwind config 파일이 필요하고, tailwind를 일반 CSS 파일로 빌드하기 위해 postcss config 파일이 필요함
 
@@ -1966,7 +1966,7 @@ source가 include에 들어가야함
 
 glob patterns라고 함
 
-glob은 *을 의미함
+glob은 \*을 의미함
 
 그럼 src 내부에서 모든 폴더와 확장자를 가진 모든 파일을 포함함
 
@@ -2040,7 +2040,7 @@ PotatoMutationVariables 부분은 backend에 있는 부분이 아님
 
 그 다음에 Apollo codegen은 login을 봄
 
-그리고 결과로 어떤 것들을 얻는지 살펴봄 
+그리고 결과로 어떤 것들을 얻는지 살펴봄
 
 그럼 무슨 일이 일어날까
 
@@ -2140,9 +2140,9 @@ PotatoMutation이라고 쓰면 이제 안전하게 보호됨
 
 src 안에 들어갔어야했음
 
-src/__api__로 해줌
+src/**api**로 해줌
 
-아니면 기존처럼 __generated__이 더 나음
+아니면 기존처럼 **generated**이 더 나음
 
 npm run apollo:codegen을 실행해봄
 
@@ -2374,7 +2374,7 @@ test를 해보기 전에 무엇을 할거냐면 codegen을 마무리하려고 �
 
 그래서 apollo codegen을 실행할 때마다 generated 폴더를 지워주려고 함
 
-Mac이나 Linux같은 경우는 rm -rf src/__generated__ 해주면 됨
+Mac이나 Linux같은 경우는 rm -rf src/**generated** 해주면 됨
 
 그런데 Windows 같은 경우에는 명령어가 다름
 
@@ -2647,7 +2647,7 @@ h4를 하고 Welcome back이라고 씀
 
 items-center가 있어서 text-left가 안 됨
 
-width full이 됨 
+width full이 됨
 
 padding에 대해서 해봄
 
@@ -3779,7 +3779,7 @@ tracking white 할 수 있음
 
 글자들에 공간이 더 많아짐
 
-Tailwind에는 tracking-wide, wider, widest 설정도 있음 
+Tailwind에는 tracking-wide, wider, widest 설정도 있음
 
 widest하면 어떻게 되지
 
@@ -3953,7 +3953,7 @@ potatoLink라고 이름 지어도 됨
 
 그냥 context를 설정하는 것임
 
-## 15.16 Routers and 404s 
+## 15.16 Routers and 404s
 
 이제 user의 역할을 앎
 
@@ -4029,7 +4029,7 @@ path가 됨
 
 create account를 눌러보면 create account로 들어가짐
 
-그런데 log in 눌러보면  /login으로 됨
+그런데 log in 눌러보면 /login으로 됨
 
 home이 login 페이지니까 이렇게 되면 안 됨
 
@@ -4943,7 +4943,7 @@ router에서 가져온 것임
 
 location을 console log해서 무엇을 get하는지 봄
 
-보다시피 get하는게 다름 
+보다시피 get하는게 다름
 
 지금은 pathname을 get하고 있음
 
@@ -6081,7 +6081,7 @@ Header 같은 부분을 만들어봄
 
 완벽한 검은색은 절대 사용하지 않고 800이나 700을 사용함
 
-800으로 함 
+800으로 함
 
 그리고 full width라고 함
 
@@ -6123,7 +6123,7 @@ rounded-md라 해서 조금 둥글게 만들어 줄 수 있음
 
 그리고 border는 0으로 함
 
-이제 border는 전혀 없음 
+이제 border는 전혀 없음
 
 괜찮은 것 같음
 
@@ -6347,7 +6347,7 @@ Optional chaining이라고 하는데, Typescript가 확인한다는 것을 의�
 
 에러가 생기지 않도록 만들어줌
 
-Optional chaining이 있으면 Typescript가 체크해서 에러가 없음 
+Optional chaining이 있으면 Typescript가 체크해서 에러가 없음
 
 data도 마찬가지임
 
@@ -6383,7 +6383,7 @@ Typescript는 이것을 알고 도와줌
 
 어떻게 보일까
 
-그리고 이제 div가 필요함 
+그리고 이제 div가 필요함
 
 h1으로 함
 
@@ -6455,7 +6455,7 @@ jpeg가 생겼음
 
 그리고 margin-bottom을 추가함
 
-이미지에 공간이 있음 
+이미지에 공간이 있음
 
 title을 크게 만들어봄
 
@@ -6467,7 +6467,7 @@ text를 좀 더 진하게 해봄
 
 거의 다 한 것 같음
 
-이제 줄을 만듦 
+이제 줄을 만듦
 
 그리고 카테고리를 만듦
 
@@ -6485,7 +6485,7 @@ restaurant.category가 없어서 그런 것 같음
 
 흥미로운 것을 발견했음
 
-category가 null임 
+category가 null임
 
 백엔드를 고쳐야겠음
 
@@ -6543,7 +6543,7 @@ border-top을 1로 할 수도 있고, padding-top을 3으로 할 수도 있음
 
 0.05부터 100까지 할 수 있음
 
-그러면 50으로 해봄 
+그러면 50으로 해봄
 
 margin-top이 너무 큰 것 같음
 
@@ -6767,7 +6767,7 @@ setPage에서 현재 페이지를 -1한 값을 Return하도록 같은 것을 만
 
 그러면 이제 어떻게 생겼는지 봄
 
-이제 우리는 CSS를 고쳐야 할 것 같음 
+이제 우리는 CSS를 고쳐야 할 것 같음
 
 전부 center로 가게 만듦
 
@@ -7105,7 +7105,7 @@ Helmet은 helmet-async로부터 import 해야함
 
 이것이 중요한 이유는, replace와 push가 어떻게 다른지 보여주고 싶기 때문임
 
-지금 Home에 있는데 완벽함 
+지금 Home에 있는데 완벽함
 
 다시 "korean"으로 감
 
@@ -7145,7 +7145,7 @@ term으로 korean이 있음
 
 보다시피 home에서 korean을 검색한 것도 나와있음
 
-내용이 저장되어있음 
+내용이 저장되어있음
 
 이제 home으로 가봄
 
@@ -7165,7 +7165,7 @@ home, edit profile, home, 그리고 search가 있음
 
 내가 만약 이것을 누르면 어디로 가질까
 
-search로 갈까 
+search로 갈까
 
 어디로 갈까
 
@@ -7321,7 +7321,7 @@ Lazy Query는 QueryTuple을 Return함
 
 useQuery처럼 Object를 return 하지 않음
 
-Tuple을 return함 
+Tuple을 return함
 
 이것은 Array가 됨
 
@@ -7936,7 +7936,7 @@ TailwindCSS로 이 header를 만듦
 
 이제 이 모든 것이 어떻게 돌아가는지 알거라고 확신함
 
-이것이 header가 될것이고,  header는 배경 사진이 있음
+이것이 header가 될것이고, header는 배경 사진이 있음
 
 그래서 아마 컨테이너에 배경 사진을 바로 지정할 수 있음
 
@@ -8212,10 +8212,10 @@ app.spec.tsx라 함
 
 그리고 이런 방법도 있음
 
-이렇게 __tests__ 폴더를 만듦
+이렇게 **tests** 폴더를 만듦
 
 이 폴더는 너가 원하는만큼 만들면 됨
- 
+
 하나는 여기에 두고 pages, routers에 만들어도 됨
 
 여기에 두는 모든 파일들은 테스트가 됨
@@ -8224,9 +8224,9 @@ app.spec.tsx라 함
 
 그냥 app.tsx라 해도 테스트가 될 것임
 
-docs에서 __test를 검색해보면 설명을 볼 수 있음
+docs에서 \_\_test를 검색해보면 설명을 볼 수 있음
 
-__tests__에 js 파일을 만들거나 test.js 또는 spec.js 파일이면 됨
+**tests**에 js 파일을 만들거나 test.js 또는 spec.js 파일이면 됨
 
 물론 js를 ts로 바꿀 수도 있음
 
@@ -8234,7 +8234,7 @@ __tests__에 js 파일을 만들거나 test.js 또는 spec.js 파일이면 됨
 
 어떤 사람들은 각 component마다 폴더를 만들어서 app.tsx, app.spec.tsx 파일을 만듦
 
-그런데 나는 __tests__ 폴더를 만들어서 테스팅을 함
+그런데 나는 **tests** 폴더를 만들어서 테스팅을 함
 
 원하는 방식대로 하면 됨
 
@@ -8248,7 +8248,7 @@ __tests__에 js 파일을 만들거나 test.js 또는 spec.js 파일이면 됨
 
 기억날지 모르겠는데, 백엔드에서는 무엇인가 describe를 하고 테스트를 만들었음
 
-우선, component를 가지고 작업할거니까 React를 "react"에서 import함 
+우선, component를 가지고 작업할거니까 React를 "react"에서 import함
 
 그리고 원하는 아무거나 describe를 하면 됨
 
@@ -8462,7 +8462,7 @@ act는 유저가 한 행동이라고 생각하면 됨
 
 보다시피 잘 통과하고 있음
 
-state를 바꾸고 있는데 waitFor()에서 무엇을 하고 있는것일까 
+state를 바꾸고 있는데 waitFor()에서 무엇을 하고 있는것일까
 
 말그대로 state가 refresh하고 쓸 수 있도록 기다려줌
 
@@ -8500,7 +8500,7 @@ getByText가 찾으려고 하는 것을 못찾으면 테스트에 통과하지 �
 
 이제 button이 어떻게 작동해야하는지 봄
 
-button에는 canClick이라는 condition이 있고, loading도 있음 
+button에는 canClick이라는 condition이 있고, loading도 있음
 
 이것이 중요함
 
@@ -8620,7 +8620,7 @@ loading이 false니까 getByText("test")가 작동함
 
 다시 한 번 testing-library/react가 대단하다는 것을 알 수 있음
 
-implementation은 이런 것임 
+implementation은 이런 것임
 
 이런 것을 삼항 조건 연산자(ternary operator)라고 하는데, loading이라 하고 물음표 ,"Loading..." 이런 것이 implementation임
 
@@ -8646,7 +8646,7 @@ implementation은 이런 것임
 
 coverage를 보면 cover되지 못한 라인을 보게 됨
 
-그런데 안타깝게도 그 라인은 implementation 라인이니까 cover되지 않음 
+그런데 안타깝게도 그 라인은 implementation 라인이니까 cover되지 않음
 
 대부분은 100%의 라인이 cover됨
 
@@ -8980,7 +8980,7 @@ import를 먼저 함
 
 type도 모두 같아야함
 
-me : {  }하고 안에 붙여넣기함
+me : { }하고 안에 붙여넣기함
 
 그리고 value를 작성함
 
@@ -9050,7 +9050,7 @@ Please verify your email이라는 문구가 없음
 
 renders without verify banner는 유저가 verified라는 것임
 
-그런데 renders verify banner는 유저가 verified가 아니라는 것임 
+그런데 renders verify banner는 유저가 verified가 아니라는 것임
 
 그래서 이 경우에는 banner를 만들어냄
 
@@ -9398,7 +9398,7 @@ i는 insensitive(대소문자 구분 안함)라는 뜻임
 
 이것이 좋은 이유는 우리가 implementation call인 change event를 직접 할 필요가 없음
 
-우리가 원하는 것은 그저 type임 
+우리가 원하는 것은 그저 type임
 
 유저가 type을 하면 정말 많은 event를 trigger함
 
@@ -10426,7 +10426,7 @@ query를 mock하는 방법이 여기 있음
 
 여기서 처음으로 query를 mock 해봤음
 
-알다시피 await를 해야함 
+알다시피 await를 해야함
 
 이제 query를 mock하는 방법을 완벽히 앎
 
@@ -10498,7 +10498,7 @@ Cypress 한 개가 설치됐고 Cypress를 실행해야함
 
 -> Failed to deserialize the V8 snapshot blob. This can mean that the snapshot blob file is corrupted or missing 에러가 발생했는데 터미널에 npx cypress install --force 입력하여 해결함
 
--> cypress verification timed out 에러가 발생했는데 터미널에 npx cypress verify 입력하여 해결함  
+-> cypress verification timed out 에러가 발생했는데 터미널에 npx cypress verify 입력하여 해결함
 
 그리고 이제 내가 보게 되는 것은, 컴퓨터에 software를 여는 것임
 
@@ -10516,7 +10516,7 @@ Cypress 한 개가 설치됐고 Cypress를 실행해야함
 
 우리는 cypress.json이라는 파일을 가지고 있음
 
-이것은 비어있음 
+이것은 비어있음
 
 그리고 우리는 여기 cypress 폴더도 가지고 있음
 
@@ -10826,7 +10826,7 @@ element를 가져오는 방식이 Tailwind class name처럼 CSS class name을 �
 
 그래서 form을 채울 수 있다는 의미임
 
-여기서 우리는 할 일을 만들어둠 
+여기서 우리는 할 일을 만들어둠
 
 log in은 나중에 하고, 이제 여기서 우리는 'email이랑 password validation(검증) 에러를 할 수 있다'라고 함
 
@@ -10868,7 +10868,7 @@ log in은 나중에 하고, 이제 여기서 우리는 'email이랑 password val
 
 원하면 --save-dev 해도 됨
 
-터미널에 npm install @testing-library/cypress@7.0.2 --save-dev 입력  
+터미널에 npm install @testing-library/cypress@7.0.2 --save-dev 입력
 
 그리고 이것이 우리한테 해줄 수 있는 것은 react testing Library에서 우리가 사용했던 것으로 element를 가지게 하는 것임
 
@@ -10948,7 +10948,7 @@ react components를 테스트할 때 우리는 전에 썼던 방식과 똑같이
 
 이제 이것을 실행시켜봄
 
-다시 시작해봄 
+다시 시작해봄
 
 "1 integration spec"을 다시 클릭해줌
 
@@ -10976,7 +10976,7 @@ log in 페이지로 가야함
 
 그래서 우리는 여기에 cy 해주고, 우리는 또 find를 cy 해줌
 
-기본적으로 이렇게 해야함 
+기본적으로 이렇게 해야함
 
 이것이 보여야할 거고, 연결시킬 수 없음
 
@@ -11362,7 +11362,7 @@ password까지 완벽하고, 이제 button을 찾아봄
 
 그리고 click() 해줌
 
-이제 무슨 일이 일어나는지 봄 
+이제 무슨 일이 일어나는지 봄
 
 그리고 나서 우리는 계정을 만듦
 
@@ -12560,7 +12560,7 @@ myRestaurant는 인자로 owner를 받고, 이 owner를 가진 모든 음식점�
 
 use me라는 hook이 있음
 
-아무튼 그것도 하나의 방법임 
+아무튼 그것도 하나의 방법임
 
 이 relationship을 eager로 만들 수 있지만, database 입장에서 별로임
 
@@ -12782,7 +12782,7 @@ baked class 중 input으로 마무리함
 
 버튼을 하나 만듦
 
-className을 btn으로 줌 
+className을 btn으로 줌
 
 그런데 사실 이것은 필요가 없음
 
@@ -13036,7 +13036,7 @@ Create Restaurant를 눌러봄
 
 다 준비됐음
 
-일단 이 음식점은 삭제함 
+일단 이 음식점은 삭제함
 
 왜냐하면 redirect해서 사용자에게 더 좋은 것을 보여주고 싶음
 
@@ -13516,7 +13516,7 @@ imageUrl, setImageUrl이라고 함
 
 이것은 Javascript 관련 내용임
 
-하지만 __typename은 그대로 있어야하고 구조도 동일해야함
+하지만 \_\_typename은 그대로 있어야하고 구조도 동일해야함
 
 string을 저장하는 새로운 state를 만들었음
 
@@ -14113,7 +14113,7 @@ form에 있는 모든 것은 문자열이 됨
 이것은 router에 있음
 
 그런데 없음
- 
+
 실수를 했음
 
 restaurantId가 아니라 id라고 해야함
@@ -14706,7 +14706,7 @@ Create Dish를 눌러봄
 
 그리고 이 디자인도 마음에 듬
 
-보이듯이 여기에 한 가지가 남아있음 
+보이듯이 여기에 한 가지가 남아있음
 
 바로 choices임
 
@@ -15019,7 +15019,7 @@ x축, y축, 수치들이 추가됨
 VictoryAxis라고 하고, documentation을 보면 VictoryAxis는 prop을 몇개 지님
 
 참고로 Victor는 최고의 documentation을 갖고 있음
- 
+
 animate도 지님
 
 이거 한번 해봄
@@ -15648,7 +15648,7 @@ Victory는 진짜 멋짐
 
 이제 promotion을 할 거고, 그 다음에는 driver 부분으로 넘어감
 
-driver는 엄청 간단함 
+driver는 엄청 간단함
 
 실시간으로 자신의 위치를 우리의 api로 보내도록 하면 됨
 
@@ -16040,7 +16040,7 @@ checkout link가 다소 번거롭긴 함
 
 user가 다른 페이지로 이동해서 구매해야함
 
-하지만 걱정마 
+하지만 걱정마
 
 paddle은 overlay가 있음
 
@@ -16294,7 +16294,7 @@ Buy Promotion을 클릭하면 payment 페이지로 이동하게 함
 
 react-toastify package를 설치함
 
-successFunction과 createOrder를 props로 하는 PayPal 컴포넌트를 만듦  
+successFunction과 createOrder를 props로 하는 PayPal 컴포넌트를 만듦
 
 ## Buy Promotion하는 절차
 
@@ -16304,7 +16304,7 @@ developer.paypal.com에서 세팅함
 
 MyRestaurants 화면에서 restaurant 하나를 선택함
 
-PayPal 화면과 직불카드 또는 신용카드 버튼이 나옴 
+PayPal 화면과 직불카드 또는 신용카드 버튼이 나옴
 
 PayPal 버튼을 클릭함
 
@@ -16314,7 +16314,7 @@ Personal 계정으로 로그인함 (예) sb-je09c9203663@personal.example.com
 
 패스워드도 입력하면 결제수단 창이 나옴
 
-바로 결제 버튼을 누름 
+바로 결제 버튼을 누름
 
 sandbox.paypal.com에서 personal 계정과 business 계정으로 로그인을 함
 
@@ -17934,7 +17934,7 @@ Pending, customerId는 나를 가리키고, restaurantId는 13임
 
 create-order를 바꿔야함
 
-CreateOrderOutput을 알아야함 
+CreateOrderOutput을 알아야함
 
 여기 있음
 
@@ -18159,3 +18159,273 @@ driver가 주문을 수락하고, 우리에게 위치를 보여주게 됨
 다음 영상에서는 order의 데이터가 여기 화면에 뿌려져 있음
 
 그리고 우리는 web socket을 사용해야 하니까 Apollo client를 migrate하거나 수정할 준비를 함
+
+## 23.1 Subscription Setup
+
+우리는 이 코스의 subscription 파트에 도달했음
+
+가장 재미있는 파트고 이것은 react application에 real time이 가능하게 해줌
+
+또한 Apollo덕에 subscription을 하는 것은 정말 놀랍게도 쉬움
+
+어려운 부분이 있다면, 이제 해줘야 할 transport 셋업임
+
+몇몇 라이브러리를 import하고 설치도 해야함
+
+그럼 subscriptions-transport-ws를 설치해봄
+
+backend가 아니라 frontend에 설치함
+
+그럼 여기에 npm i subscriptions-transport-ws@0.9.18를 해줌
+
+그리고 이것을 보여줌
+
+order를 이렇게 만들어봤음
+
+order id가 있고, 주문의 총 금액이랑 restaurant, Deliver To는 나고, driver가 있음
+
+driver가 나타나면 여기서 driver를 볼 수 있음
+
+이런 식으로 진행됨
+
+helmet을 추가하는 것을 깜빡했음
+
+이것을 하고 시작해봄
+
+아까 말했듯이 여기 description을 해주고 나서, backend에 가짜 user를 만들어봄
+
+이 가짜 user는 여기 pending인 주문을 수락함
+
+pending인 order를 여기 있는 GraphQL로 업데이트한 다음 response를 확인해봄
+
+그럼 여기에 Order detail이라 함
+
+Order #으로 할까
+
+설치가 끝났음
+
+그럼 여기 있는 apollo로 가봄
+
+설명을 보면서 어떻게 사용하는지 알아봄
+
+우선 WebSocketLink를 만들어야함
+
+그럼 여기에 만들어줌
+
+다 됐고 다음으로 link를 만들어야함
+
+httpLink 옆에 둠
+
+이것은 websocket localhost이고, 똑같이 4000/grapql로 만들어줌
+
+“서로 다른 작업에서는 별개의 transport를 사용하세요.”
+
+우리는 splitLink라는 함수를 만들어야함
+
+splitLink에는 function 하나가 필요한데, 이 function이 true를 return하면 wsLink를 얻게 되고, false를 return하면 httpLink를 받음
+
+다시 말하면 splitLink는 split이라는 함수를 사용하는데, split 함수는 3개의 인자를 가짐
+
+하나는 함수이고, 나머지는 어떤 값들임
+
+그래서 함수가 true를 return하게 되면, 우리는 wsLink를 사용하는거고 만약 함수가 false를 return하면, 우리는 httpLink를 사용함
+
+이 함수는 OperationDefinition을 얻은 다음에 definition.operation이 'subscription'이면 true를 return함
+
+우리는 mutation, query, subscription 같이 각각 다른 operation definition을 가지고 있음
+
+이렇게 동작하고 나중에 이것이 우리를 편하게 해줌
+
+그럼 여기로 와서 splitLink를 사용함
+
+httpLink 대신 예전에 만들어뒀던 authLink를 사용함
+
+이렇게 해주고 @apollo/client로부터 split을 import 해줌
+
+그런 다음 getMainDefinition도 @apollo/client/utilities로부터 import 해줌
+
+이제 link를 사용해야함
+
+link를 위해서 이 부분을 여기에 넣어줌
+
+여기에 넣어주고 splitLink는 link를 return 해줌
+
+매우 간단함
+
+여기 있는 함수는 true나 false를 return 해줌
+
+만약 true를 return한다면, 우리는 wsLink를 사용하게 될거고 만약 false를 return하게 된다면, authLink를 사용하게 됨
+
+이제 어떤 것도 실패하면 안 됨
+
+새로고침 해보면 보다시피 아무 문제 없이 모든 것이 똑같이 유지되고 있음
+
+우리는 아직 authLink를 사용하고 있고, 인증도 받았기 때문에 모든 것이 예전이랑 똑같이 동작하고 있음
+
+모든 것이 예전이랑 똑같이 동작하고 있음
+
+잘 동작함
+
+망가진 부분이 전혀 없음
+
+이제 wsLink에 설정을 해야하는데, wsLink는 우리가 인증을 할 수 있게 해줌
+
+이것은 connectionParams로 구현함
+
+그럼 wsLink로 가서 connectionParams를 해줌
+
+backend에 가보면 여기 connection.context가 있고, TOKEN_KEY는 이거였음
+
+그럼 이것을 가져와서 여기에 넣어줌
+
+그리고 authTokenVar가 필요함
+
+이렇게 우리는 websocket link를 만들어줬음
+
+이제 connection parameter에 token인 authTokenVar가 있음
+
+우리가 query를 사용해 연결할 때는 request header를 갖고, subscription을 이용해 연결할 때는 connection context를 갖는다는 것을 기억해야함
+
+여기 context가 있나
+
+그럼 subscription을 어떻게 사용하냐면 매우 간단함
+
+이 부분은 끝났음
+
+다 했고 subscription을 어떻게 실행하냐면 매우 간단함
+
+subscription type에 다른 부분은 동일함
+
+그리고 useSubscription이 있음
+
+어려운 부분은 이 부분인데 우리는 다 했음
+
+그럼 order로 가서 우선 useSubscription hook을 사용함
+
+나중에 subscription을 사용하는 다른 방법을 보여줌
+
+우선 hook을 사용한 다음 subscription이 잘 동작하는지 테스트를 해봄
+
+그리고 우리가 선택할 방법을 다른 방법으로 어떻게 하는지 보여줌
+
+왜인지 곧 알게 됨
+
+subscription을 만들어줌
+
+전부 가깝게 여기에다 해줌
+
+이 버튼은 뭐지
+
+query의 이름으로 subscription을 씀
+
+playground로 가봄
+
+여기에 subscription이 있음
+
+orderUpdates는 input을 가지고 있고 order를 return 해줌
+
+그럼 orderUpdates는 input을 가짐
+
+orderUpdates는 변수를 가짐
+
+그리고 이것은 order를 받음
+
+내 생각에는 order fragment를 만들어주는 것이 더 좋을 것 같음
+
+order fragment를 만들기 좋은 시점임
+
+그럼 fragments로 가서 우리는 이미 order의 일부를 가지고 있음
+
+테스트 해봄
+
+여기도 똑같이 해줌
+
+우리는 order를 바로 받을 수 있음
+
+아직 동작하지 않으니 fragment를 추가해줌
+
+FULL_ORDER_FRAGMENT가 맞음
+
+이것이 subscription을 만드는 방법임
+
+매우 간단함
+
+잘 되는지 확인해봄
+
+터미널에 npm run apollo:codegen을 입력하면 subscription의 type을 제공해줌
+
+이제 여기에 useSubscription을 씀
+
+subscription이 우리에게 주는 것을 확인해보면 기본적으로 data를 줌
+
+보통 query처럼 data를 줌
+
+이름이 중복됨
+
+subscriptionData로 이름을 바꿔줌
+
+type은 orderUpdates랑 orderUpdatesVariables임
+
+그리고 여기 ORDER_SUBSCRIPTION을 해줌
+
+그리고 이것은 variables, input을 가지고, id는 query랑 똑같음
+
+여기 보면 우리의 관점에서 약간 흥미로운 것이 있는데, 우리는 query를 하고 나서 subscribe를 해줬음
+
+만약 내가 useSubscription없이 query의 결과를 subscription 할 수 있다고 하면 어떨까
+
+무슨 말인지 나중에 알게 됨
+
+지금은 test를 해봄
+
+subscriptionData를 console.log 해봄
+
+server를 보면 에러는 없고 여기로 돌아와서 새로고침을 하면 에러가 없어 보이고, console을 보면 undefined라 되어있음
+
+subscriptionData에서 아무 일도 일어나지 않았기 때문임
+
+하지만 에러가 없으니 우리의 GraphQL에 잘 연결이 되었다는거니까 좋은 소식임
+
+개발자 도구의 network에서 ws를 보면 잘 동작함
+
+그럼 실제로 update를 발생시켜봄
+
+그리고나서 이 부분에 나타나는 것을 봄
+
+물론 여기에는 undefined가 있음
+
+다음 영상에서 보기 전에 우리는 client를 셋업 해줬고, subscription을 사용했음
+
+여기 보면 error가 없음
+
+link쪽만 조심해주면 됨
+
+복사 붙여넣기만 잘 해주고, authLink에 httpLink만 잘 기억해 준다면 전부 괜찮음
+
+나머지는 복사 붙여넣기고 connectionParams가 있는 것도 잊지마
+
+궁금하니까 connection?.context[TOKEN_KEY]를 출력해봄
+
+작동하는지 봐봄
+
+error가 발생하기 전에 정말 인증을 하고 있는지 확인해봄
+
+여기를 보면 새로고침 해줌
+
+order를 받았음
+
+여기서 connection을 찾아 위로 올라가보면 있음
+
+잘 동작하고 connecting도 잘 동작함
+
+인증을 잘하고 있다는 거고 모든 것이 완벽함
+
+망가진 부분은 전혀 없으니 다음 강의에서 봄
+
+playground를 이용해서 user를 만들어봄
+
+그리고 restaurant으로 가서 restaurant의 owner를 바꿔줌
+
+왜냐하면 지금 이 restaurant의 order가 내 데이터베이스에 한명뿐인 user로 되어있음
+
+그래서 가짜 owner를 만들어줄거고 이 부분을 바꿔준 다음, query를 실행해주고 주문을 수락함

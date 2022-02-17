@@ -18429,3 +18429,219 @@ playground를 이용해서 user를 만들어봄
 왜냐하면 지금 이 restaurant의 order가 내 데이터베이스에 한명뿐인 user로 되어있음
 
 그래서 가짜 owner를 만들어줄거고 이 부분을 바꿔준 다음, query를 실행해주고 주문을 수락함
+
+## 23.2 subscribeToMore
+
+이제 진실의 시간임
+
+나는 fake owner 계정을 하나 만들었고, 이 계정으로 로그인을 했음(email: fake@owner.com, password: 121212, role: Owner)
+
+이제 주문번호가 14번인 주문을 수정함(백엔드의 restClient에서 editOrder를 mutation함)
+
+그러면 status는 Cooking이 돼야함
+
+그리고 나는 restaurant도 수정해줬는데, restaurant의 owner를 fake owner로 해줬음
+
+제대로 했으면 다 잘 동작이 되고, 여기 order status가 console에 보임
+
+여기 보임
+
+왜 3번이나 출력됐는지는 모르겠음
+
+이것은 있다가 고치고, 뭐 어찌되었든 동작함
+
+아마 내가 계속 저장해서 3번 나오는거 같은데 모르겠음
+
+이렇게 서버를 종료하면 보다시피 아무것도 연결되지 않았음
+
+새로고침 해보면 아마 다 망가져 있을 것임
+
+서버가 없어서 그럼
+
+이제 서버를 재시작 해주고, 다시 한번 해봄
+
+orders를 새로고침 하고, 여기 보이는 것처럼 cooking이 아니라 pending으로 다시 해봄
+
+이제 order 14번은 Pending상태고, 서버를 재시작 해주고 subscription에서 어떤 일이 발생하는지 봄
+
+같은 것을 한번 더 반복함
+
+아마 내 생각에는 3개의 클라이언트가 연결돼서 그런거 같음
+
+아마 우리가 create-react-app을 저장할 때, 페이지를 새로 고치지 않고 코드를 고쳤기 때문에 클라이언트가 늘어난 것 같음
+
+어쨌든 동작함
+
+왜냐하면 이것은 실시간 처리를 다루고 있어서 정말 복잡해야 하는데 hooks 덕분에 진짜 간단함
+
+그리고 이것은 100% typescript 덕분에 완벽하게 작동할 수 있었음
+
+다음 단계는 여기 있는 거지 같은 것을 보여주는 것임
+
+이것이 왜 거지 같냐면, 여기 보면 이것들이 다르기 때문임
+
+useQuery로부터 온 data랑 subscriptionData의 data가 다름
+
+이것이 order니까 우리들 생각에는 저것이 같다고 생각함
+
+하지면 여기 보면 우리는 front-end를 수정해준 적이 없음
+
+왜냐하면 status: Cooking은 data?getOrder.order?.status에서 옴
+
+그러면 우리는 state를 만들어 주는게 좋다고 생각함
+
+여기에 state를 만들고, 데이터를 얻으면 state에다가 그것을 넣어주는 것임
+
+그리고 subscription으로부터 data를 얻으면, 그것도 state에 넣어주는 것임
+
+좋은 생각임
+
+하지만 이미 apollo쪽에서는 이런 고민을 했었음
+
+그래서 우리는 subscribeToMore를 사용함
+
+이것은 매우 흔한 패턴이기 때문임
+
+query를 한 다음에 subscribe를 더 하고 싶은 그런 상황은 매우 흔함
+
+예를 들면 채팅방에 들어갔음
+
+메시지를 얻고 나서 계속해서 다음 메시지를 계속해서 더 받음
+
+이것과 같음
+
+이렇게 더 많은 subscribe를 하는 경우가 생김
+
+subscribeToMore를 사용하면 엄청 멋진 것이 있는데, 이런 것을 할 수 있음
+
+subscribeToMore를 사용하는데 subscription이랑 variables를 넣어주고, 바로 직전에 했던 query를 update 할 수 있는 함수 하나를 제공해줌
+
+그래서 useQuery와 useSubscription을 각각 나눠 사용하는 대신에 query로부터 data를 가져오면 더 많은 업데이트에 subscribe를 함
+
+이것은 함수가 될거고, 여기에 subscribeToMore를 해줌
+
+subscribeToMore는 useEffect 내부에서 호출됨
+
+우리는 이곳에 data를 넣어줌
+
+만약 data?.getOrder.ok인 경우, subscribeToMore 함수를 불러줌
+
+subscribeToMore는 몇가지 옵션이 있는데, 그중 하나는 document인데 이것은 subscription을 넣으면 됨
+
+다른 하나는 그 subscription의 variables임
+
+여기 이미 있으니까 복사해줌
+
+세번째는 updateQuery라는 함수임
+
+updateQuery는 이전의 query 결과와 새로운 subscription data가 필요한 함수임
+
+그럼 여기에 이전 query result를 넣고, 여기 안에는 새로운 subscription data가 있어야함
+
+subscriptionData는 자동완성을 이용함
+
+그럼 이제 여기 있는 subscription hook은 더 이상 필요 없으니 지워줌
+
+subscriptionData 내부에는 실제 타입은 아니지만 data: getOrder가 있다고 생각함
+
+그럼 subscriptionData 내부에 data가 있음
+
+subscriptionData 밖에서 subscriptionData는 안에 data가 있고, 이것은 orderUpdates type이 됨
+
+이것은 내가 typescript에게 제공한 type임
+
+type을 혼란스러워한 이유는 일반적으로 query를 만들고 subscribeToMore를 하면 query의 결과가 subscription의 결과와 같아서 그럼
+
+주문을 얻으면 order를 이런 식으로 받음
+
+apollo가 보통 이런 식으로 받음
+
+그래서 apollo랑 data type이 같았음
+
+하지만 우리는 ok랑 error가 있으니까 그렇지 않음
+
+여기서 그것을 수정해봄
+
+이것이 바로 object argument에 type을 만들어 주는 방법임
+
+우리 subscriptionData는 data: orderUpdates를 가지고 있다고 할 수 있음
+
+이것은 typescript 코드임
+
+ES6가 아님
+
+여기 보면 updateQuery에 문제가 있음
+
+왜냐하면 updateQuery는 항상 무엇인가를 return 해줘야함
+
+새로운 query를 return 해줘야함
+
+query와 같은 구조로 새로운 query를 return 해줘야 하는 것을 잊지마
+
+query는 data?.getOrder.order?.restaurant? 이런 구조임
+
+우선 data가 존재하지 않는 경우를 체크해줌
+
+그러면 이전 결과를 return 해줌
+
+data가 존재할 경우에는 기존의 것과 새로운 data가 같이 있어야함
+
+그리고 아까 말했듯이 같은 구조여야함
+
+그럼 여기에서 data를 return함
+
+data를 return하는건데 data.getOrder임
+
+기존 query를 전부 가져와야하니 …prev.getOrder를 해줌
+
+이것은 ok랑 error를 포함하고 order는 새로 얻은 order로 덮어 씌워야함
+
+order는 …data.orderUpdates가 됨
+
+저것이 order니까 여기 보면 우리는 같은 구조로 return 해줬음
+
+data라는 object를 return 해줬음
+
+data.getOrder를 가지고 있음
+
+data.getOrder 부분은 ok, error랑 order도 가지고 있고 subscription에는 orderUpdates가 있음
+
+그리고 orderUpdates 내부에는 order가 있음
+
+이것은 동작함
+
+여기에 FullOrderParts가 있고 여기에도 있음
+
+보다시피 우리는 updateQuery를 이용해 data를 덮어씌워서 query를 교체해줬음
+
+코드가 좋아보이지는 않아도 나는 만족함
+
+이제 browser로 돌아와서 새로고침 해봄
+
+당연히 status가 변했음
+
+status를 pending으로 한번 더 바꿔봄
+
+저장해주고 console에서는 바뀌는 것을 확인했으니까 이제 frontend에서 이 부분을 자동으로 바꿔줘야함
+
+그러면 이 order를 한번 더 해봄
+
+새로고침하고 status는 Pending 상태여야함
+
+봤듯이 완벽하게 동작함
+
+우리는 subscription을 사용해서 cache를 update 해줬음
+
+새로고침하면 이것은 Cooking일거고, Pending으로 다시 저장해봄
+
+한번 더 봄
+
+이것 보는게 정말 재밌음
+
+status는 Pending이고 해봄
+
+창을 좀 작게 만들어봄
+
+여기로 와서 update를 볼 수 있게 창 크기를 줄여봄
+
+Status는 Pending임

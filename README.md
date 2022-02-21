@@ -18645,3 +18645,247 @@ status는 Pending이고 해봄
 여기로 와서 update를 볼 수 있게 창 크기를 줄여봄
 
 Status는 Pending임
+
+## 23.3 Restaurant Orders
+
+테스트를 계속 해봤는데 동작이 잘 되고 있음
+
+여기 보면 cooking이지
+
+여기에 cooked라고 해봄
+
+역시나 잘 됨
+
+이제 user subscription은 다 완료했음
+
+왜냐하면 기본적으로 내용이 변하면 아주 쉽게 금방 알아차릴 수 있음
+
+이제 작별인사 하고 다음으로 넘어가봄
+
+이제 restaurant을 위한 subscription을 다룰 차례임
+
+기억할지 모르겠지만 restaurant에 새로운 주문이 오면 팝업이 떠야함
+
+이제부터 그것을 해봄
+
+그럼 이것을 멈추고 restaurants에서 수정해줌
+
+user를 다시 restaurant owner로 변경해줘야함
+
+fake owner가 아니라 이것이 owner가 돼야함
+
+이제 restaurant으로 돌아가서 Real restaurant의 owner를 나로 바꿔줌
+
+새로고침을 해주고 이제 나는 restaurant의 주인이 됐음
+
+내가 restaurant의 owner임
+
+하지만 나는 여전히 여기 있는 order를 볼 수 있음
+
+내가 order를 보고 싶을수도 있으니까 괜찮음
+
+하지만 내가 진짜로 원하는 것은 새로운 주문이 들어오면 여기에서 알림을 받는 것임
+
+무슨 말인지 알겠지
+
+혹은 새로운 주문이 들어오면 order 페이지로 즉시 redirect되고 싶음
+
+그것이 더 좋겠음
+
+그럼 그렇게 해봄
+
+여기 보이는 아름다운 판매량을 보고 긴장을 풀면 안됨
+
+주문이 들어오는 순간 order id를 가진 user의 dashboard로 redirect함
+
+주문이 들어오면 여기로 바로 이동함
+
+이것만 보는게 아니라 change status라 적힌 버튼이 있음
+
+그럼 시작해봄
+
+아무것도 없는 처음부터 시작하기 위해서 일단 order를 지움
+
+지우고 저장함
+
+이제 order 화면을 약간 바꿔줌
+
+여기 있는 order는 세 종류의 사람이 볼 수 있음
+
+첫번째는 레스토랑 오너고, 두번째는 유저, 세번째는 드라이버임
+
+그래서 우리는 지금 사용자가 누구인지 알 필요가 있음
+
+여기로 와서 이전에 했던 방법을 그대로 해봄
+
+data를 userData라 하고 useMe hook은 사용자가 누구인지 알려줌
+
+이것이 useMe임
+
+이제 여기로 와서 이 status를 보여주지 않고 userData?.me.role이 "Client"인 경우에만 이것을 보여줌
+
+Client가 status를 보는 사람이 됨
+
+이제 Owner라면 주문 상태에 따라 두 가지를 볼 수 있음
+
+하나는 data?.getOrder.order?.status === "Pending"인 경우 button을 볼 수 있어야함
+
+버튼을 만들어줌
+
+Accept order라고 해줌
+
+아래에는 주문 상태가 Pending이 아니라 Cooking인 경우를 추가함
+
+여기는 Mark as Cooked나 Order Cooked로 바꿈
+
+여기 보면 이 주문은 사라져서 이제 존재하지 않음
+
+동작 안하지
+
+새로운 order를 만들어봄
+
+그럼 fake user로 로그인해서 만들어봄
+
+localhost:3000으로 가서 fake@owner.com으로 login을 해줘야함
+
+로그인이 됐음
+
+이메일을 확인해주세요
+
+이것을 수정해줌
+
+지금은 fake owner가 customer가 돼야함
+
+하지만 우리는 아직 이쪽으로 넘어올 수 없음
+
+우선 user로 돌아와서 alert를 만들어봄
+
+이 부분은 일단 멈춤
+
+적어도 이것이 어떻게 작동할지 이해됐음
+
+만약 client면 status를 볼 수 있음
+
+만약 owner면 두 가지의 버튼을 볼 수 있음
+
+하지만 우선 owner를 거기로 데려가야함
+
+이제 owner에 있는 my-restaurant으로 가서 subscription을 해줘야함
+
+여기에 subscription을 해줌
+
+다시 한번 상기 시켜주면 두 유저가 있음
+
+하나는 owner이고 다른 하나는 client임
+
+이것은 incognito 모드(시크릿 모드)에서 실행 중이고, 여기 보면 이메일이 확인되지 않았다고 나옴
+
+우리가 준비가 되면 주문을 만듦
+
+하지만 아직 준비가 안 됐음
+
+주문이 들어오면 owner의 화면이 redirect돼서 지난 영상에서 만든 화면으로 가게 됨
+
+하지만 이번에는 그 화면이 owner의 관점으로 보여짐
+
+owner가 보게 될 화면은 조금 다른데 여기 2개의 버튼을 만들어줬기 때문임
+
+owner의 주문 화면은 주문 상태에 따라 Accept Order나 Order Cooked가 보임
+
+우선 owner를 위한 subscription을 봄
+
+subscription은 여기 있는데 pendingOrders임
+
+그럼 작성해봄
+
+이쯤에다가 복사 & 붙여넣기함
+
+이것은 아무것도 필요하지 않음
+
+pendingOrders만 쓰면 됨
+
+이것이 우리의 subscription임
+
+매우 간단함
+
+이제 npm run apollo:codegen을 해주고, 이 type들이 생김
+
+다 됐고 이제 끝부분으로 와서, 여기에 useSubscription으로부터 data를 받아옴
+
+이미 codegen을 했으니 pendingOrders를 해주고 variables는 필요 없음
+
+그리고 subscription을 넣으면 됨
+
+data는 이미 존재하니까 subscriptionData로 바꿔줌
+
+여기에 useEffect를 호출해줌
+
+왜냐하면 subscriptionData를 바로 받을 수가 없음
+
+약간 시간이 걸릴거고 가끔은 안 올 수도 있음
+
+우리는 useEffect를 사용함
+
+여기에 넣은 것은 subscriptionData가 변할 때마다 useEffect가 다시 실행된다는 의미임
+
+이것은 새로운 주문이 들어왔다는 것임
+
+그리고 우리는 history가 필요한데 history를 어떻게 쓰는지 알고 있음
+
+그리고 useHistory를 해주면 끝임
+
+여기로 와서 새로고침하고 지금 사용자는 owner로 되어 있음
+
+그럼 여기 있는 고객이 주문을 하는 그 순간에 이것이 order로 redirect 돼야함
+
+서버를 다시 시작해야 하는 거 잊지 말고, owner랑 roles를 변경해줬으니까 서버를 반드시 재시작 해줘야함
+
+서버를 다시 시작하지 않으면 아마 에러가 발생함
+
+내 client는 이미 다른 사람에게 연결 되어있음
+
+그래서 그럼
+
+연결시 subscription이 서버에 인증이 된다는 것을 잊지마
+
+나는 여기서 client로 바꿔서 그럼
+
+이제 준비 다 됐음
+
+잘 작동하는 것 같으니 이제 customer로 주문을 만듦
+
+이제 Confirm Order, OK를 누르면 owner는 order 페이지로 이동 돼야함
+
+그럼 해봄
+
+여기는 당연히 됐고 이제 owner dashboard로 넘어가봄
+
+여기 보면 둘 다 같은 곳으로 이동 됐음
+
+당연히 둘 다 같은 주문이고, 다른 점이라면 이 버튼임
+
+Accept Order가 있고, 이것을 클릭하면 order를 수락함
+
+그리고 다른 것도 봄
+
+너무 잘 됨
+
+여기 버튼에 예전에 만들어 둔 btn class를 사용함
+
+이제 더 멋있음
+
+에러가 있음
+
+Cannot read property 'subscribeToMore' of undefined
+
+내 생각에는 내가 client라서 그런거 같음
+
+새로고침하고 됨
+
+react의 refresh가 좀 이상한거 같음
+
+이렇게 새로고침을 직접 해줘야함
+
+여기 보면 owner는 Accept Order를 누를 수 있음
+
+그리고 이것은 여기 있는 Status를 바꿔줌

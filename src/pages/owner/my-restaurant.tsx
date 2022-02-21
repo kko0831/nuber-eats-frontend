@@ -1,12 +1,11 @@
-import { gql, useQuery } from "@apollo/client";
-import React from "react";
+import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { Dish } from "../../components/dish";
-import { 
-  VictoryAxis, 
-  VictoryBar, 
-  VictoryChart, 
+import {
+  VictoryAxis,
+  VictoryChart,
   VictoryLabel,
   VictoryLine,
   VictoryPie,
@@ -14,15 +13,17 @@ import {
   VictoryTooltip,
   VictoryVoronoiContainer,
 } from "victory";
-import { 
-  DISH_FRAGMENT, 
-  ORDERS_FRAGMENT, 
-  RESTAURANT_FRAGMENT 
+import {
+  DISH_FRAGMENT,
+  ORDERS_FRAGMENT,
+  FULL_ORDER_FRAGMENT,
+  RESTAURANT_FRAGMENT,
 } from "../../fragments";
-import { 
-  myRestaurant, 
-  myRestaurantVariables, 
+import {
+  myRestaurant,
+  myRestaurantVariables,
 } from "../../__generated__/myRestaurant";
+import { pendingOrders } from "../../__generated__/pendingOrders";
 
 export const MY_RESTAURANT_QUERY = gql`
   query myRestaurant($input: MyRestaurantInput!) {
@@ -45,13 +46,21 @@ export const MY_RESTAURANT_QUERY = gql`
   ${ORDERS_FRAGMENT}
 `;
 
+const PENDING_ORDERS_SUBSCRIPTION = gql`
+  subscription pendingOrders {
+    pendingOrders {
+      ...FullOrderParts
+    }
+  }
+  ${FULL_ORDER_FRAGMENT}
+`;
+
 interface IParams {
   id: string;
 }
 
 export const MyRestaurant = () => {
   const { id } = useParams<IParams>();
-  const history = useHistory();
   const { data } = useQuery<myRestaurant, myRestaurantVariables>(
     MY_RESTAURANT_QUERY,
     {
@@ -62,6 +71,15 @@ export const MyRestaurant = () => {
       },
     }
   );
+  const { data: subscriptionData } = useSubscription<pendingOrders>(
+    PENDING_ORDERS_SUBSCRIPTION
+  );
+  const history = useHistory();
+  useEffect(() => {
+    if (subscriptionData?.pendingOrders.id) {
+      history.push(`/orders/${subscriptionData.pendingOrders.id}`);
+    }
+  }, [subscriptionData]);
   return (
     <div>
       <Helmet>
@@ -79,7 +97,7 @@ export const MyRestaurant = () => {
         <h2 className="text-4xl font-medium mb-10">
           {data?.myRestaurant.restaurant?.name || "Loading..."}
         </h2>
-        <Link 
+        <Link
           to={`/restaurants/${id}/add-dish`}
           className="mr-8 text-white bg-gray-800 py-3 px-10"
         >
@@ -120,7 +138,7 @@ export const MyRestaurant = () => {
               <VictoryLine
                 labels={({ datum }) => `$${datum.y}`}
                 labelComponent={
-                  <VictoryTooltip 
+                  <VictoryTooltip
                     style={{ fontSize: 18 } as any}
                     renderInPortal
                     dy={-20}
@@ -145,8 +163,8 @@ export const MyRestaurant = () => {
                   } as any,
                 }}
                 tickFormat={(tick) => new Date(tick).toLocaleDateString("ko")}
-              />    
-            </VictoryChart>     
+              />
+            </VictoryChart>
           </div>
         </div>
       </div>

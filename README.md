@@ -18889,3 +18889,143 @@ react의 refresh가 좀 이상한거 같음
 여기 보면 owner는 Accept Order를 누를 수 있음
 
 그리고 이것은 여기 있는 Status를 바꿔줌
+
+## 23.4 Edit Order
+
+이제 order 화면에 mutation을 만듦
+
+이 mutation은 여기 있는 restaurant의 owner만 사용함
+
+그리고 우리는 이미 mutation을 가지고 있는데 바로 여기에 editOrder가 있음
+
+항상 하듯이 input을 변수로 넣고 여기서 무엇을 받아올까
+
+ok랑 error임
+
+그리고 이것은 mutation이어야함
+
+그럼 터미널에 npm run apollo:codegen을 실행해봄
+
+이제 여기에 editOrderMutation을 만들어봄
+
+variables는 나중에 해줌
+
+이제 여기로 와서 onButtonClick이라는 함수를 하나 만들어줌
+
+이것은 Owner만 호출할 함수임
+
+onClick에 onButtonClick을 넣음
+
+조금 더 좋게 바꿔줌
+
+우리가 onButtonClick을 부를때마다, newStatus랑 같이 호출하고 싶음
+
+따라서 onButtonClick은 newStatus를 받게 될건데 type은 OrderStatus임
+
+우리는 API로부터 모든 type을 받아오고 있음
+
+내가 Accept Order를 누를때마다 OrderStatus.Cooking이라는 status를 보낸다는 의미임
+
+주문이 조리 중이라는 뜻임
+
+여기서 조리가 완료되면, OrderStatus.Cooked를 보냄
+
+backend로부터 바로 오는거니까 진짜 놀라움
+
+이제 여기에 editOrderMutation을 호출해줌
+
+이것은 variables, input이 필요함
+
+그리고 우리가 전에 받은 order id가 필요함
+
+여기 있는 +params.id가 되겠음
+
+그리고 status는 newStatus임
+
+이제 editOrderMutation을 할 수 있게 되었음
+
+이제 order를 수정할 수 있게 됐음
+
+그리고 여기 있는 subscription이 다시 제 역할을 수행함
+
+이 부분은 모두의 state를 자동으로 업데이트 해줌
+
+owner의 state도, user의 state도 순서대로 작동함
+
+이제 새로고침함
+
+여기서는 owner이고 약간 작게 만들어줌
+
+그리고 여기는 customer임
+
+이제 owner가 주문을 수락함
+
+약간 쫄리니까 새로고침 한번 더함
+
+주문을 수락해봄
+
+엄청 빠름
+
+그리고 여기도 업데이트 되었음
+
+subscription은 바로 업데이트해주니까 우리는 캐시를 업데이트 해줄 필요가 없음
+
+그럼 한번 더 Order Cooked를 누르면 Status는 Cooked가 됨
+
+이제 코드를 좀 더 개선시켜봄
+
+string으로 비교하는 대신 UserRole.Owner를 쓸 수도 있음
+
+여기도 Pending이라 하지말고, OrderStatus.Cooking이라 할 수 있음
+
+Cooking이 아니라 Pending임
+
+여기는 Cooking이 돼야겠음
+
+새로고침을 해야하는 이유는 우리 잘못이 아니라 create-react-app 때문임
+
+여기에 한 가지를 추가함
+
+또 다른 조건을 만들건데 여기 보면 owner에게는 아무것도 표시가 안되고 있음
+
+data?.getOrder.order?.status가 OrderStatus.Cooked와 같지 않음
+
+data?.getOrder.order?.status가 Cooked가 아니라 Cooking임
+
+그리고 data?.getOrder.order?.status가 Pending과 같지 않다면 여기 있는 것을 똑같이 보여줌
+
+이 코드를 좀 더 좋아보이게 만들 수 있음
+
+한번 봄
+
+새로고침을 하고 다시 해봄
+
+Postico(DBeaver)로 가서 새로고침 하고, 이 order는 Pending이 돼야함
+
+새로고침 해주고, 여기도 새로고침함
+
+이제 Accept Order하면 Status는 Cooking임
+
+여기를 클릭하면 Order는 Cooked가 되었음
+
+이제 restaurant의 owner와 client는 둘 다 동기화되었음
+
+restaurant의 owner는 status가 cooked고 driver를 기다리고 있다고 말할 수 있음
+
+이제 우리는 driver가 되어야함
+
+새로운 유저를 만들어줘야 하는데 driver를 쓰기 위해서 아마 나는 다른 브라우저인 Firefox를 사용할 것 같음
+
+같은 브라우저를 2개씩 사용하지 않는 것이 중요함
+
+예를 들면 여기 구글 크롬이 있고, 여기에 구글 크롬 시크릿 모드를 사용할 수 있음
+
+그런데 만약 또 다른 시크릿 모드를 열어도, 여기 있는 시크릿 모드랑 같은 계정임
+
+같은 계정으로 로그인됨
+
+그러니까 배달원을 위해 다른 브라우저를 사용함
+
+배달원은 주문을 수락하게 될텐데 그 전에 배달원의 dashboard를 먼저 만들도록 함
+
+그럼 subscription을 잠깐 쉬고 Google Maps를 살펴보도록 함

@@ -19029,3 +19029,159 @@ restaurant의 owner는 status가 cooked고 driver를 기다리고 있다고 말�
 배달원은 주문을 수락하게 될텐데 그 전에 배달원의 dashboard를 먼저 만들도록 함
 
 그럼 subscription을 잠깐 쉬고 Google Maps를 살펴보도록 함
+
+## 23.5 Driver Dashboard part One
+
+이제 driver dashboard를 만들어봄
+
+끝을 향해 가고 있음
+
+여기에 Dashboard를 return 해줌
+
+이제 routers의 logged-in-router에 추가함
+
+이것은 driver의 Route가 됨
+
+driverRoutes라고 함
+
+그리고 "/"로 들어올 경우 Dashboard를 렌더링 해줌
+
+이 부분을 복사 붙여넣기해서 추가하고 role을 바꿔줌
+
+우리는 role 부분을 더 좋게 개선해줄 수 있음
+
+여기도 마찬가지로 UserRole.Owner로 바꾸고, 여기도 마찬가지로 UserRole.Delivery로 바꿈
+
+이제 이것을 driverRoutes로 바꿔줌
+
+이제 무엇을 해야할까
+
+목표를 설정해봄
+
+목표는 driver의 화면 상단에 Google Map을 만들고, driver가 주문이 있는지 기다릴 수 있게 order subscription을 해줘야함
+
+주문이 들어오게 되면 주문을 볼 수 있음
+
+driver가 주문을 수락할 수 있을거고, 주문을 수락하면 주문의 배달 주소를 받게 됨
+
+그럼 우리는 driver가 어디 있고 어디서 주문을 받아야하는지 좌표를 사용해서 지도에서 볼 수 있게 함
+
+문제는 backend쪽 order에 아직 주소가 없음
+
+그래서 우리는 order에 주소를 추가 해줘야함
+
+이것은 나중에 해줌
+
+우선 지금은 map을 렌더링하고 driver의 위치에 집중함
+
+지도를 렌더링하기 위해 우리는 google-map-react를 사용함
+
+이 라이브러리는 주간 10만정도의 다운로드를 받고, 리액트 컴포넌트로 Google Map을 사용할 수 있게 해줌
+
+딱 한가지 필요한 것은 API임
+
+나의 key값이 필요함
+
+key를 얻는 방법은 console.cloud.google.com에 들어가서 Maps Javascript API를 눌러줌
+
+그럼 여기서 API key를 생성 해줄거고, ENABLE을 눌러줌
+
+이것이 생성되면 받은 키를 복사 붙여넣기 해주면 됨
+
+그럼 이것을 import함
+
+여기에 사용함
+
+여기 보면 google-map-react는 type이 없는거 같음
+
+그럼 있는지 한번 시도해봄
+
+있었으면 좋겠음
+
+계속 해봄
+
+이제 google-map-react가 있음
+
+이 component를 import하고 dashboard에 추가해줌
+
+우선 dashboard에 div를 만들고, 상단에 배너를 만들어줌
+
+search에서 만든 배너랑 restaurant owner의 dashboard의 배너랑 똑같이 만듦
+
+className을 padding은 20정도로 해주고 background는 테스트로 gray 800으로 함
+
+Map은 크게 만듦
+
+더 크게 만들어야 될 것 같음
+
+여기에 지도를 넣음
+
+이 부분들은 아직 필요 없고 이것도 필요 없음
+
+컴포넌트를 이렇게 만들어줌
+
+이것은 google-map-react의 장점인데, 마치 react의 component처럼 무엇인가를 추가할 수 있음
+
+내 API key를 가져옴
+
+Credentials를 눌러주고 잠깐 기다려줌
+
+새로운 credential을 만들어줌
+
+이것이 API key를 줌
+
+이것이 내 API key임
+
+그럼 이제 닫아줌
+
+이 API key는 안전하지 않음
+
+프론트에 추가하기 때문에 누구든지 볼 수 있음
+
+그래서 이 API key를 제한 해줘야함
+
+어떻게 하냐면 google에게 이 API key는 내 domain에서만 사용가능하다고 말해야함
+
+프론트엔드에 API Key를 숨길 필요가 없음
+
+왜냐하면 프론트엔드 여기에 붙이는 대신 API key를 제한함
+
+그래도 아무것도 보이지 않는데 그 이유는 Google Map react component가 이 container 안에 있어서 그럼
+
+그래서 이 container의 width랑 height를 설정해야함
+
+그럼 이 className을 지워주고 어떻게 되는지 봄
+
+아직 보이지 않고 있음
+
+이 container에 width랑 height를 설정함
+
+보다시피 엄청 커졌음
+
+width는 innerWidth, height는 95vh로 했음
+
+이제 배경을 지우고 새로고침 해줌
+
+이제 center를 해줌
+
+defaultCenter로 함
+
+defaultZoom도 필요함
+
+이것은 10으로 함
+
+defaultCenter는 demo에서 어떻게 했는지 봄
+
+이것을 center에 넣음
+
+한번 해봄
+
+우리는 러시아에 있음
+
+내가 가는 곳마다 이것이 중앙에 있음
+
+그래도 좋음
+
+다음 영상에서는 우리의 위치를 받아봄
+
+우리의 위치를 지도의 중심으로 설정함

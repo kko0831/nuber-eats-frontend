@@ -19185,3 +19185,245 @@ defaultCenter는 demo에서 어떻게 했는지 봄
 다음 영상에서는 우리의 위치를 받아봄
 
 우리의 위치를 지도의 중심으로 설정함
+
+## 23.6 Driver Dashboard part Two
+
+이제 latitude랑 longitude를 내가 있는 실제 위치로 바꿔줌
+
+우선 useEffect를 씀
+
+useEffect에서 아무것도 watch하지 않을거고, 여기에 navigator.geolocation.watchPosition()을 씀
+
+watchPosition은 getLocation이랑 비슷한데 지켜보는 기능도 있음
+
+내가 만약 움직이면 우리가 움직인 것을 알 수 있음
+
+onSuccess에 position이 들어오고 타입은 Position임
+
+여기에 onError도 만들어줌
+
+error를 얻고 type은 PositionError임
+
+watchPostion은 onSuccess랑 onError가 필요함
+
+또한 여기에 옵션을 줄 수 있는데 예를 들어 enableHighAccuracy를 true로 할 수 있음
+
+watchPosition의 정의를 한번 봄
+
+PositionCallback도 있고 이것은 Position으로 호출됨
+
+다시 정의로 가보면 options에 enableHighAccuracy, maximumAge, timeout이 있음
+
+우리는 enableHighAccuracy를 해줬음
+
+그럼 여기에서 position을 console.log하고 error도 console.log 해봄
+
+브라우저를 확인해봄
+
+typescript가 Position이 무엇인지 모름
+
+ts-ignore를 해줌
+
+이제 볼 수 있음
+
+지금 어디가 확대 된거야
+
+여기 보면 Location access allowed라고 적힌 아이콘이 있음
+
+혹은 위치에 접근을 허락하냐는 질문을 볼 수도 있음
+
+그럼 yes라고 해주면 됨
+
+yes라고 했으면 console을 봄
+
+에러가 좀 있음
+
+내 생각에는 defaultCenter가 없어서 그런건가
+
+왜 그런지 봄
+
+혹시 새로고침 때문인가
+
+한번 해봄
+
+다시 새로고침을 함
+
+h1 때문이 맞음
+
+너무 확대된거 같으니 zoom을 15정도로 해줌
+
+15보다 더 해줘야 하나
+
+15면 충분함
+
+여기 GeolocationPosition이 보임
+
+여기에는 coordinates, accuracy, latitude, longitude같은 정보를 가지고 있음
+
+그럼 해봄
+
+position 내부에 coords가 있고 그 내부에 latitude랑 longitude가 있음
+
+나는 이 user의 위치를 state에 저장함
+
+여기에 driverCoords라 함
+
+그리고 setDriverCoords를 해주고 useState를 해줬음
+
+이제 interface를 만들어줘야함
+
+ICoords를 여기에 설정함
+
+기본값으로 longitude는 0, latitude도 0으로 함
+
+이제 여기 있는 defaultCenter도 바꿔줘야함
+
+defaultCenter를 우리 집 근처로 해봄
+
+우리집 근처인 37.58이랑, 126.95로 함
+
+왜냐하면 defaultCenter랑 내가 현재 있는 위치의 차이를 보고 싶음
+
+그럼 setDriverCoords를 사용해서 lat은 latitude로, lng는 longitude로 세팅함
+
+여기 보이는 곳이 내 지도의 중심 부분임
+
+이제 무엇을 하고 싶냐면 내 좌표가 있으니 지도를 그 좌표로 옮김
+
+그러기 위해서는 yesIWantToUseGoogleMapApiInternals라는 props를 활성화 시켜줘야함
+
+그럼 yesIWantToUseGoogleMapApiInternals를 복사해서 여기에 붙여 넣어줌
+
+그런 다음에 onGoogleApiLoaded라는 함수를 쓸건데 이것은 우리에게 map을 줌
+
+이 함수를 통해서 map 객체와 상호 작용을 할 수 있게 됨
+
+그럼 여기를 onApiLoaded라 함
+
+그럼 map과 maps를 얻고, 일단 지금은 map과 maps의 type을 any로 함
+
+이제 우리가 무엇을 받았는지 console.log로 확인해봄
+
+새로고침 해주고 inspect로 가서 console을 보면 Xi가 있는 것을 알 수 있음
+
+이것은 map임
+
+center도 있고, controls, mapDataProviders와 같은 것들이 있음
+
+엄청 많은 것들이 있지
+
+또한 maps object도 있는데 maps object는 보면 알겠지만 엄청 많은 함수가 있음
+
+예를 들면 LatLng, Marker, NavigationControlStyle, Polygon, Rectangle 등등 많음
+
+그럼 map과 maps의 차이점이 무엇일까
+
+map은 지금 당장 화면에 있는 지도 정보임
+
+maps는 내가 사용할 수 있는 Google Maps 객체임
+
+그럼 무엇이 있는지 google maps api sdk를 쳐봄
+
+그럼 차이점을 알 수 있음
+
+여기 JavascriptAPI 보이지
+
+Reference로 가서 여기 보면 Maps가 있음
+
+Maps는 class이고 엄청 많은 것을 가지고 있음
+
+Map class는 여기 있는 map임
+
+예를 들면 setOptions, getZoom 같은 것이 있음
+
+한번 getZoom을 써봄
+
+이 map은 우리가 방금 만든 map이라는 사실을 잊으면 안 됨
+
+따라서 이것은 map의 instance임
+
+그럼 console.log(map.getZoom())을 통해 무엇을 얻는지 봄
+
+우리는 이 map이랑 상호작용을 했음
+
+우리는 react에 있는 이 map에 함수를 통해 접근하는 것을 봤음
+
+만약 map을 가지고 무엇인가를 해야하면 여기서 해주면 됨
+
+이제 또 다른 하나는 maps인데, maps는 전에 말했듯이 constructor임
+
+새로고침 하고 여기 보면 map을 위한 constructor들을 가지고 있음
+
+예를 들면 Map을 위한 Constructor라던가, maps에는 거의 모든 constructor가 있음
+
+좀 다른건데 하나는 map으로 react component이고, 또 다른 하나는 constructor임
+
+이제 여기에서 map의 center를 바꿔봄
+
+지도를 어디로인가 가져가봄
+
+그럼 defaultCenter를 36이랑 125로 한번 바꿔봄
+
+새로고침을 해주면 아마 좀 다른 곳에 있는 것을 볼 수 있음
+
+제발 바다만 아니였으면 하는데 역시나 바다임
+
+여기가 우리가 있는 장소임
+
+이제 여기 onApiLoaded에 setTimeout을 씀
+
+시간을 2초로 함
+
+이제 여기서 map.panTo를 씀
+
+이것이 무엇인지 모르겠으면 여기 Reference에 panTo 함수가 있음
+
+panTo는 latLng 객체를 매개변수로 받음
+
+latLng은 LatLng class에서 가져올 수 있음
+
+사용하는 방법은 이렇게 new google.maps.LatLng를 하면 됨
+
+우리는 이미 maps에 접근이 가능하니 google은 필요 없음
+
+따라서 우리는 maps.LatLng로 함
+
+그럼 여기로 와서 new maps.LatLng를 해줌
+
+그럼 latitude는 driverCoords.lat이 돼야하고, 여기는 driverCoords.lng가 됨
+
+우리는 지금 map을 사용해줬고, google maps api도 사용했음
+
+새로고침 해봄
+
+그럼 pan으로 가는지 봄
+
+다 잘되고 보면 지도 중심이 잘 바뀌었음
+
+조금 더 기다리게 5초로 해봄
+
+약간 시간이 걸림
+
+여기 보면 맵이 로드가 되고 5초 후에 내가 원하는 곳으로 이동함
+
+우리는 map에 접근할 수 있음
+
+그리고 이것은 내가 상상할 수 있는 모든 것들을 map으로 할 수 있게 해줌
+
+왜냐하면 여기 있는 모든 메소드를 사용할 수 있기 때문임
+
+Methods로 와보면 또한 events도 있음
+
+거의 모든 것이 다 있음
+
+우리는 API가 load 되자마자 driver가 있는 곳으로 이동하려고 함
+
+우리는 maps api에 접근이 가능하고, map에도 접근이 가능하기 때문임
+
+따라서 여기 있는 component는 최소한의 기능을 하게 됐음
+
+여기서는 단지 초기화만 해주고, 여기서 google API를 통해 직접 접근했음
+
+이번 영상은 여기까지고 다음에는 driver dashboard를 만들어봄
+
+driver가 움직이면 지도의 위치가 바뀌는 것을 볼 수 있음

@@ -19577,3 +19577,209 @@ zoom도 16으로 해줌
 만약 여기 새로운 주문이 들어오면, driver에게 어디를 가야할지 알려줌
 
 driver에게 어디를 가야할지 보여주고 거기에 갈 수 있도록 함
+
+## 23.8 Address Geocoding
+
+지난 영상에서 driver를 이렇게 하고 끝냈었는데, 이렇게 하면 console에 에러가 나타났었음
+
+그럼 내가 어떻게 고쳤는지 알려줌
+
+Driver라는 component만 만들어주면 되는데, 이 component는 이렇게 생겼음
+
+이렇게 생겼음
+
+어떤 에러였냐면 map이 driver에게 전달하는 props를 driver component가 이해하지 못해서 생겼던 에러였음
+
+하지만 이제는 받을 수 있음
+
+전에 우리는 이렇게 했었고, 지금은 새로운 component를 만들어줬음
+
+props를 위해서 interface를 만들어줬고, driver는 매우 간단한 component임
+
+이제 console에 error가 더 이상 없음
+
+이제 내가 보여줄 것은 새로고침 해주고 TypeScript와 Google Maps를 어떻게 사용할건지 알려줌
+
+왜냐하면 구글 문서가 좀 보기 어렵게 되어있음
+
+그럼 이것을 설치해봄
+
+여기서 설치를 해줌(터미널에 npm i -D @types/googlemaps@3.40.3 입력)
+
+설치가 끝난 다음에 해줄 일은 나의 compilerOptions에 이것을 추가하는 것임
+
+나는 tsconfig.json안에 types: googlemaps를 이미 추가해줬음
+
+설치가 완료될 때까지 기다려줌
+
+설치가 완료됐고 이제 이 부분을 google.maps.Map으로 변경해줌
+
+이제 configuration이 생겼음
+
+우리는 maps 객체를 사용할 필요가 없음
+
+maps 객체를 사용할 필요가 없는 이유는 Google Map을 나의 웹 사이트에 로드하는 순간 inspect를 해서 console창에 가서 google을 쳐보면 이렇게 load 되는 것을 볼 수 있음
+
+따라서 maps 객체는 이미 window에 있기 때문에 state에 있는 maps 객체는 필요하지 않음
+
+여기 보이듯이 전에 봤던 모든 것을 가지고 있음
+
+그럼 여기서 우리가 할 수 있는 것은 google이 있음
+
+어찌되었든 state에 저장해줄 필요가 없음
+
+우리의 map만 state에 저장하고, maps는 저장할 필요 없음
+
+그러니까 여기를 any로 하고 넘어감
+
+이제 google.maps를 쓰면 됨
+
+그러면 여기에 엄청 멋진 것이 생기는데 매우 나이스한 자동완성이 생김
+
+여기도 google을 붙여줌
+
+다시 말하지만 google은 window에 있음
+
+문제 없이 똑같이 동작해야함
+
+문제없이 잘 됨
+
+More tools의 Sensors로 가서 다른 장소로도 이동해봄
+
+Moscow로 이동해봄
+
+완벽하게 작동함
+
+지도를 움직여도 자동차는 map의 중심으로 같이 움직임
+
+매우 잘 동작함
+
+이제 할 일은 '길'임
+
+이제 길을 보여줌
+
+전에 말했듯이 이곳에서 저곳까지 어떻게 길을 나타낼지 알려줌
+
+우리는 google을 이용해서 길을 표시해줄건데 아마 uber나 uber eats도 이렇게 내가 운전해야하는 경로를 보여줌
+
+이 API를 사용하기 위해 console.cloud.google.com에서 Directions API를 활성화시켜줌
+
+잊지 말아야 할 점은 이것도 maps API를 활성화했던 동일한 프로젝트 안에서 해야함
+
+2개의 API키를 갖는게 아님
+
+전에 사용했던 같은 API키를 사용함
+
+이 API키는 maps를 위해서 사용되고, 똑같은 API키로 directions도 가능함
+
+그럼 어떻게 directions를 사용할까
+
+사용법은 엄청 쉬움
+
+여기 엄청 다양한 service가 있고, 우선 Geocoding이랑 Reverse Geocoding이 있음
+
+Geocoding은 이런 식으로 주소를 적어주고, Geocode를 누르면 지도의 좌표를 우리에게 제공해줌
+
+주소를 가져다가 좌표로 바꿔줌
+
+또 다른 방법은 Reverse Geocoding인데 이것은 좌표를 적으면 주소를 제공해줌
+
+Geocoding을 해봄
+
+이 택시가 있는 위치의 주소를 알아내봄
+
+그럼 API Library로 돌아가서 Geocoding을 활성화 시켜줘야함
+
+Geocoding API에서 ENABLE을 눌러줌
+
+그럼 Geocode랑 Reverse Geocode를 해봄
+
+어렵지 않음
+
+Reverse Geocoding이 어떻게 동작하냐면 geocoder를 만들어주고 geocoder.geocode 함수에 위도, 경도를 넣어서 실행하면 results를 얻게 됨
+
+그럼 어디 있는지 알 수 있음
+
+그럼 시작해봄
+
+나는 이 API를 사용하는게 정말 쉽다는 것을 보여주기 위해서 함
+
+우리가 driverCoodrs.lat과 driverCoords.lng를 받으면 여기에 geocoder를 만들어줌
+
+여기 google을 추가해줌
+
+우리는 Geocoder를 만들어줬고 geocoder.geocode에 location을 넣어서 호출함
+
+location은 위도랑 경도가 됨
+
+만약 내가 이 constructor를 사용하는지 궁금하다면 이것은 필수는 아님
+
+이것은 꼭 할 필요는 없음
+
+LatLng는 필수가 아님
+
+latitude와 longitude로 이루어진 object를 넘겨줘도 상관없음
+
+하지만 이렇게 하는 것이 좀 더 확실해서 그럼
+
+geocode는 response로 results랑 status를 가짐
+
+results의 type은 google.maps.GeocoderResult[]이고, status의 type은 status임
+
+그럼 console.log로 status랑 results를 출력해봄
+
+그 전에 이 키워드 쓰는 법부터 알아야겠음
+
+벌써 나와있었음
+
+새로고침을 해주면 무엇인가 나오는데 More tools의 Sensors에서 Sao Paulo로 가봄
+
+여기 주소가 나왔음
+
+이것은 내가 전에 중국에 있던 적이 있어서 나왔나봄
+
+잘 동작함
+
+우리가 어디 있는지 알아냈음
+
+보통 사람들은 첫번째 주소를 사용하는데, 아마 이것이 가장 정확한 주소라서 그럼
+
+이제 나는 유저의 프로필에 있는 실제 지도에 주소를 추가 해줄 수 있음
+
+geocode를 이용해 좌표를 바꿔줄 수도 있고, user에게 좌표를 물어봐서 주소로 바꿔줄 수도 있음
+
+이제 좀 지루해지는 것은 알지만, 계속 테스트를 하기 위해 Sensors로 가서 San Francisco로 가봄
+
+그럼 여기 geocode가 있음
+
+잘 동작함
+
+여기 보면 좌표로부터 주소를 얻어낼 수 있음
+
+이 코드를 내 github에 저장해두기 위해 일단 주석처리 해줌
+
+이것은 code challenge 과제일 수도 있음
+
+한번 해보는게 어때
+
+edit profile로 가서 user에게 요청함
+
+user에게 물음
+
+user가 좌표를 주면 내가 주소를 줌
+
+이제 어떻게 하는지 앎
+
+이제 진짜로 끝냄
+
+무엇을 하고 싶냐면 여기에 어떤 마커를 배치 해주고 싶음
+
+그리고 그 주소를 보여줌
+
+주소가 아니라 경로를 보여줌
+
+우리는 google에게 경로를 알려달라고 요청함
+
+여기 있는 Directions API를 사용할 수 있게 했고, Geocoding을 쓸 수 있게 만들었으니 이제 Directions API를 쓰기만 하면 됨
+
+그럼 해봄

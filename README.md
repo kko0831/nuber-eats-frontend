@@ -19783,3 +19783,211 @@ user가 좌표를 주면 내가 주소를 줌
 여기 있는 Directions API를 사용할 수 있게 했고, Geocoding을 쓸 수 있게 만들었으니 이제 Directions API를 쓰기만 하면 됨
 
 그럼 해봄
+
+## 23.9 Painting Directions
+
+이제 마지막으로 보여주고 싶은 것은 google map에 경로를 표시해 주는 것임
+
+이것은 Direction API를 사용하면 정말 쉽게 할 수 있음
+
+경로를 좀 더 정확하게 보기 위해서 일단 Driver를 지워줌
+
+Driver는 어떻게 driver를 만드는지 보여주기 위한거니까, 일단 빠르게 버튼을 하나 만들어줌
+
+Get route라고 해줌
+
+무엇이든 상관없음
+
+그리고 여기 onGetRouteClick이라는 함수를 만들어줌
+
+다시 말하지만 이것은 단지 Google API를 이용해서 어떻게 경로를 만드는지 보여줌
+
+그럼 여기에 onClick을 해주고 onGetRouteClick을 넣어줌
+
+여기에 해줘야 할 것은 두가지인데, direction service랑 direction renderer를 만들어줌
+
+그럼 여기에 directionsService를 해주고, 이제 우리는 renderer에게 어떤 map을 렌더링할건지 알려주기만 하면 됨
+
+여기서 map을 저장했었음
+
+여기 있으니까 map을 넣어줌
+
+map이 undefined일 수도 있으니 if (map)에 directionsService.route()함
+
+request는 origin을 가지는데 이 origin은 위도, 경도가 됨
+
+여기 마우스를 올리면 볼 수 있음
+
+origin은 string이고, LatLng, Place 등등 일 수 있음
+
+이것이 우리의 origin임
+
+이것은 location 안에 들어가야함
+
+origin 다음에는 destination을 넣어야함
+
+destination도 location을 가지고 있음
+
+여기서 나는 destination으로 약간 이상한 위치를 해주려고 함
+
+우리가 있는 latitude에서 0.05정도를 더해주고, longitude도 0.05를 더해줌
+
+어떻게 보일지 보여주려고 이렇게 함
+
+그리고 여기 callback 함수가 들어갈건데 result와 status를 받음
+
+그리고 result와 status를 console.log함
+
+버튼을 누르면 우리는 directionsService를 만들어주고, 새로운 renderer를 만든 다음, renderer에 우리의 map을 설정함
+
+이 map은 API가 load되고 얻은 것임
+
+그 다음 directionsService.route를 해줬는데 origin의 location에는 우리의 위도, 경도를 넣어줬음
+
+그리고 route의 destination에는 위도, 경도에 각각 0.05씩 더해 넣어줬음
+
+어떻게 하는지 보여주고 싶어서 그럼
+
+그럼 여기로 와서 새로고침을 해줌
+
+Get route라는 버튼이 있음
+
+그럼 console창을 엶
+
+마이너스 해줌
+
+travelMode 옵션을 빼먹었음
+
+travelMode는 google.maps.TravelMode type이 필요함
+
+여기에는 BICYCLING, DRIVING, TRANSIT, TWO_WHEELER, WALKING 같은 옵션이 있음
+
+우리는 DRIVING으로 함
+
+다시 새로고침 해줌
+
+그럼 Get Route함
+
+보기에는 괜찮은데 경로가 어디 있지
+
+route가 console 안에 있었음
+
+우리가 얻은 경로는 이것임
+
+legs는 무엇인지 잘 모르겠음
+
+우리가 얻은 route임
+
+이것이 다 route임
+
+이것이 다 위도랑 경도들임
+
+아직 안 끝났음
+
+이제 results를 얻었음
+
+이제 여기서 해줘야할 것은 directionsRenderer임
+
+이제 끝났음
+
+저것이 퍼즐의 마지막 조각이였음
+
+그럼 새로고침을 해주고, 다시 한번 Get route를 누름
+
+엄청 간단하지
+
+원한다면 이것들을 바꿔줄 수도 있음
+
+여기 있는 마커를 바꿔줄 수도 있고, 경로를 좀 더 두껍게 하거나 내가 원하는대로 하면 됨
+
+위도랑 경도만 있으면 엄청나게 간단해
+
+이제 주소를 좌표로 바꾸는 방법을 앎
+
+좌표를 주소로 바꿔주는 방법도 알고 있음
+
+또한 watchPosition을 통해 사용자가 움직일때마다 좌표를 어떻게 watch하는지도 보여줬음
+
+그리고 출발지와 도착지를 주소없이 좌표만으로 경로를 만드는 방법도 알게 되었음
+
+따라서 user가 자기 위치의 위도, 경도를 주고 driver의 위도, 경도를 가지고 있다면, 이 말은 driver와 user간의 경로를 만들 수 있다는 말임
+
+이제 엄청난 힘을 갖게 됨
+
+진짜 간단함
+
+특히 typescript의 도움으로 이 모든 것을 볼 수 있어서 그런 것 같음
+
+예를 들어 만약 route를 어떻게 쓰는지 까먹으면 definition으로 가서 알 수 있음
+
+여기 있는 것들이 request에 있는 것들임
+
+avoidFerries가 있다는 것도 알게 됐음
+
+travelMode를 바꿀 수도 있음
+
+혹은 심지어 definition으로 가서 callback도 살펴볼 수 있음
+
+result가 있고 status도 있음
+
+엄청 쉬움
+
+전부 typescript 덕분임
+
+말했듯이 이제 좌표를 받아서 주소로 바꾸는 법을 알고, 주소를 좌표로 바꾸는 법도 앎
+
+또한 두 좌표나 주소를 받아서 그 사이의 경로를 만드는 법도 알게 되었음
+
+예를 들어 DirectionsRenderer가 궁금하면 마우스를 올려서 options를 볼 수 있음
+
+options를 살펴보면 DirectionsRendererOptions가 있음
+
+directions, map, polylineOptions가 다 옵션임
+
+PolylineOptions를 살펴봄
+
+icons, map, path, strokeColor를 가지고 있지
+
+여기에 polylineOptions를 써주고, strokeColor을 black으로 해봄
+
+우리는 class를 통해서 학습하고 있음
+
+strokeOpacity도 해줄까
+
+1로 해봄
+
+class를 더 보면 visible도 필요하고, icons도 설정할 수 있음
+
+우리는 방금 black과 opacity를 만드는 법을 배웠음
+
+새로고침 해서 잘 되는지 테스트 해봄
+
+Get route함
+
+이제 검은색임
+
+두껍게도 할 수 있을까
+
+한번 봄
+
+이렇게 하면 끝남
+
+3으로 함
+
+이제 두꺼워졌음
+
+이제 우리는 색을 바꾸는 법도 배웠음
+
+class의 이름들을 보고 배워봤음
+
+58은 너무 큼
+
+어쨌든 다 끝났고 이제 엄청난 힘을 갖게 되었음
+
+이것이 제일 예쁜거 같음
+
+내가 하고 싶은대로 하면 됨
+
+이제 진짜로 order를 끝내봄
+
+마지막 퍼즐 조각은 driver가 주문을 수락하는 것임

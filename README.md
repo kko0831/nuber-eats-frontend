@@ -19991,3 +19991,167 @@ class의 이름들을 보고 배워봤음
 이제 진짜로 order를 끝내봄
 
 마지막 퍼즐 조각은 driver가 주문을 수락하는 것임
+
+## 23.10 Coocked Order Subscription
+
+드디어 코스의 마지막 장인 "cookedOrders subscription"과 "editOrder mutation"에 왔음
+
+이 코스의 마지막 subscription을 해봄
+
+COOKED_ORDERS_MUTATION이 됨
+
+const COOKED_ORDERS_SUBSCRIPTION = gql``함
+
+subscription coockedOrders{}에 어떤 input도 없음
+
+그리고 fragments.ts로 감
+
+여기에다 ${FULL_ORDER_FRAGMENT}를 집어넣고 이것을 import함
+
+그리고 FullOrderParts도 집어넣음
+
+FULL_ORDER_FRAGMENT가 import되지 않았음
+
+npm run apollo:codegen을 실행시킴
+
+여기에다 { data : cookedOrdersData }를 만듦
+
+cookedOrders라고 명명한 것을 명심함
+
+음식이 조리되었을때 주문을 선택할 수 있는 것은 배달원뿐임
+
+useSubscription()을 쓰고 COOKED_ORDERS_SUBSCRIPTION을 넣음
+
+그러면 멋진 <cookedOrders> mutation 타입을 얻을 수 있음
+
+이제 우리는 useEffect()를 사용함
+
+만약 cookedOrdersData가 생긴다면, 이것은 조리완료된 주문이 배달을 기다린다는 것을 의미함
+
+그러면 if(cookedOrdersData?.cookedOrders.id){}함
+
+이것은 조리가 완료된 주문이 배달을 기다리고 있다는 것을 의미함
+
+한번 onGetRouteClick을 활성화 시켜봄
+
+이번에는 약간 다르게 호출함
+
+이것을 make path 같은 것으로 바꿔봄
+
+미리보기를 보여줄 수도 있겠음
+
+이것이 나의 챌린지가 될 수 있음
+
+주문에 배달 주소를 추가해보는게 어때
+
+그러니까 주문이 subscription으로 들어오면, 배달원에게 예상 경로를 보여줌
+
+그러면 배달원이 Yes나 No로 결정함
+
+이것을 먼저 끝내봄
+
+지도에 경로를 만들어봄
+
+여기서 makeRoute를 씀
+
+새로고침하고 봄
+
+아무것도 안 바뀌었지
+
+이제 지도 상에 무엇을 할 수 있냐면 주문을 보여 줄 수 있고, 원한다면 사용자를 리다이렉트(redirect) 할 수도 있음
+
+일단 사용자를 order로 리다이렉트 해봄
+
+이렇게 <div></div>를 만들건데 cookedOrdersData?.cookedOrders가 있을 때만 보여줌
+
+이 조건에 만족하면 우리는 h1을 만듦
+
+그 다음 Accept Challenge라 적힌 button을 만듦
+
+오른쪽 화살표도 넣음
+
+이제 이것을 밖으로 가져감
+
+어떻게 생겼는지 확인해봄
+
+주문이 없다는 것은 알고 있음
+
+New Coocked Order, Pick it up soon!, Accept Challenge가 있음
+
+이제 마지막 Tailwind CSS에게 작별인사를 함
+
+배경은 흰색으로 함
+
+relative로 하고 -top-10으로 함
+
+보기 좋아졌음
+
+shadow-lg를 넣음
+
+padding은 py-8, px-5로 함
+
+New Cooked Order를 center로 옮김
+
+보기 좋아졌음
+
+font는 text-3xl로 할까
+
+나머지도 똑같이 함
+
+대신 text-2xl로 변경해주고, margin top과 bottom은 3(my-3)으로 함
+
+이제 여기에 Pick it up soon을 적고, Accept Challenge 버튼의 className에 btn을 넣음
+
+width는 full로 함
+
+margin-top은 5로 함
+
+New Cooked Order, Pick it up soon! 이 뒤에 '@레스토랑'을 추가함
+
+이제 이것을 새로운 Cooked Order가 있을때만 보이도록 만듦
+
+button을 클릭하면 어떤 일이 발생하냐면 order 페이지로 이동하게 됨
+
+그러면 세부내용을 볼 수 있음
+
+button을 link로 만드는게 좋을 것 같음
+
+href는 `/orders/${coockedOrdersData.cookedOrders.id}`임
+
+이 Link는 'react-router-dom'에서 import 하면 됨
+
+됐는데 뭐가 문제지
+
+href가 아니라 to임
+
+보이는지 확인해봄
+
+괜찮은지만 보고 싶은데 별로 좋아보이지 않음
+
+여기에 block을 추가해봄
+
+이제 괜찮음
+
+전에 작업한 곳으로 돌아감
+
+여기 cookedOrdersData?.cookedOrders.restaurant이 있고, 이제 작동하는지 확인해봄
+
+우리는 지금 주문이 하나도 없음
+
+그래서 여기있는 것을 <div></div> 안으로 넣음
+
+여기에 fragment를 render함
+
+그리고 title을 만듦
+
+여기에 지금은 주문이 없다고 나옴(No orders yet)
+
+이 말은 우리가 주문을 기다리는 중이라는 것임
+
+이제 주문을 만들어봄
+
+시크릿 창을 열고 fake@client.com으로 로그인함
+
+이제 가짜 주문을 만들어봄
+
+이 친구는 나에게 무엇인가를 보여줘야함

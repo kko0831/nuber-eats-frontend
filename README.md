@@ -20155,3 +20155,213 @@ href가 아니라 to임
 이제 가짜 주문을 만들어봄
 
 이 친구는 나에게 무엇인가를 보여줘야함
+
+## 23.11 Final Test
+
+여기 driver 페이지가 있음
+
+크롬 창에 아직 주문이 없다고 나옴
+
+중간에는 customer가 있음
+
+이것은 크롬의 시크릿 창임
+
+마지막에는 owner 페이지가 띄워진 Firefox가 있음
+
+이제 restaurant owner는 주문받아 요리할 준비가 됐음
+
+배달원은 주문을 배달할 준비가 됐고, 가운데에는 배고픈 customer가 있음
+
+이제 주문을 해봄
+
+바베큐치킨, 바베큐치킨 스페셜, 맵게, 피클을 선택하고 confirm order를 누름
+
+그러면 customer, owner 페이지가 상세내용이 적힌 order 페이지로 감
+
+지금 배달원 페이지에는 아직 주문이 없음
+
+주문된 음식이 Cooked가 되어야함
+
+이제 레스토랑은 주문을 받음
+
+보이다시피 주문 상태가 cooking으로 바뀌었음
+
+이제 주문을 Cooked로 만듦
+
+Cooked가 돼서 이제 여기에 뜸
+
+이것은 바로 내가 주문한 Real One barbecue임
+
+이것은 fake@client.com에게 배달됨
+
+이제 Accept Challenge를 누름
+
+그러면 주문번호 #20을 보게 됨
+
+하지만 이것처럼 상세정보가 보이지 않음
+
+왜냐하면 여기에 아직 배달원이 없기 때문임
+
+이것을 고치고 싶겠지만 일단 다른 모든 것이 제대로 작동돼서 너무 좋음
+
+이 부분을 바꿔봄
+
+Accept Challenge는 주문을 받는다는거니까 내가 주문에 배달원으로 등록되어야함
+
+여기 takeOrder가 있음
+
+보다시피 지금 나는 주문을 볼 수 없음
+
+내가 주문을 받지 않으면 주문을 볼 수 없게 되어있음
+
+그래서 먼저 배달원으로 등록되어야함
+
+거의 다 왔음
+
+이제 mutation을 만들어봄
+
+그것은 takeOrder가 됨
+
+takeOrder를 봄
+
+이것이 이번 코스의 마지막 mutation이 됨
+
+이것을 다 마치면 이 코스를 하고 있는 나에게 절대적인 만족감을 줌
+
+const TAKE_ORDER_MUTATION = gql`mutation takeOrder(input: TakeOrderInput!)`함
+
+input은 variable이 됨
+
+이제 우리는 ok와 error가 필요함
+
+ok와 error를 만듦
+
+그리고 backend에서 마지막으로 수정할 것이 있음
+
+왜냐하면 우리가 받은 주문 ID를 가져오고 싶기 때문임
+
+그럴 필요가 없음
+
+주문을 가져올 필요가 없음
+
+우리가 받은 주문 ID를 가져올 필요가 없음
+
+이미 가지고 있음
+
+터미널에 npm run apollo:codegen 입력함
+
+만들어지는동안 여기 아래에 mutation을 만들어봄
+
+여기에 const [takeOrderMutation] = useMutation(TAKE_ORDER_MUTATION)이라 함
+
+여기에는 variables가 필요함
+
+이것이 import되지 않았음
+
+variables는 takeOrderVariables임
+
+variables의 input에는 order의 id를 넣으면 됨
+
+우리는 주문 ID가 필요함
+
+ID가 여기 있음
+
+여기서 Link를 button으로 바꿔봄
+
+그리고 to 대신 onClick에 이것을 저장해봄
+
+이 onClick에서 takeOrderMutation function을 호출함
+
+또는 triggerMutation을 호출함
+
+triggerMutation 안에 있는 것들은 number임
+
+triggerMutation에 number가 필요하다고 명시해줌
+
+이제 여기에서 triggerMutation을 호출함
+
+다 했음
+
+이제 onComplete function을 정의함
+
+onComplete 함수는 takeOrder type인 data를 받음
+
+if(data.takeOrder.ok)에 해당되면 history를 사용함
+
+useHistory()를 사용함
+
+history.push(`/orders/${}`)함
+
+주문 ID(orderId)가 필요함
+
+이것이 주문 ID가 필요한 이유임
+
+아니면 .id처럼 그냥 여기서 가지고 옴
+
+이것이 onCompleted임
+
+이제 제대로 작동하는지 봄
+
+어쩌면 문제가 발생할 수도 있음
+
+왜냐하면 나는 이것이 존재하지 않을거라고 생각함
+
+어떤 일이 일어나는지 한번 봄
+
+variables가 아니라 이것처럼 그냥 onCompleted임
+
+다시 해봄
+
+여기로 돌아와서 아직 주문이 없고, 우리는 이 주문창에서 나와야함
+
+/my-restaurant으로 가서 식당을 선택하고 새로고침을 함
+
+여기서도 다시 한번 새로고침 함
+
+모두 listening을 하고 있겠지
+
+Start order후 Add하고 Confirm함
+
+잘 동작함
+
+Accept Challenge에 성공했음
+
+이제 driver가 주문을 픽업하면 주문 상태를 PickedUp으로 업데이트 해줌
+
+대시보드에서 할 것은 다 했음
+
+다시 order.tsx로 돌아감
+
+이제 이거랑 비슷한 것을 함
+
+이것을 배달원으로 바꿈
+
+이렇게 해봄
+
+userData?.me.role이 UserRole.Delivery와 같고 status가 OrderStatus.Cooked라면 이것을 PickedUp으로 업데이트함
+
+만약 status가 PickedUp이라면 status를 Delivered로 업데이트함
+
+여기 있는 것을 지움
+
+아니면 status가 Delivered이면 우리는 thank you for your service라고 보여줄 수도 있겠음
+
+status가 Delivered이면 여기있는 모두에게 보여줘도 될 것 같음
+
+"Nuber Eats를 이용해주셔서 감사합니다."라고 보여줄 수 있겠음
+
+모두 새로고침 해줘야함
+
+지금은 PickedUp임
+
+.status === OrderStatus.Delivered로 수정함
+
+모두 새로고침 해야함
+
+왜냐하면 create react app이 알아서 새로고침 해주는데 제대로 되지 않음
+
+주문이 PickedUp으로 바뀌었음
+
+status가 Delivered로 바뀌었음
+
+마침내 해냈음

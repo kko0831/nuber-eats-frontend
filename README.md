@@ -20471,3 +20471,297 @@ pagination도 했었음
 아주 감사하게도 Nest.JS를 deploy하는 것은 정말 간단함
 
 왜냐하면 보다시피 package.json에 start script가 있는데, 이미 만들어져 있고 우리는 어떤 것도 수정할 필요가 없음
+
+## 24.3 Netlify
+
+Netlify로 가서 Add new site-> Import an existing project를 클릭함
+
+New site from Git을 클릭하면 어떤 사이트를 원하는지 물어봄
+
+GitHub을 클릭하면 됨
+
+그러면 다시 어떤 저장소를 원하는지 물어봄
+
+이 경우에는 나는 nuber-eats-frontend를 선택함
+
+여기 있음
+
+이제 우리는 master branch를 deploy함
+
+이런 식으로 npm run build 명령어를 실행시킴
+
+nuber-eats-frontend를 열어줌
+
+여기에 명령어 build가 또 있음
+
+또한 tailwind:build 실행 부분도 확인해야함
+
+매우 중요한건데 여기에 만듦
+
+"prebuild": ""라고 해줌
+
+tailwind:build 명령어를 실행하도록 함
+
+"prebuild": "npm run tailwind:build"함
+
+create react app을 실행할 때 CSS build도 실행이 되는지 확실히 해야함
+
+그리고 이제 테스트를 해봄
+
+publish directory는 build/고 advanced settings를 해서 보면 아직 아무것도 필요하지 않음
+
+에러가 좀 발생하겠지만 같이 고쳐봄
+
+이것이 내 site를 deploy함
+
+master branch에서 가장 마지막에 commit한 내용으로 내 site를 deploy함
+
+master branch의 가장 최신 commit 내용이 됨
+
+npm run을 실행할건데 안타깝게도 styles를 먼저 build하지는 않음
+
+왜냐하면 styles가 아직 없음
+
+일단 기다려봄
+
+에러가 발생했음
+
+그 전에 Netlify 경고가 몇개 떴는데 여기 보면 typescript에서 발생함
+
+"loading이라는 변수가 있지먄 사용되지 않았다"와 "useApolloClient가 선언되었으나 한번도 사용되지 않았다" 등이 있음
+
+이것들은 사실 에러가 아님
+
+예를 들어서 owner/my-restaurants.tsx의 첫째 줄을 봄
+
+여기 보이는 숫자를 보면 됨
+
+useApolloClient를 import 했지만 한번도 사용하지 않았음
+
+이것 때문에 경고를 받음
+
+userApolloClient는 선언되었는데 value는 한번도 사용하지 않음
+
+이것은 삭제해주는 것이 좋겠음
+
+이제 사용하지 않는 variables는 없어졌음
+
+이런 것들은 typescript가 내보내는 경고임
+
+이제 괜찮을 것임
+
+하지만 문제는 뭐냐면 Netlify가 경고를 에러로 받아들인다는 것임
+
+다시 이 창으로 가서 다시 경고를 확인해 볼 수 있음
+
+또 다른 경고를 보면 "link가 선언되었지만 사용되지 않았다"임
+
+즉, 내가 link를 import 했지만 사용하지 않았음
+
+또는 ok에 값을 대입했지만 한번도 사용하지 않았음
+
+이것들 모두는 그냥 경고임
+
+이 부분을 package.json에서 변경할 수 있음
+
+여기로 와서 CI=false라고 적어줌
+
+이 의미는 Netlify가 front-end를 build할 때 경고를 에러로 인식하지 않게 한다는 의미임
+
+아까 말한 것처럼 사실 모든 경고를 고쳐주는 것이 좋음
+
+하지만 내가 할 수 있는 다른 방법을 보여줬음
+
+이제 에러가 없음
+
+왜냐하면 경고와 에러는 매우 다름
+
+이 내용을 git add .함
+
+git push origin master도 해주고 다음 build가 완료된 후에 다시 옴
+
+결과를 보러 가기 전에 Tailwind가 작동하고 있는지 보여주고 싶음
+
+하지만 문제는 이 용량이 엄청 큼
+
+그래서 초반에 내가 말했던 것을 해봄
+
+Tailwind 파일을 우리가 사용하는 class로만 이루어진 Tailwind 압축 파일로 build함
+
+우리가 해야할 것은 tailwind.config.js에 가서 purge를 추가해줌
+
+기본적으로 어떤 파일을 purge할 것인지 적어줌
+
+purge의 의미는 tailwind가 우리 파일을 보고 어떤 class를 사용하고 있는지 감지함
+
+그러면 사용하고 있는 class의 이름만 Netlify 최종 CSS build에 추가가 됨
+
+4MB짜리 css는 말이 안 됨
+
+그럼 이것을 복사해서 postcss로 파일로 감
+
+tailwind.config.js파일로 감
+
+여기에 purge하기 원하는 것을 적을건데 src 폴더 안에 있는 모든 폴더의 모든 tsx 파일을 추가해줌
+
+'./src/\*_/_.tsx'함
+
+src 폴더 안에 있는 모든 폴더의 모든 파일 .tsx를 purge함
+
+중요한 것은 NODE_ENV가 production으로 설정되었을때 purge가 자동으로 동작함
+
+여기로 와서 tailwind:build에 NODE_ENV=production을 적어줌
+
+이것이 우리의 build가 됨
+
+만약 윈도우를 사용하고 있다면 이 부분을 비워둠
+
+윈도우에서는 동작하지 않음
+
+윈도우에서 이것을 실행한다면 동작하지 않음
+
+그러면 cross_env를 설치해야 하는데 cross-env는 이렇게 설치하면 됨
+
+cross-env를 설치하고 나면 윈도우에서도 NODE_ENV=production이 동작함
+
+이것은 이제 없애고 여기다가 "tailwind:prodbuild"를 써줌
+
+이제 나는 3개의 prebuild 스크립트를 가졌음
+
+prebuild는 tailwind:prodbuild를 호출함
+
+그리고 tailwind:prodbuild는 npm run tailwind:build를 실행할거지만 NODE_ENV=production 환경에서 실행함
+
+git add .을 하고 git commit -m "prod build"를 해줌
+
+message는 그냥 "purge"로 해줌
+
+CSS를 purge하면 발생하는 차이를 보여줌
+
+파일이 정말 무거웠음
+
+여기서 볼 수 있음
+
+예를 들면 4MB 용량의 CSS파일을 가지고 있었음
+
+말도 안 됨
+
+너무 과함
+
+여기서 잠깐 비디오를 멈춤
+
+새로 build하고 CSS 용량이 얼마나 작아졌는지 보여줌
+
+얼마나 날씬해졌는지 봄
+
+19KB가 됐음
+
+purge의 능력임
+
+사용하는 class들만 가져와서 만듦
+
+지금 site가 live 상태임
+
+site를 한번 봄
+
+Production 버튼을 누르면 됨
+
+잘 동작했음
+
+이것이 바로 deploy된 react.js임
+
+잘 동작함
+
+계정 만들기로 가서 여러분에게 에러를 보여줌
+
+command + R키를 누르거나 새로고침을 하면 "페이지를 찾을 수 없습니다"라는 페이지가 뜸
+
+nomad root에 들어갔는데 잘 동작했음
+
+계정만들기도 작동했고 로그인도 잘 됨
+
+하지만 다른 페이지에서 새로고침을 하면 이 페이지는 root 페이지가 아님
+
+그리고 여기서 새로고침을 하면 "페이지를 찾을 수 없습니다"라고 나옴
+
+router가 잘 작동하지 않았다는 의미임
+
+아니면 router는 제대로 동작했지만 Netlify가 create-account라는 폴더를 찾으려고 하는데 그 폴더가 존재하지 않음
+
+그러면 여기 뭐가 들어오든 redirect하도록 해줌
+
+Netlify가 이것을 받아서 react로 들어가게 함
+
+react는 여기 주소로 호스팅 되고 있음
+
+일단 redirects로 가서 Netlify를 사용해서 다시 써줌
+
+먼저 해야할 것은 \_redirects 파일을 만드는 것임
+
+그리고 이 파일은 public 폴더에 위치함
+
+새 파일을 만들어봄
+
+그리고 나서 이제 Netlify가 우리 사이트에 도착하는 모든 요청을 타겟 주소로 보내도록 함
+
+이런 식으로 동작함
+
+이것이 브라우저가 요청하는 것이고, 이것은 Netlify가 우리에게 주는 것임
+
+이제 어떤 path로 가든 모든 요청을 받아서 모두 index.html로 가게 함
+
+200이라고 적어줌
+
+200은 redirection 200의 값과 같음
+
+여기서 무슨 일이 일어나냐면 예를 들어볼건데 /create-account를 보면 Netlify는 /create account를 받아서 index.html로 보내줌
+
+index.html에는 이미 /create-account 주소 요청을 처리할 router가 있음
+
+이런 식으로 작동함
+
+이것이 타켓이고 이것이 사람들이 가고자 하는 곳이고 이것이 결과임
+
+웹사이트의 어떤 페이지로 사람들이 가든 전부 index.html로 가게 됨
+
+index.html은 react application을 포함하고 있는 페이지임
+
+react application에서 path를 결정해줌
+
+사람들이 어디로 가든 여기 목적지가 있고 200 코드도 가지고 있음
+
+git add .과 git commit과 git push를 하고 나서 모든 것이 끝나면 다시 옴
+
+여기 보면 Post processing - redirect rules라고 나옴
+
+잘 작동했다는 뜻임
+
+이제 Netlify로 가서 새로고침을 하면 모든 것이 제대로 작동해야만 함
+
+문제 없음
+
+이제 create an account로 가서 create account를 클릭하고 create account 페이지에서 새로고침을 함
+
+이제 보면 잘 작동함
+
+하나 에러가 날텐데 계정을 만들때 발생함
+
+지금 우리는 Heroku에 backend를 연결했기 때문임
+
+계정을 한번 만들어봄
+
+Network에 에러가 발생함
+
+이것 때문임
+
+create account를 클릭하면 에러가 떴음
+
+한번 봄
+
+localhost:4000에 연결하려고 시도했다고 하는데 말이 안 됨
+
+우리는 localhost:4000에 연결하고 싶지 않음
+
+우리는 nuber-eats-backend에 있는 API에 연결하고 싶음
+
+URL을 변경해줘야 하는데 다음 강의에서 이 부분을 진행함

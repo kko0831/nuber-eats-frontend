@@ -20664,7 +20664,7 @@ purge의 능력임
 
 site를 한번 봄
 
-Production 버튼을 누르면 됨
+Open published deploy 버튼을 누르면 됨
 
 잘 동작했음
 
@@ -20765,3 +20765,97 @@ localhost:4000에 연결하려고 시도했다고 하는데 말이 안 됨
 우리는 nuber-eats-backend에 있는 API에 연결하고 싶음
 
 URL을 변경해줘야 하는데 다음 강의에서 이 부분을 진행함
+
+## 24.4 Done!
+
+이제 무엇을 할거냐면 이것을 Visual Studio code에서 변경해줌
+
+나는 이미 여기 가지고 있음
+
+webSocketLink에서 process.env.NODE_ENV=production이라면 우리는 이곳으로 감
+
+이 경우에는 ws임
+
+그리고 httpLink에서 nuber-eats-backend-kko.herokuapp.com/graphql로 감
+
+이렇게 해주면 됨
+
+이것들을 변경하면 됨
+
+websocket을 잊지마
+
+httpLink가 있는데 이 경우에는 https를 써줬음
+
+보다시피 Heroku는 https를 기본으로 사용함
+
+그래서 https를 무료로 이용할 수 있음
+
+https를 쓰면 ws 대신에 wss를 써주도록 해야겠음
+
+일반적인 웹사이트나 컴퓨터에서는 ws를 써도 상관 없음
+
+왜냐하면 localhost이기 때문임
+
+하지만 실제 서버에서는 https와 wss를 써줘야함
+
+Netlify 또한 https를 무료로 제공하고 있음
+
+git add .함
+
+git commit -m "wss https"함
+
+빌드가 끝나고 돌아옴
+
+빌드가 끝나고 계정을 만들어 볼거고, webSocket 연결이랑 graphql연결이 완벽하게 잘 이뤄짐
+
+다시 돌아왔음
+
+console창에 에러가 발생하지 않았음
+
+새로고침을 하고 에러가 있나 봄
+
+에러가 없음
+
+네트워크로 가면 graphql이 연결된 것이 보임
+
+여기 보면 websocket도 있음
+
+그리고 어디인가에 graphql이 있음
+
+아직 어떤 query도 실행시키지 않아서 없음
+
+계정을 만들고 잘 작동하는지 봄
+
+패스워드는 121212임
+
+가게 오너로 등록함
+
+create account 버튼을 클릭 해줌
+
+"계정이 만들어졌습니다. 로그인해주세요."가 나옴
+
+패스워드를 입력해주고 log in 버튼을 클릭함
+
+password 팝업이 떴음
+
+잘 작동함
+
+deploy가 됐음
+
+Netlify frontend를 만들었고 Heroku backend도 만들었음
+
+우리는 어느 곳에서도 https를 이용할 수 있고 매우 보안적임
+
+여러분은 이제 어떻게 하는지 배웠음
+
+이렇게 만드는 법을 알게 되었음
+
+정말 큰 프로젝트였음
+
+정말 많은 것을 배웠음
+
+나중에 배운 것들을 꼭 활용해봤으면 좋겠음
+
+NestJS 서버의 구조는 활용하기 정말 좋음
+
+react로 한 것도 활용해보면 정말 좋음
